@@ -1,0 +1,712 @@
+---
+/**
+ * MENU-04 — ARTE SCIAMANICA — Raffaele Vicenzi Autore — v1.2
+ *
+ * Base: derivata da MENU-02 (stessa topbar, stessi font, stessi fix BASE_URL).
+ *
+ * Modifiche v1.2:
+ * - TAB attiva (pannello selezionato) colorata con lo stesso “verdino” dei tasti top (--menuHover).
+ * - Titolo opere: font DSAccent (non MrB).
+ * - Rimossa la didascalia sotto l’alveare.
+ * - Inserite le immagini negli alveari usando la nomenclatura:
+ *   P01_S01_01.jpg ... P01_S01_10.jpg
+ *   P01_S02_01.jpg ... P01_S02_07.jpg
+ *   P02_S01_01.jpg ... P02_S01_05.jpg
+ *   P03_S01_01.jpg (singola => honeycomb.single)
+ *
+ * Note tecniche:
+ * - URL asset assoluti via BASE_URL (u()).
+ * - Font via @font-face INIETTATI in <head> (niente url("fonts/...") nel CSS estratto).
+ */
+
+// ===== BASE URL (subpath safe) =====
+const baseHref = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : import.meta.env.BASE_URL + "/";
+
+const u = (p: string): string => baseHref + p.replace(/^\/+/, "");
+
+// ===== LINKS MENU (come index) =====
+const hrefHome = baseHref;
+const hrefM02 = u("menu-02/");
+const hrefM03 = u("menu-03/");
+const hrefM04 = u("menu-04/");
+const hrefM05 = u("menu-05/");
+const hrefM06 = u("menu-06/");
+
+// ===== ASSET =====
+const profileImg = u("img/profilo.jpg");
+const heroBgUrl = u("img/hero.jpg");
+
+// ===== FONTS (public/fonts) =====
+const candFontUrl = u("fonts/candara.ttf");
+const mrBFontUrl = u("fonts/MrB.ttf");
+const dsAccentFontUrl = u("fonts/DSAccent.ttf");
+
+const fontFaceCSS = `
+@font-face{
+  font-family:"Candara";
+  src:url("${candFontUrl}") format("truetype");
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:"MrB";
+  src:url("${mrBFontUrl}") format("truetype");
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:"DSAccent";
+  src:url("${dsAccentFontUrl}") format("truetype");
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
+`;
+
+// ===== GALLERIE (nomi file come da tua nomenclatura) =====
+// P01 / S01 => 01..10
+const P01S01 = Array.from({ length: 10 }, (_, i) => `img/arte_sciamanica/P01_S01_${String(i + 1).padStart(2, "0")}.jpg`);
+// P01 / S02 => 01..07
+const P01S02 = Array.from({ length: 7 }, (_, i) => `img/arte_sciamanica/P01_S02_${String(i + 1).padStart(2, "0")}.jpg`);
+// P02 / S01 => 01..05
+const P02S01 = Array.from({ length: 5 }, (_, i) => `img/arte_sciamanica/P02_S01_${String(i + 1).padStart(2, "0")}.jpg`);
+// P03 / S01 => 01 (singola)
+const P03S01 = [`img/arte_sciamanica/P03_S01_01.jpg`];
+
+// helper urls assolute
+const U = (rel: string) => u(rel);
+---
+
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <base href={baseHref} />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Raffaele Vicenzi — Arte Sciamanica</title>
+
+    <link rel="preload" href={candFontUrl} as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href={mrBFontUrl} as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href={dsAccentFontUrl} as="font" type="font/ttf" crossorigin />
+
+    <style is:global set:html={fontFaceCSS}></style>
+  </head>
+
+  <body>
+    <!-- TOPBAR (uguale a index / menu-02) -->
+    <header class="topbar">
+      <a class="brand" href={hrefHome} aria-label="Home">
+        <img class="brandImg" src={profileImg} alt="" width="52" height="52" />
+        <span class="brandText">
+          <span class="brandName">Raffaele Vicenzi</span>
+          <span class="brandLine">| Autore | Esoterista | Sciamano | Artista-Artigiano |</span>
+        </span>
+      </a>
+
+      <nav class="nav" aria-label="Menu">
+        <a class="navItem" href={hrefHome}>Home</a>
+        <a class="navItem" href={hrefM02}>Bio</a>
+        <a class="navItem" href={hrefM03}>Il Campo Del Cuore</a>
+        <a class="navItem isActive" href={hrefM04} aria-current="page">Arte Sciamanica</a>
+        <a class="navItem" href={hrefM05}>Esperienze</a>
+        <span class="navItem navDisabled" aria-disabled="true" title="In arrivo">Contatti</span>
+      </nav>
+    </header>
+
+    <main>
+      <!-- STAGE + CARD -->
+      <section class="artStage" style={`--stageBkg: url('${heroBgUrl}');`}>
+        <div class="artCard" role="region" aria-label="Arte Sciamanica">
+          <header class="artHead">
+            <h1 class="artTitle">Arte Sciamanica</h1>
+            <p class="artSubtitle">"Arte che àncora il codice nello scenario e che rende l'immagine come un vero e proprio atto magico."</p>
+          </header>
+
+          <!-- TAB / PANNELLI -->
+          <div class="tabsWrap">
+            <div class="tabs" role="tablist" aria-label="Sezioni Arte Sciamanica">
+              <button class="tab isActive" type="button" role="tab" aria-selected="true" aria-controls="panelP01" id="tabP01" data-target="panelP01">
+                Bastoni rituali
+              </button>
+              <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="panelP02" id="tabP02" data-target="panelP02">
+                Ciondoli rituali
+              </button>
+              <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="panelP03" id="tabP03" data-target="panelP03">
+                Altri oggetti
+              </button>
+            </div>
+
+            <!-- CONTENUTO sotto le schede -->
+            <section class="panelStage" aria-live="polite">
+              <!-- P01 -->
+              <section class="panel isShow" id="panelP01" role="tabpanel" aria-labelledby="tabP01">
+                <h2 class="workTitle"><span class="workTitleMark">BASTONI RITUALI</span></h2>
+
+                <div class="panelText">
+                  <p><em>Gallerie foto e spiegazioni delle simbologie, scelte materiali, colori e costruzione dei bastoni rituali.</em></p>
+
+                  <!-- STRISCIA 1 -->
+                 <h3 class="stripeTitle"><span class="stripeMark">Bastone rituale "Keras Abrasax"</span></h3>
+
+                <div class="honeyWrap honeyFloat">
+                  <div class="honeycomb" aria-label="Galleria P01 S01">
+                    {P01S01.map((rel, idx) => (
+                      <a class="hex" href={U(rel)} target="_blank" rel="noopener noreferrer" aria-label={`P01 S01 ${String(idx + 1).padStart(2, "0")}`}>
+                        <span class="hexInner" style={`background-image:url('${U(rel)}');`}>
+                          <span class="hexLabel">{`P01_S01_${String(idx + 1).padStart(2, "0")}`}</span>
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+
+                <p>Descrizione fotografie: <br><br>
+1. Lavorazione dell'impugnatura del bastone progettata per il suo utilizzo rituale.<br><br>
+
+2. Dettaglio lavorazione di lisciatura e predisposizione alla prima fase di verniciatura, impregnanti.<br><br>
+
+3. Bastone rituale che rappresenta di base la figura gnostica e templare di Abrasax, che porta saggezza e vede la nuda e cruda verità di ciò che si è, senza veli e nebbie, che vede oltre.
+<br><br>
+4. Scrittura in ebraico bianca su sfondo rosso della Sephira D'AAT: la Conoscenza.<br><br>
+
+5. Dopo strati di olio di Lino e olio di Camelia (per evitare che il legno marcisca), uso di colori acrilici e vernice lucida da esterno, per creare uno spessore protettivo al colore per eventuali contusioni e il contatto con l'acqua.
+<br><br>
+6. Croce Templare
+<br><br>
+7. Il bastone rappresenta, oltre il Caduceo e la Kundalini che sale, il sigillo sacro dei templari IAO ABRASAX SABAOTH.
+<br><br>
+8. Scritta in cuneiforme accadico della Dea Madre sacra ai Sumeri. NIN (Grande, Altissima, Bellissima) MAH(Signora).
+<br><br>
+9. Prima lavorazione di scultura del serpente che mancia il bastone.
+<br><br>
+10. Il bastone è un connettore tra Cielo e Terra, Abrasax e sul fondo la lingua (Rossa) che sta indicare il I Chakra che è radicato alla terra. Figura antropomorfa con la Testa di Gallo, il corpo umano e le gambe di serpente. Figura Sacra ai Templari.
+<br></p><br>
+
+                  <!-- STRISCIA 2 -->
+                  <h3 class="stripeTitle"><span class="stripeMark">Bastone rituale "Rishlat Mor-Righain"</span></h3>
+                  
+                    <div class="honeyWrap honeyFloat">
+                    <div class="honeycomb" aria-label="Galleria P01 S02">
+                      {P01S02.map((rel, idx) => (
+                        <a class="hex" href={U(rel)} target="_blank" rel="noopener noreferrer" aria-label={`P01 S02 ${String(idx + 1).padStart(2, "0")}`}>
+                          <span class="hexInner" style={`background-image:url('${U(rel)}');`}>
+                            <span class="hexLabel">{`P01_S02_${String(idx + 1).padStart(2, "0")}`}</span>
+                          </span>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+
+                  <p>Il nome del bastone è Rishlat Mor-Righain. <br>
+
+Volevo scrivere in Gaelico “lo scettro di Morrigan”, ma poi ho scoperto una cosa: “Mor” significa grande, “Righ” = Re, “Ban-righ” = Regina. Quindi, per me, è una forzatura tradurre la parola "Morrigan" come “Grande Regina”, “Righain” significa “regno”. Pertanto Mor-Righain è un gioco di parole tra Morrigan e Mor-Righain, che significa sia “Scettro di Morrigan” o “Scettro che comanda sopra il Regno”.
+<br><br>
+Descrizione fotografie: <br>
+1-2. Primi intagli delle diverse tipologie di impugnatura a seconda degli usi rituali. Possibilità di diverse prese mantenendo il bastone orizzontale. Bastone in legno di Abete Rosso (Val di Rabbi -TN-). In un primo momento il suo nome era “Nija Itazipa” che in lingua indiano Lakota, significa "Arco degli Spiriti"; infatti se esso è per diverso tempo lasciato alla luce del sole, di notte si illumina, poiché è stato rivestito di colori fluorescenti del medesimo gradiente di quelli acrilici di base. <br>
+<br>
+3. Il bastone Rishlat Mor-Righain è il bastone che riconosce e ti mostra il potere a chi lo impugna/brandisce. Non contiene energia, ma può può contenere quella necessaria per mostrare il "potere" che si è, il "ciò che si è". <br>
+<br>
+4. Si notano le piume di corvo (Aria) che rappresentano il mio spirito guida/animale Totem, un velo nero sulla "faccia" del bastone che simboleggia lo spirito di Sara La Kali, la "Madonna Nera" (Acqua). Poi ci sono due pietre; quella verde scuro è una Blood Stone sacra a Morrigan, mentre l'altra, Fluorite, legata al mondo degli spiriti. <br><br>
+5-6-7. Panoramica delle varie impugnature e "vene" dove dalla terra scorrono i canali che conducono al Mondo degli Spiriti; bastone è un conduttore e un collegamento a quel mondo con il nostro. <br><br>
+</p>
+                </div>
+              </section>
+
+              <!-- P02 -->
+              <section class="panel" id="panelP02" role="tabpanel" aria-labelledby="tabP02" hidden>
+                <h2 class="workTitle"><span class="workTitleMark">CONDOLI RITUALI</span></h2>
+
+                <div class="panelText">
+                  <p><em>Gallerie foto e spiegazioni delle simbologie, scelte materiali, colori e costruzione dei ciondoli rituali.</em></p>
+
+                  <h3 class="stripeTitle"><span class="stripeMark">Pendaglio Rituale per canalizzazione potere 5° Chakra</span></h3>
+                  <div class="honeyWrap honeyFloat">
+                    <div class="honeycomb" aria-label="Galleria P02 S01">
+                      {P02S01.map((rel, idx) => (
+                        <a class="hex" href={U(rel)} target="_blank" rel="noopener noreferrer" aria-label={`P02 S01 ${String(idx + 1).padStart(2, "0")}`}>
+                          <span class="hexInner" style={`background-image:url('${U(rel)}');`}>
+                            <span class="hexLabel">{`P02_S01_${String(idx + 1).padStart(2, "0")}`}</span>
+                          </span>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                   <p>Questo pendaglio rituale è stato completamente creato in diverse canalizzazioni senza una vera intenzione precisa; forme e simboli sono usciti da essa senza una premeditazione. Il legno utilizzato è un pino della Val Di Gresta (TN). <br><br>
+In centro ci sono due piramidi sovrapposte il cui significato mi è quasi oscuro; so solo che ha a che fare con i viaggi stellari e/o con gli Starseed. L'azzurro è legato al 5° chakra "Io Esprimo", interamente protetto da una vernice per esterni lucida. La scritta centrale indica la LEGGE, la legge in senso trismegistiano-crowleyano: si legge "Mùun", che a sua volta, indicando le cifre numeriche, significa letteralmente "da 1 a 9").<br><br>
+Dalle parti abbiamo il nero che rappresenta l'Ombra e il simbolo che nella mia filosofia è legata al sistema che io chiamo "Meywx" (pronuncia: mèiux") concetto che tra gli altri si può definire l'essere interiore la causa che genera la sua ombra sul muro (manifestazione della materia) e il bianco, la Luce, e quindi il simbolo del Sistema che io chiamo "Anw", la Coscienza, colui/colei che vigila/è nel "qui e ora".<br><br>
+
+I due buchi per gli anelli di cuoio sono sfasati perché servono per bilanciare il pendaglio; infatti indossato è perfettamente bilanciato. Nel mezzo c'è un ulteriore foro che serve per aggiungerci un "oggetto di potere" o "oggetto di attivazione"; serve per attivare la connessione con il pendaglio e le forze interiori e esterne alle quali esso fa riferimento, che comunque ignoro. <br><br>
+<br><br>
+                </div>
+              </section>
+
+              <!-- P03 -->
+              <section class="panel" id="panelP03" role="tabpanel" aria-labelledby="tabP03" hidden>
+                <h2 class="workTitle"><span class="workTitleMark">ALTRE OPERE E COSTRUZIONI</span></h2>
+
+                <div class="panelText">
+                  <p><em>Gallerie foto e spiegazioni delle simbologie, scelte materiali, colori e costruzione di altre opere.</em></p>
+
+                  <h3 class="stripeTitle"><span class="stripeMark">CUORE</span></h3>
+
+                  <!-- ALVEARE/FOTO a sinistra, testo che ci gira attorno -->
+                  <div class="honeyWrap honeyFloat">
+                    <div class="honeycomb single" aria-label="Galleria P03 S01 (singola)">
+                      {P03S01.map((rel) => (
+                        <a class="hex" href={U(rel)} target="_blank" rel="noopener noreferrer" aria-label="P03 S01 01">
+                          <span class="hexInner" style={`background-image:url('${U(rel)}');`}>
+                            <span class="hexLabel">P03_S01_01</span>
+                          </span>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+
+                  <p>
+                    Questa composizione artistica rappresenta il Cuore circondato dagli spiriti degli antenati e da pietre che hanno una storia,
+                    scelte dai molti luoghi in Natura e che, per un motivo o per l'altro, "mi hanno chiamato". Le pietre blu sono fluorescenti,
+                    mentre quelle naturali disposte in cerchio formano un muro di protezione attorno al Cuore stesso.
+                    <br><br>
+                  </p>
+
+                  <!-- chiude il “giro attorno” e rimette tutto sotto -->
+                  <div class="clearFloat" aria-hidden="true"></div>
+                </div>
+              </section>
+
+
+    </main>
+
+    <footer class="footer">
+      <small>© <span id="y"></span> Raffaele Vicenzi</small>
+    </footer>
+
+    <script is:inline>
+      (() => {
+        const y = document.getElementById("y");
+        if (y) y.textContent = String(new Date().getFullYear());
+
+        const tabs = Array.from(document.querySelectorAll(".tab"));
+        const panels = Array.from(document.querySelectorAll(".panel"));
+
+        function show(id){
+          panels.forEach((p) => {
+            const isTarget = p.id === id;
+            p.hidden = !isTarget;
+            p.classList.toggle("isShow", isTarget);
+          });
+
+          tabs.forEach((t) => {
+            const isActive = t.getAttribute("data-target") === id;
+            t.classList.toggle("isActive", isActive);
+            t.setAttribute("aria-selected", isActive ? "true" : "false");
+          });
+        }
+
+        tabs.forEach((t) => {
+          t.addEventListener("click", () => {
+            const id = t.getAttribute("data-target");
+            if (id) show(id);
+          });
+        });
+      })();
+    </script>
+
+    <style>
+      :root{
+        --ink:#0b0b0b;
+
+        /* Sfondo pagina */
+        --artPaper:#f7f1e8;
+
+        /* card trasparente */
+        --artCard: rgba(255,255,255,0.62);
+        --artBorder: rgba(0,0,0,0.12);
+
+        /* pannello sotto le schede */
+        --panelBlue: rgba(35, 86, 150, 0.20);
+
+        /* cornici bianche spesse */
+        --frameWhite: rgba(255,255,255,0.95);
+
+        /* titolo opere (arancio chiarissimo) */
+        --titleMark: rgba(255, 206, 150, 0.72);
+
+        /* hover verdino menu + stesso verdino per TAB attiva */
+        --menuHover: rgba(119, 194, 99, 0.28);
+      }
+
+      *{ box-sizing:border-box; }
+      body{
+        margin:0;
+        color: var(--ink);
+        font-family: "Candara", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+        background: var(--artPaper);
+        line-height:1.45;
+      }
+      a{ color:inherit; text-decoration:none; }
+
+      /* TOPBAR (uguale a index) */
+      .topbar{
+        position: sticky;
+        top:0;
+        z-index: 50;
+        display:flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 18px;
+        background: rgba(255,255,255,0.92);
+        border-bottom: 1px solid rgba(0,0,0,0.08);
+        backdrop-filter: blur(10px) saturate(180%);
+        gap: 14px;
+      }
+      .brand{
+        display:flex;
+        align-items:center;
+        gap: 12px;
+        min-width: 220px;
+      }
+      .brandImg{
+        width: 52px;
+        height: 52px;
+        border-radius: 12px;
+        object-fit: cover;
+        border: 1px solid rgba(0,0,0,0.20);
+        background: #fff;
+        flex: 0 0 auto;
+      }
+      .brandText{ display:flex; flex-direction: column; line-height: 1.1; }
+      .brandName{
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+      }
+      .brandLine{
+        margin-top: 6px;
+        font-family:"MrB","Candara",system-ui,sans-serif;
+        font-size: 12px;
+        opacity: 0.92;
+        letter-spacing: 0.03em;
+        white-space: nowrap;
+      }
+
+      .nav{
+        display:flex;
+        align-items:center;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+      .navItem{
+        padding: 10px 12px;
+        border-radius: 999px;
+        background: rgba(0,0,0,0.05);
+        border: 1px solid rgba(0,0,0,0.10);
+        font-size: 14px;
+        transition: background-color .16s ease, transform .16s ease, filter .16s ease;
+        position: relative;
+        will-change: transform;
+      }
+      .navItem:not(.navDisabled):hover{
+        background: var(--menuHover);
+        animation: navShakeY 0.65s ease-in-out infinite;
+      }
+      .navItem:focus-visible{
+        outline: 2px solid rgba(0,0,0,0.55);
+        outline-offset: 3px;
+      }
+      .navDisabled{
+        opacity: 0.45;
+        cursor: default;
+        user-select:none;
+        background: rgba(0,0,0,0.03);
+      }
+      .isActive{
+        background: rgba(120,170,255,0.20);
+        border-color: rgba(0,0,0,0.10);
+      }
+
+      @keyframes navShakeY{
+        0%   { transform: translateY(0); }
+        25%  { transform: translateY(-2px); }
+        50%  { transform: translateY(0); }
+        75%  { transform: translateY(2px); }
+        100% { transform: translateY(0); }
+      }
+
+      /* STAGE */
+      .artStage{
+        position: relative;
+        min-height: calc(100vh - 72px);
+        padding: 42px 18px 56px;
+        background: var(--artPaper);
+      }
+
+      .artStage::before{
+        content:"";
+        position:absolute;
+        inset:0;
+        background-image: var(--stageBkg);
+        background-size: cover;
+        background-position: center;
+        opacity: 0.14;
+        filter: saturate(1.05) contrast(1.02);
+        pointer-events:none;
+      }
+      .artStage::after{
+        content:"";
+        position:absolute;
+        inset:0;
+        background: linear-gradient(to bottom, rgba(255,255,255,0.55), rgba(247,241,232,0.92));
+        pointer-events:none;
+      }
+
+      .artCard{
+        position: relative;
+        z-index: 1;
+        max-width: 980px;
+        width: 100%;
+        margin: 0 auto;
+
+        border-radius: 22px;
+        background: var(--artCard);
+        border: 1px solid var(--artBorder);
+        backdrop-filter: blur(12px) saturate(160%);
+        box-shadow: 0 18px 55px rgba(0,0,0,.12);
+        overflow: hidden;
+      }
+
+      .artHead{
+        padding: 20px 20px 12px;
+        border-bottom: 1px solid rgba(0,0,0,0.08);
+        background: rgba(255,255,255,0.30);
+      }
+      .artTitle{
+        margin: 0;
+        font-family:"DSAccent","Candara",system-ui,sans-serif;
+        font-weight: 400;
+        font-size: 34px;
+        line-height: 1.05;
+      }
+      .artSubtitle{
+        margin: 8px 0 0;
+        font-family:"MrB","Candara",system-ui,sans-serif;
+        font-size: 18px;
+        opacity: 0.92;
+        max-width: 80ch;
+      }
+
+      /* ===== TABS ATTACCATE ===== */
+      .tabsWrap{ padding: 16px 16px 20px; }
+      .tabs{
+        display:flex;
+        gap: 10px;
+        align-items:flex-end;
+        flex-wrap: wrap;
+        margin: 0;
+        padding: 0 2px;
+      }
+
+      .tab{
+        appearance: none;
+        border: 4px solid var(--frameWhite);
+        border-bottom: 0;
+        background: rgba(35, 86, 150, 0.22);
+        color: var(--ink);
+        font-family: "MrB","Candara",system-ui,sans-serif;
+        font-size: 14px;
+        padding: 12px 14px 11px;
+        border-radius: 16px 16px 0 0;
+        cursor: pointer;
+        box-shadow: 0 -10px 22px rgba(0,0,0,0.08);
+        position: relative;
+        transform: translateY(8px);
+        transition: background-color .16s ease, filter .16s ease, transform .16s ease;
+      }
+
+      .tab:hover{ filter: brightness(1.03); }
+
+      /* ✅ TAB/PANNELLO SELEZIONATO = verdino come menu top */
+      .tab.isActive{
+        background: var(--menuHover);
+        transform: translateY(4px);
+      }
+
+      .tab:focus-visible{
+        outline: 2px solid rgba(0,0,0,0.55);
+        outline-offset: 3px;
+      }
+
+      /* ===== PANNELLO SOTTO ===== */
+      .panelStage{
+        margin-top: -4px;
+        border: 4px solid var(--frameWhite);
+        border-radius: 18px;
+        background: var(--panelBlue);
+        overflow: hidden;
+      }
+
+      .panel{ padding: 18px 16px 22px; }
+      .panel.isShow{ display:block; }
+      .panel[hidden]{ display:none; }
+
+      /* ✅ Titolo opere con DSAccent + 25px */
+      .workTitle{
+        margin: 0 0 12px;
+        font-family:"DSAccent","Candara",system-ui,sans-serif;
+        font-weight: 400;
+        font-size: 25px;
+        line-height: 1.15;
+      }
+      .workTitleMark{
+        display:inline-block;
+        padding: 6px 10px;
+        border-radius: 10px;
+        background: var(--titleMark);
+      }
+
+      /* Titolo striscia (interno pannello) */
+      .stripeTitle{
+        margin: 18px 0 10px;
+        font-family:"MrB","Candara",system-ui,sans-serif;
+        font-size: 25px;
+        font-weight: 400;
+      }
+      .stripeMark{
+        display:inline-block;
+        padding: 6px 10px;
+        border-radius: 10px;
+        background: rgba(255,255,255,0.55);
+        border: 1px solid rgba(0,0,0,0.10);
+      }
+
+      .panelText{
+        font-family:"Candara",system-ui,-apple-system,Segoe UI,Roboto,Arial;
+        font-size: 16px;
+      }
+      .panelText p{
+        margin: 0 0 14px;
+        text-align: justify;
+        text-justify: inter-word;
+        hyphens: auto;
+      }
+
+      /* ===== ALVEARE ===== */
+    
+      .honeyWrap.honeyFloat{
+        float: left;
+        width: 50%;
+        max-width: 520px;
+        margin: 12px 18px 12px 0; /* spazio a destra per il testo */
+      }
+
+      .clearFloat{ clear: both; }
+
+      @media (max-width: 900px){
+        .honeyWrap.honeyFloat{
+          float: none;
+          width: 100%;
+          max-width: none;
+          margin: 12px 0 14px;
+        }
+      }
+
+      .honeycomb{
+        display:grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 18px;
+        background: rgba(255,255,255,0.00);
+      }
+
+      /* singola foto: cella grande */
+      .honeycomb.single{
+        grid-template-columns: minmax(260px, 420px);
+        justify-content: start;
+      }
+      .hexLabel{ display:none !important; }
+
+      .hex{
+        position: relative;
+        display:block;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        outline: none;
+      }
+
+      .hexInner{
+        position:absolute;
+        inset:0;
+        border-radius: 0;
+        background: rgba(255,255,255,0.35);
+        border: 10px solid var(--frameWhite);
+        box-shadow: 0 14px 34px rgba(0,0,0,0.10);
+        overflow:hidden;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+
+        /* anteprima */
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+
+        /* “quadrato” */
+        clip-path: none;
+
+        transform: scale(1);
+        transition: transform .18s ease, filter .18s ease;
+      }
+
+      /* hover: evidenzia + velo bianco */
+      .hexInner::after{
+        content:"";
+        position:absolute;
+        inset:0;
+        background: rgba(255,255,255,0.00);
+        transition: background .18s ease;
+        pointer-events:none;
+      }
+      
+      .hex:hover .hexInner{
+        transform: scale(1.04);
+        filter: brightness(1.02);
+      }
+      .hex:hover .hexInner::after{
+        background: rgba(255,255,255,0.28);
+      }
+
+      .hexLabel{
+        position: relative;
+        z-index: 1;
+        font-family:"MrB","Candara",system-ui,sans-serif;
+        font-size: 13px;
+        padding: 8px 10px;
+        border-radius: 10px;
+        background: rgba(255,255,255,0.75);
+        border: 1px solid rgba(0,0,0,0.10);
+      }
+
+      /* FOOTER */
+      .footer{
+        padding: 22px 18px;
+        background: rgba(255,255,255,0.85);
+        border-top: 1px solid rgba(0,0,0,0.10);
+      }
+
+      @media (max-width: 900px){
+        .brandLine{ white-space: normal; }
+        .tabs{ gap: 8px; }
+        .tab{ padding: 11px 12px 10px; }
+        .panel{ padding: 16px 14px 18px; }
+        .honeycomb{ grid-template-columns: repeat(3, 1fr); }
+      }
+    </style>
+  </body>
+</html>

@@ -1,0 +1,457 @@
+---
+/**
+ * MENU-03 — IL CAMPO DEL CUORE — Raffaele Vicenzi Autore — v1.0
+ *
+ * Derivato da MENU-02 (Bio):
+ * - Cambiato SOLO il colore “azzurrino” dello sfondo (variabile --bioPaper).
+ * - Contenuti sostituiti (titolo/sottotitolo/testo).
+ * - Aggiunto bottone finale “Visita al Sitoweb” tutto a destra linkato al sito esterno.
+ *
+ * Note tecniche:
+ * - URL asset assoluti via BASE_URL (u()).
+ * - Font via @font-face INIETTATI in <head> (niente url("fonts/...") nel CSS estratto).
+ */
+
+const baseHref = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : import.meta.env.BASE_URL + "/";
+
+const u = (p: string): string => baseHref + p.replace(/^\/+/, "");
+
+// ===== LINKS MENU (come index) =====
+const hrefHome = baseHref;
+const hrefM02 = u("menu-02/");
+const hrefM03 = u("menu-03/");
+const hrefM04 = u("menu-04/");
+const hrefM05 = u("menu-05/");
+const hrefM06 = u("menu-06/");
+
+// ===== ASSET =====
+const profileImg = u("img/campocuore_hero.jpg");
+const heroBgUrl = u("img/hero.jpg");
+
+// ===== FONTS (public/fonts) =====
+const candFontUrl = u("fonts/candara.ttf");
+const mrBFontUrl = u("fonts/MrB.ttf");
+const dsAccentFontUrl = u("fonts/DSAccent.ttf");
+
+const fontFaceCSS = `
+@font-face{
+  font-family:"Candara";
+  src:url("${candFontUrl}") format("truetype");
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:"MrB";
+  src:url("${mrBFontUrl}") format("truetype");
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:"DSAccent";
+  src:url("${dsAccentFontUrl}") format("truetype");
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
+`;
+
+// ===== LINK ESTERNO =====
+const campoUrl = "https://draven4866.github.io/campo_del_cuore";
+---
+
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <base href={baseHref} />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Raffaele Vicenzi — Il Campo del Cuore</title>
+
+    <link rel="preload" href={candFontUrl} as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href={mrBFontUrl} as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href={dsAccentFontUrl} as="font" type="font/ttf" crossorigin />
+
+    <style is:global set:html={fontFaceCSS}></style>
+  </head>
+
+  <body>
+    <!-- TOPBAR (uguale a index) -->
+    <header class="topbar">
+      <a class="brand" href={hrefHome} aria-label="Home">
+        <img class="brandImg" src={profileImg} alt="" width="52" height="52" />
+        <span class="brandText">
+          <span class="brandName">Raffaele Vicenzi</span>
+          <span class="brandLine">| Autore | Esoterista | Sciamano | Artista-Artigiano |</span>
+        </span>
+      </a>
+
+      <nav class="nav" aria-label="Menu">
+        <a class="navItem" href={hrefHome}>Home</a>
+        <a class="navItem" href={hrefM02}>Bio</a>
+        <a class="navItem isActive" href={hrefM03} aria-current="page">Il Campo Del Cuore</a>
+        <a class="navItem" href={hrefM04}>Arte Sciamanica</a>
+        <a class="navItem" href={hrefM05}>Esperienze</a>
+        <span class="navItem navDisabled" aria-disabled="true" title="In arrivo">Contatti</span>
+      </nav>
+    </header>
+
+    <main>
+      <!-- BACKGROUND + CARD -->
+      <section class="bioStage" style={`--stageBkg: url('${heroBgUrl}');`}>
+        <div class="bioCard" role="region" aria-label="Che cos'è Il Campo del Cuore">
+          <header class="bioHead">
+            <h1 class="bioTitle">Che cos&apos;è Il Campo del Cuore</h1>
+            <p class="bioSubtitle">
+              La scienza pratica del sentire: manuali, tarot dedicati e procedure di sovranità per scrivere il reale.
+            </p>
+          </header>
+
+          <div class="bioBody">
+            <img class="floatPhoto" src={profileImg} alt="Raffaele Vicenzi" width="220" height="220" />
+
+            <article class="bioBlock" data-reveal>
+              <p>
+                Il <strong>Campo del Cuore</strong> è un progetto nato per trasformare una cosa che tutti viviamo—turbamento,
+                chiusura, slancio, confusione, lucidità—in qualcosa che si possa <strong>leggere</strong> e quindi attraversare
+                con più precisione. Non è un “metodo per stare sempre bene” e non pretende di spiegare la vita con una teoria totale:
+                è una grammatica essenziale per riconoscere cosa succede dentro e fuori di noi quando qualcosa ci tocca, ci attiva o ci spegne.
+              </p>
+              
+              <p>
+                L’idea è arrivata per necessità: anni di scrittura, ascolto, ricerca e pratica mi hanno mostrato che la differenza non la fa
+                l’autoanalisi infinita, ma la capacità di cogliere i segnali giusti al momento giusto. Da qui nasce il sito: una porta sobria
+                che introduce il tono del lavoro e accompagna verso i materiali principali.
+              </p>
+            
+              <p>
+                Il cuore del progetto sono due strumenti complementari. Il <strong>Volume 1</strong> (Manuale) è una sequenza modulare di cornici e
+                pratiche brevi: non chiede ritualismi né performance, ma continuità e una cosa per volta. Serve a costruire leggibilità:
+                riconoscere soglie, ricorrenze, punti di chiusura e gesti minimi che riportano presenza. Il <strong>Volume 2</strong> (Mazzo) è una mappa
+                archetipica per l’indagine del presente: una serie di Arcani che funzionano come specchi operativi. Ogni Arcano apre un campo di significato
+                e si articola in vocaboli-archetipo che aiutano a nominare atteggiamenti, blocchi, risorse e contraddizioni senza giudizio.
+              </p>
+              
+              <p>
+                Insieme, Manuale e Mazzo formano un percorso unico: il primo dà struttura e metodo, il secondo dà linguaggio e profondità. Il sito raccoglie
+                la cornice, l’etica del lavoro (privacy, confini, sobrietà) e una galleria video introduttiva: abbastanza per orientarti, senza “spoilerare”
+                l’esperienza. Se ti interessa un approccio che unisca chiarezza, simbolo e pratica quotidiana, qui trovi una soglia. Il resto si apre nel lavoro
+                vero e proprio.
+              </p>
+            </article>
+
+            <div class="clearFloat" aria-hidden="true"></div>
+
+            <div class="ctaRow" data-reveal>
+              <a class="ctaBtn" href={campoUrl} target="_blank" rel="noopener noreferrer">Visita il Sitoweb</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <small>© <span id="y"></span> Raffaele Vicenzi</small>
+    </footer>
+
+    <!-- Year + Reveal on scroll -->
+    <script is:inline>
+      (() => {
+        const y = document.getElementById("y");
+        if (y) y.textContent = String(new Date().getFullYear());
+
+        const blocks = Array.from(document.querySelectorAll("[data-reveal]"));
+        if (!("IntersectionObserver" in window) || blocks.length === 0) {
+          blocks.forEach((b) => b.classList.add("isIn"));
+          return;
+        }
+
+        const io = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((e) => {
+              if (e.isIntersecting) {
+                e.target.classList.add("isIn");
+                io.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.18 }
+        );
+
+        blocks.forEach((b) => io.observe(b));
+      })();
+    </script>
+
+    <style>
+      :root{
+        --ink:#0b0b0b;
+
+        /* ✅ qui cambia SOLO lo “sfondo azzurrino” rispetto a menu-02 */
+        --bioPaper:#f3efe8;
+
+        --bioCard: rgba(255,255,255,0.62);
+        --bioBorder: rgba(0,0,0,0.12);
+
+        /* hover verdino menu */
+        --menuHover: rgba(119, 194, 99, 0.28);
+      }
+
+      *{ box-sizing:border-box; }
+      body{
+        margin:0;
+        color: var(--ink);
+        font-family: "Candara", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+        background: var(--bioPaper);
+        line-height:1.45;
+      }
+      a{ color:inherit; text-decoration:none; }
+
+      /* TOPBAR (uguale a index) */
+      .topbar{
+        position: sticky;
+        top:0;
+        z-index: 50;
+        display:flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 18px;
+        background: rgba(255,255,255,0.92);
+        border-bottom: 1px solid rgba(0,0,0,0.08);
+        backdrop-filter: blur(10px) saturate(180%);
+        gap: 14px;
+      }
+      .brand{
+        display:flex;
+        align-items:center;
+        gap: 12px;
+        min-width: 220px;
+      }
+      .brandImg{
+        width: 52px;
+        height: 52px;
+        border-radius: 12px;
+        object-fit: cover;
+        border: 1px solid rgba(0,0,0,0.20);
+        background: #fff;
+        flex: 0 0 auto;
+      }
+      .brandText{ display:flex; flex-direction: column; line-height: 1.1; }
+      .brandName{
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+      }
+      .brandLine{
+        margin-top: 6px;
+        font-family:"MrB","Candara",system-ui,sans-serif;
+        font-size: 12px;
+        opacity: 0.92;
+        letter-spacing: 0.03em;
+        white-space: nowrap;
+      }
+
+      .nav{
+        display:flex;
+        align-items:center;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+      .navItem{
+        padding: 10px 12px;
+        border-radius: 999px;
+        background: rgba(0,0,0,0.05);
+        border: 1px solid rgba(0,0,0,0.10);
+        font-size: 14px;
+        transition: background-color .16s ease, transform .16s ease, filter .16s ease;
+        position: relative;
+        will-change: transform;
+      }
+      .navItem:not(.navDisabled):hover{
+        background: var(--menuHover);
+        animation: navShakeY 0.65s ease-in-out infinite;
+      }
+      .navItem:focus-visible{
+        outline: 2px solid rgba(0,0,0,0.55);
+        outline-offset: 3px;
+      }
+      .navDisabled{
+        opacity: 0.45;
+        cursor: default;
+        user-select:none;
+        background: rgba(0,0,0,0.03);
+      }
+      .isActive{
+        background: rgba(120,170,255,0.20);
+        border-color: rgba(0,0,0,0.10);
+      }
+
+      @keyframes navShakeY{
+        0%   { transform: translateY(0); }
+        25%  { transform: translateY(-2px); }
+        50%  { transform: translateY(0); }
+        75%  { transform: translateY(2px); }
+        100% { transform: translateY(0); }
+      }
+
+      /* STAGE */
+      .bioStage{
+        position: relative;
+        min-height: calc(100vh - 72px);
+        padding: 42px 18px 56px;
+        background: var(--bioPaper);
+      }
+
+      .bioStage::before{
+        content:"";
+        position:absolute;
+        inset:0;
+        background-image: var(--stageBkg);
+        background-size: cover;
+        background-position: center;
+        opacity: 0.18;
+        filter: saturate(1.05) contrast(1.02);
+        pointer-events:none;
+      }
+      .bioStage::after{
+        content:"";
+        position:absolute;
+        inset:0;
+        background: linear-gradient(to bottom, rgba(255,255,255,0.45), rgba(243,239,232,0.92));
+        pointer-events:none;
+      }
+
+      .bioCard{
+        position: relative;
+        z-index: 1;
+        max-width: 800px;
+        width: 100%;
+        margin: 0 auto;
+        border-radius: 22px;
+        background: var(--bioCard);
+        border: 1px solid var(--bioBorder);
+        backdrop-filter: blur(12px) saturate(160%);
+        box-shadow: 0 18px 55px rgba(0,0,0,.12);
+        overflow: hidden;
+      }
+
+      .bioHead{
+        padding: 20px 20px 10px;
+        border-bottom: 1px solid rgba(0,0,0,0.08);
+        background: rgba(255,255,255,0.30);
+      }
+
+      .bioTitle{
+        margin: 0;
+        font-family:"DSAccent","Candara",system-ui,sans-serif;
+        font-weight: 400;
+        font-size: 34px;
+        line-height: 1.05;
+      }
+      .bioSubtitle{
+        margin: 8px 0 0;
+        font-family:"MrB","Candara",system-ui,sans-serif;
+        font-size: 18px;
+        opacity: 0.92;
+        max-width: 70ch;
+      }
+
+      .bioBody{
+        padding: 18px 20px 22px;
+      }
+
+      .floatPhoto{
+        float: left;
+        width: 220px;
+        height: 220px;
+        object-fit: cover;
+        border-radius: 18px;
+        margin: 6px 18px 10px 0;
+        border: 1px solid rgba(0,0,0,0.16);
+        box-shadow: 0 16px 40px rgba(0,0,0,.14);
+        background: rgba(255,255,255,0.50);
+      }
+
+      .bioBlock{
+        opacity: 0;
+        transform: translateY(14px);
+        transition: opacity .55s ease, transform .55s ease;
+      }
+      .bioBlock.isIn{
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .bioBlock p{
+        margin: 0 0 14px;
+        max-width: 85ch;
+        text-align: justify;
+        text-justify: inter-word;
+        hyphens: auto;
+      }
+
+      .clearFloat{ clear: both; }
+
+      /* CTA */
+      .ctaRow{
+        margin-top: 10px;
+        opacity: 0;
+        transform: translateY(14px);
+        transition: opacity .55s ease, transform .55s ease;
+        text-align: right;
+      }
+      .ctaRow.isIn{
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .ctaBtn{
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        padding: 12px 18px;
+        border-radius: 999px;
+        background: rgba(119, 194, 99, 0.22);
+        border: 1px solid rgba(0,0,0,0.16);
+        font-family:"MrB","Candara",system-ui,sans-serif;
+        font-size: 16px;
+        line-height: 1;
+        cursor: pointer;
+        transition: transform .14s ease, background-color .14s ease, filter .14s ease;
+      }
+      .ctaBtn:hover{
+        background: rgba(119, 194, 99, 0.32);
+        filter: brightness(1.02);
+        transform: translateY(-1px);
+      }
+      .ctaBtn:focus-visible{
+        outline: 2px solid rgba(0,0,0,0.55);
+        outline-offset: 3px;
+      }
+
+      /* FOOTER */
+      .footer{
+        padding: 22px 18px;
+        background: rgba(255,255,255,0.85);
+        border-top: 1px solid rgba(0,0,0,0.10);
+      }
+
+      @media (max-width: 900px){
+        .brandLine{ white-space: normal; }
+        .floatPhoto{
+          float: none;
+          display: block;
+          width: min(320px, 100%);
+          height: auto;
+          aspect-ratio: 1 / 1;
+          margin: 6px 0 14px;
+        }
+        .bioBody{ padding: 16px 16px 18px; }
+        .bioHead{ padding: 18px 16px 10px; }
+      }
+    </style>
+  </body>
+</html>

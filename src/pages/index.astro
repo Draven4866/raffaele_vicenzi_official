@@ -1,16 +1,838 @@
 ---
+/**
+ * INDEX — Raffaele Vicenzi Autore — v1.5
+ *
+ * Fix chiave (GitHub Pages / subpath + Astro CSS estratto in /_astro/):
+ * - URL asset sempre assoluti via BASE_URL (funzione u()).
+ * - Font caricati con @font-face INIETTATI in <head> (niente url("fonts/...") nel CSS estratto).
+ * - Background passati via variabili CSS inline (evita path relativi del CSS estratto).
+ */
 
+// ===== BASE URL (subpath safe) =====
+const baseHref = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : import.meta.env.BASE_URL + "/";
+
+const u = (p: string): string => baseHref + p.replace(/^\/+/, "");
+
+// ===== LINKS MENU (pagine anche non create) =====
+// Menu 01 = Home
+const hrefHome = baseHref;
+// Menu 02 = Bio
+const hrefM02 = u("menu-02/");
+// Menu 03 = Campo Del Cuore
+const hrefM03 = u("menu-03/");
+// Menu 04 = Arte Sciamanica
+const hrefM04 = u("menu-04/");
+// Menu 05 = Esperienze
+const hrefM05 = u("menu-05/");
+// Menu 06 = Contatti (per ora NON cliccabile)
+const hrefM06 = u("menu-06/");
+
+// ===== ASSET =====
+const profileImg = u("img/profilo.jpg");
+const heroBgUrl = u("img/hero.jpg");
+
+// ===== FONTS (public/fonts) =====
+const candFontUrl = u("fonts/candara.ttf");
+const mrBFontUrl = u("fonts/MrB.ttf");
+const dsAccentFontUrl = u("fonts/DSAccent.ttf");
+
+const fontFaceCSS = `
+@font-face{
+  font-family:"Candara";
+  src:url("${candFontUrl}") format("truetype");
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:"MrB";
+  src:url("${mrBFontUrl}") format("truetype");
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:"DSAccent";
+  src:url("${dsAccentFontUrl}") format("truetype");
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
+`;
+
+// ===== STRISCIA 01: SLIDER (Slide / News) =====
+// (Background: per ora “colori/gradients” robusti; quando vuoi, puoi aggiungere bgImage: u("img/xxx.jpg"))
+const sliderItems: {
+  kind: "SLIDE" | "NEWS";
+  title: string;
+  text: string;
+  href?: string;      // link opzionale della slide/news
+  cta?: string;       // testo bottone opzionale
+  tone?: "a" | "b" | "c" | "d";
+  bgImage?: string;   // opzionale: u("img/....jpg")
+}[] = [
+  {
+    kind: "SLIDE",
+    title: "Slide",
+    text: "Presentazione sintetica: visione, percorso, direzione.",
+    href: hrefM02,
+    cta: "Vai alla Bio",
+    tone: "a",
+  },
+  {
+    kind: "NEWS",
+    title: "News",
+    text: "Aggiornamento: nuovi contenuti in arrivo (video / testi / opere).",
+    href: hrefM05,
+    cta: "Vedi Esperienze",
+    tone: "b",
+  },
+  {
+    kind: "SLIDE",
+    title: "Slide",
+    text: "Officina Ermetica: narrativa, rito, artigianato del simbolo.",
+    href: hrefM04,
+    cta: "Arte Sciamanica",
+    tone: "c",
+  },
+  {
+    kind: "NEWS",
+    title: "News",
+    text: "Il Campo del Cuore: porta dedicata + link al sito specifico.",
+    href: hrefM03,
+    cta: "Apri Il Campo del Cuore",
+    tone: "d",
+  },
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <base href={baseHref} />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Raffaele Vicenzi — Autore</title>
+
+    <!-- Preload font -->
+    <link rel="preload" href={candFontUrl} as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href={mrBFontUrl} as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href={dsAccentFontUrl} as="font" type="font/ttf" crossorigin />
+
+    <!-- @font-face con URL assolute -->
+    <style is:global set:html={fontFaceCSS}></style>
+  </head>
+
+  <body>
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <a class="brand" href={hrefHome} aria-label="Home">
+        <img class="brandImg" src={profileImg} alt="" width="52" height="52" />
+        <span class="brandText">
+          <span class="brandName">Raffaele Vicenzi</span>
+          <span class="brandLine">| Autore | Esoterista | Sciamano | Artista-Artigiano |</span>
+        </span>
+      </a>
+
+      <!-- MENU -->
+      <nav class="nav" aria-label="Menu">
+        <a class="navItem" href={hrefHome}>Home</a>
+        <a class="navItem" href={hrefM02}>Bio</a>
+        <a class="navItem" href={hrefM03}>Il Campo Del Cuore</a>
+        <a class="navItem" href={hrefM04}>Arte Sciamanica</a>
+        <a class="navItem" href={hrefM05}>Esperienze</a>
+        <span class="navItem navDisabled" aria-disabled="true" title="In arrivo">Contatti</span>
+      </nav>
+    </header>
+
+    <main>
+      <!-- HERO (bg enorme + titolo/sottotitolo a sinistra) -->
+      <section class="hero" style={`--heroBkg: url('${heroBgUrl}');`}>
+        <div class="heroInner">
+          <h1 class="heroTitle">Officina Ermetica</h1>
+          <p class="heroSub">
+            <em>Narrativa, arte sciamanica, alchimia del quotidiano, scrittuta iniziatica e rituale.</em>
+          </p>
+        </div>
+      </section>
+
+      <!-- STRISCIA 01 — SLIDER / NEWS (reveal) -->
+      <section class="strip" data-reveal>
+        <div class="stripInner">
+          <h2>Striscia 01</h2>
+
+          <div class="slider" id="homeSlider" aria-label="Slide e News">
+            <div class="sliderViewport">
+              {sliderItems.map((it, idx) => (
+                <article
+                  class={`slide tone-${it.tone ?? "a"}`}
+                  data-slide
+                  data-idx={idx}
+                  data-href={it.href ?? ""}
+                  style={it.bgImage ? `--slideBkg: url('${it.bgImage}');` : ""}
+                  aria-hidden={idx === 0 ? "false" : "true"}
+                >
+                  <div class="slideGlass">
+                    <div class="kicker">{it.kind}</div>
+                    <h3 class="slideTitle">{it.title}</h3>
+                    <p class="slideText">{it.text}</p>
+
+                    {it.href ? (
+                      <a class="slideCta" href={it.href} role="button">
+                        {it.cta ?? "Apri"}
+                      </a>
+                    ) : (
+                      <span class="slideCta isDisabled" aria-disabled="true">In arrivo</span>
+                    )}
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <div class="sliderDots" role="tablist" aria-label="Selettore slide">
+              {sliderItems.map((_, i) => (
+                <button class={`dot ${i === 0 ? "isOn" : ""}`} type="button" data-dot data-i={i} aria-label={`Slide ${i + 1}`}></button>
+              ))}
+            </div>
+          </div>
+
+          <p class="stripHint">Slide / News — cambia automaticamente ogni pochi secondi.</p>
+        </div>
+      </section>
+
+      <!-- STRISCIA 02 — EMBED YT + IG (reveal) -->
+      <section class="strip" data-reveal>
+        <div class="stripInner">
+          <h2>Striscia 02</h2>
+
+          <div class="embeds">
+            <!-- YouTube -->
+            <div class="embedCard">
+              <h3 class="embedTitle">YouTube</h3>
+              <div class="ratio16x9">
+                <!-- Sostituisci l'ID video quando vuoi -->
+                <iframe
+                  src="https://www.youtube-nocookie.com/embed/RUIxBlup5Y0"
+                  title="YouTube — video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowfullscreen
+                ></iframe>
+              </div>
+              <p class="embedNote">Embed YouTube (placeholder: cambia ID quando vuoi).</p>
+            </div>
+
+            <!-- Instagram (placeholder + struttura pronta) -->
+            <div class="embedCard">
+              <h3 class="embedTitle">Instagram</h3>
+
+              <!-- Opzione A (consigliata): embed ufficiale di un post (incolla qui il blockquote del post) -->
+              <div class="igBox">
+                <p class="embedNote">
+                  Instagram: per mostrare “ultime immagini” servono embed ufficiali (post singoli) o un widget esterno.
+                  Qui puoi incollare l’embed di un post (blockquote) e verrà renderizzato dallo script.
+                </p>
+
+                <!-- ESEMPIO STRUTTURA (incolla qui l'embed di Instagram quando lo hai):
+                <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/XXXXXXXXX/" data-instgrm-version="14"></blockquote>
+                -->
+              </div>
+
+              <!-- script IG: non fa nulla finché non incolli un blockquote -->
+              <script async src="https://www.instagram.com/embed.js"></script>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- STRISCIA 03 — LINK ESTERNI (reveal) -->
+      <section class="strip" data-reveal>
+        <div class="stripInner">
+          <h2>Striscia 03</h2>
+
+          <div class="linkBlocks" aria-label="Link esterni">
+            <a class="linkBlock" href={hrefM03}>
+              <div class="lbTitle">Il Campo del Cuore</div>
+              <div class="lbText">Breve spiegazione + link al sito dedicato.</div>
+              <div class="lbCta">Apri</div>
+            </a>
+
+            <!-- Blog (per ora interno; se poi diventa esterno, metti URL completo) -->
+            <a class="linkBlock" href={u("blog/")}>
+              <div class="lbTitle">Blog</div>
+              <div class="lbText">Appunti, testi, aggiornamenti (in arrivo).</div>
+              <div class="lbCta">Apri</div>
+            </a>
+
+            <a class="linkBlock" href={u("link/")}>
+              <div class="lbTitle">Altri link esterni</div>
+              <div class="lbText">Raccolta ordinata di risorse e rimandi.</div>
+              <div class="lbCta">Apri</div>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <small>© <span id="y"></span> Raffaele Vicenzi</small>
+    </footer>
+
+    <!-- Year + Reveal + Slider -->
+    <script is:inline>
+      (() => {
+        // year
+        const y = document.getElementById("y");
+        if (y) y.textContent = String(new Date().getFullYear());
+
+        // reveal strips
+        const els = Array.from(document.querySelectorAll("[data-reveal]"));
+        if (!("IntersectionObserver" in window) || els.length === 0) {
+          els.forEach((el) => el.classList.add("isIn"));
+        } else {
+          const io = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((e) => {
+                if (e.isIntersecting) {
+                  e.target.classList.add("isIn");
+                  io.unobserve(e.target);
+                }
+              });
+            },
+            { threshold: 0.18 }
+          );
+          els.forEach((el) => io.observe(el));
+        }
+
+        // slider (Striscia 01)
+        const root = document.getElementById("homeSlider");
+        if (!root) return;
+
+        const slides = Array.from(root.querySelectorAll("[data-slide]"));
+        const dots = Array.from(root.querySelectorAll("[data-dot]"));
+
+        let idx = 0;
+        let timer = null;
+
+        function setOn(i){
+          idx = (i + slides.length) % slides.length;
+
+          slides.forEach((s, k) => {
+            const on = k === idx;
+            s.classList.toggle("isOn", on);
+            s.setAttribute("aria-hidden", on ? "false" : "true");
+          });
+
+          dots.forEach((d, k) => d.classList.toggle("isOn", k === idx));
+        }
+
+        function next(){
+          setOn(idx + 1);
+        }
+
+        // init
+        setOn(0);
+
+        // click dots
+        dots.forEach((d) => {
+          d.addEventListener("click", () => {
+            const i = Number(d.getAttribute("data-i") || "0");
+            setOn(i);
+            restart();
+          });
+        });
+
+        function restart(){
+          if (timer) window.clearInterval(timer);
+          timer = window.setInterval(next, 4200);
+        }
+
+        // pause on hover
+        root.addEventListener("mouseenter", () => { if (timer) window.clearInterval(timer); });
+        root.addEventListener("mouseleave", () => restart());
+
+        restart();
+      })();
+    </script>
+
+    <style>
+      :root{
+        --ink: #0b0b0b;
+        --paper: #f2f2f2;
+        --paper2:#e7e7e7;
+
+        /* hover verdino trasparente per menu */
+        --menuHover: rgba(119, 194, 99, 0.28);
+      }
+
+      *{ box-sizing:border-box; }
+      body{
+        margin:0;
+        color: var(--ink);
+        font-family: "Candara", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+        background: #ffffff;
+        line-height:1.45;
+      }
+      a{ color:inherit; text-decoration:none; }
+
+      /* TOPBAR */
+      .topbar{
+        position: sticky;
+        top:0;
+        z-index: 50;
+        display:flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 18px;
+        background: rgba(255,255,255,0.92);
+        border-bottom: 1px solid rgba(0,0,0,0.08);
+        backdrop-filter: blur(10px) saturate(180%);
+        gap: 14px;
+      }
+
+      .brand{
+        display:flex;
+        align-items:center;
+        gap: 12px;
+        min-width: 220px;
+      }
+      .brandImg{
+        width: 52px;
+        height: 52px;
+        border-radius: 12px;
+        object-fit: cover;
+        border: 1px solid rgba(0,0,0,0.20);
+        background: #fff;
+        flex: 0 0 auto;
+      }
+      .brandText{
+        display:flex;
+        flex-direction: column;
+        line-height: 1.1;
+      }
+      .brandName{
+        font-family:"Candara", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+      }
+      .brandLine{
+        margin-top: 6px;
+        font-family:"MrB", "Candara", system-ui, sans-serif;
+        font-size: 12px;
+        opacity: 0.92;
+        letter-spacing: 0.03em;
+        white-space: nowrap;
+      }
+
+      .nav{
+        display:flex;
+        align-items:center;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+      .navItem{
+        padding: 10px 12px;
+        border-radius: 999px;
+        background: rgba(0,0,0,0.05);
+        border: 1px solid rgba(0,0,0,0.10);
+        font-size: 14px;
+        transition: background-color .16s ease, transform .16s ease, filter .16s ease;
+        position: relative;
+        will-change: transform;
+      }
+
+      /* ✅ HOVER: verdino trasparente + tremolio su/giù (finché hover) */
+      .navItem:not(.navDisabled):hover{
+        background: var(--menuHover);
+        border-color: rgba(0,0,0,0.10);
+        animation: navShakeY 0.65s ease-in-out infinite;
+      }
+      .navItem:not(.navDisabled):focus-visible{
+        outline: 2px solid rgba(0,0,0,0.55);
+        outline-offset: 3px;
+      }
+
+      @keyframes navShakeY{
+        0%   { transform: translateY(0); }
+        25%  { transform: translateY(-2px); }
+        50%  { transform: translateY(0); }
+        75%  { transform: translateY(2px); }
+        100% { transform: translateY(0); }
+      }
+
+      .navDisabled{
+        opacity: 0.45;
+        cursor: default;
+        user-select:none;
+        background: rgba(0,0,0,0.03);
+      }
+
+      /* HERO */
+      .hero{
+        position: relative;
+        min-height: 68vh;
+        background-color: #dcdcdc;
+        background-image: var(--heroBkg);
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+
+        display:flex;
+        align-items: center;
+
+        /* centro “spinto” leggermente verso il basso */
+        padding: clamp(90px, 14vh, 160px) 18px clamp(44px, 8vh, 90px);
+      }
+      .hero::before{
+        content:"";
+        position:absolute;
+        inset:0;
+        background: linear-gradient(to bottom, rgba(255,255,255,0.10), rgba(255,255,255,0.75));
+        pointer-events:none;
+      }
+      .heroInner{
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        text-align: left;
+      }
+      .heroTitle{
+        margin: 0;
+        line-height: 1.05;
+        font-family:"DSAccent","Candara",system-ui,sans-serif;
+        font-weight: 400;
+        font-size: 45px;
+        letter-spacing: 0.01em;
+      }
+      .heroSub{
+        margin:0;
+        line-height: 1.15;
+        max-width: 70ch;
+        font-family:"MrB","Candara",system-ui,sans-serif;
+        font-size: 25px;
+        opacity: 0.92;
+      }
+      .heroNote{
+        margin: 10px 0 0;
+        font-family: "Candara", system-ui, sans-serif;
+        font-size: 12px;
+        opacity: 0.78;
+      }
+
+      /* STRIP + REVEAL con “velo bianco” */
+      .strip{
+        position: relative;
+        padding: 56px 18px;
+        background: var(--paper);
+        overflow:hidden;
+        border-top: 1px solid rgba(0,0,0,0.06);
+      }
+      .strip:nth-of-type(2){ background: var(--paper2); }
+      .strip:nth-of-type(3){ background: #f7efe2; }
+      .strip:nth-of-type(4){ background: #eaf3ff; }
+
+      .stripInner{
+        position: relative;
+        z-index: 1;
+        max-width: 980px;
+        margin: 0 auto;
+        transform: translateY(14px);
+        opacity: 0;
+        transition: transform .55s ease, opacity .55s ease;
+      }
+
+      .strip::before{
+        content:"";
+        position:absolute;
+        inset:0;
+        background: rgba(255,255,255,0.92);
+        opacity: 1;
+        transform: translateY(0);
+        transition: opacity .70s ease, transform .70s ease;
+        pointer-events:none;
+        z-index: 0;
+      }
+
+      .strip.isIn .stripInner{ transform: translateY(0); opacity: 1; }
+      .strip.isIn::before{ opacity: 0; transform: translateY(-12%); }
+
+      .strip h2{
+        margin:0 0 10px;
+        font-family:"DSAccent","Candara",system-ui,sans-serif;
+        font-weight: 400;
+        font-size: 26px;
+      }
+
+      .stripHint{
+        margin: 12px 0 0;
+        font-size: 13px;
+        opacity: .78;
+      }
+
+      /* ===== STRISCIA 01: SLIDER ===== */
+      .slider{
+        margin-top: 14px;
+        border-radius: 18px;
+        overflow: hidden;
+        border: 1px solid rgba(0,0,0,0.12);
+        box-shadow: 0 18px 55px rgba(0,0,0,.10);
+        background: rgba(255,255,255,0.55);
+        backdrop-filter: blur(10px) saturate(160%);
+      }
+
+      .sliderViewport{
+        position: relative;
+        min-height: 240px;
+      }
+
+      .slide{
+        position:absolute;
+        inset:0;
+        padding: 18px;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity .45s ease, transform .45s ease;
+        display:flex;
+        align-items: stretch;
+        justify-content: stretch;
+      }
+      .slide.isOn{
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* sfondo slide: immagine opzionale via --slideBkg; altrimenti gradients per “tono” */
+      .slide::before{
+        content:"";
+        position:absolute;
+        inset:0;
+        background:
+          var(--slideBkg, none),
+          radial-gradient(70% 60% at 20% 20%, rgba(255,255,255,.65), rgba(255,255,255,0)),
+          linear-gradient(to bottom, rgba(255,255,255,.55), rgba(255,255,255,.88));
+        background-size: cover;
+        background-position: center;
+        filter: saturate(1.05);
+      }
+
+      .tone-a::before{ background:
+        var(--slideBkg, none),
+        radial-gradient(70% 60% at 20% 20%, rgba(119,194,99,.22), rgba(255,255,255,0)),
+        linear-gradient(to bottom, rgba(255,255,255,.55), rgba(255,255,255,.88));
+      }
+      .tone-b::before{ background:
+        var(--slideBkg, none),
+        radial-gradient(70% 60% at 20% 20%, rgba(255,170,120,.22), rgba(255,255,255,0)),
+        linear-gradient(to bottom, rgba(255,255,255,.55), rgba(255,255,255,.88));
+      }
+      .tone-c::before{ background:
+        var(--slideBkg, none),
+        radial-gradient(70% 60% at 20% 20%, rgba(120,170,255,.22), rgba(255,255,255,0)),
+        linear-gradient(to bottom, rgba(255,255,255,.55), rgba(255,255,255,.88));
+      }
+      .tone-d::before{ background:
+        var(--slideBkg, none),
+        radial-gradient(70% 60% at 20% 20%, rgba(210,120,255,.18), rgba(255,255,255,0)),
+        linear-gradient(to bottom, rgba(255,255,255,.55), rgba(255,255,255,.88));
+      }
+
+      .slideGlass{
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        border-radius: 16px;
+        background: rgba(255,255,255,0.55);
+        border: 1px solid rgba(0,0,0,0.10);
+        backdrop-filter: blur(12px) saturate(160%);
+        padding: 16px 16px 14px;
+        display:flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .kicker{
+        display:inline-flex;
+        align-self: flex-start;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(0,0,0,0.06);
+        border: 1px solid rgba(0,0,0,0.10);
+        font-size: 12px;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+      }
+
+      .slideTitle{
+        margin: 0;
+        font-family:"DSAccent","Candara",system-ui,sans-serif;
+        font-weight: 400;
+        font-size: 22px;
+        line-height: 1.05;
+      }
+      .slideText{
+        margin: 0;
+        max-width: 80ch;
+      }
+
+      .slideCta{
+        margin-top: 2px;
+        align-self: flex-start;
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        padding: 10px 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(0,0,0,0.14);
+        background: rgba(119, 194, 99, 0.22);
+        font-family:"MrB","Candara",system-ui,sans-serif;
+        font-size: 14px;
+        transition: transform .12s ease, background-color .12s ease, filter .12s ease;
+        cursor: pointer;
+      }
+      .slideCta:hover{
+        background: rgba(119, 194, 99, 0.30);
+        transform: translateY(-1px);
+        filter: brightness(1.02);
+      }
+      .slideCta.isDisabled{
+        opacity: .5;
+        cursor: default;
+        user-select:none;
+      }
+
+      .sliderDots{
+        display:flex;
+        gap: 8px;
+        padding: 12px 14px 14px;
+        justify-content:center;
+        background: rgba(255,255,255,0.55);
+        border-top: 1px solid rgba(0,0,0,0.08);
+      }
+      .dot{
+        width: 9px;
+        height: 9px;
+        border-radius: 999px;
+        border: 1px solid rgba(0,0,0,0.22);
+        background: rgba(0,0,0,0.10);
+        cursor: pointer;
+      }
+      .dot.isOn{
+        background: rgba(0,0,0,0.50);
+      }
+
+      /* ===== STRISCIA 02: EMBEDS ===== */
+      .embeds{
+        margin-top: 14px;
+        display:grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      .embedCard{
+        border-radius: 18px;
+        background: rgba(255,255,255,0.70);
+        border: 1px solid rgba(0,0,0,0.12);
+        backdrop-filter: blur(12px) saturate(160%);
+        box-shadow: 0 18px 55px rgba(0,0,0,.10);
+        padding: 14px 14px 12px;
+      }
+      .embedTitle{
+        margin: 0 0 10px;
+        font-family:"DSAccent","Candara",system-ui,sans-serif;
+        font-weight: 400;
+        font-size: 20px;
+      }
+      .embedNote{
+        margin: 10px 0 0;
+        font-size: 13px;
+        opacity: .78;
+      }
+
+      .ratio16x9{
+        width: 100%;
+        aspect-ratio: 16 / 9;
+        border-radius: 14px;
+        overflow:hidden;
+        background:#000;
+        border: 1px solid rgba(0,0,0,0.12);
+      }
+      .ratio16x9 iframe{
+        width:100%;
+        height:100%;
+        border:0;
+        display:block;
+      }
+
+      .igBox{
+        border-radius: 14px;
+        background: rgba(0,0,0,0.04);
+        border: 1px dashed rgba(0,0,0,0.18);
+        padding: 12px;
+        min-height: 180px;
+      }
+
+      /* ===== STRISCIA 03: LINK BLOCKS ===== */
+      .linkBlocks{
+        margin-top: 14px;
+        display:grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 14px;
+      }
+      .linkBlock{
+        border-radius: 18px;
+        background: rgba(255,255,255,0.70);
+        border: 1px solid rgba(0,0,0,0.12);
+        backdrop-filter: blur(12px) saturate(160%);
+        box-shadow: 0 18px 55px rgba(0,0,0,.10);
+        padding: 14px;
+        display:flex;
+        flex-direction: column;
+        gap: 10px;
+        transition: transform .12s ease, filter .12s ease, background-color .12s ease;
+      }
+      .linkBlock:hover{
+        transform: translateY(-2px);
+        filter: brightness(1.02);
+        background: rgba(255,255,255,0.82);
+      }
+      .lbTitle{
+        font-family:"DSAccent","Candara",system-ui,sans-serif;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 1.05;
+      }
+      .lbText{
+        margin:0;
+        opacity: .92;
+        max-width: 60ch;
+      }
+      .lbCta{
+        align-self: flex-start;
+        padding: 9px 13px;
+        border-radius: 999px;
+        border: 1px solid rgba(0,0,0,0.14);
+        background: rgba(119, 194, 99, 0.22);
+        font-family:"MrB","Candara",system-ui,sans-serif;
+        font-size: 14px;
+      }
+
+      /* FOOTER */
+      .footer{
+        padding: 22px 18px;
+        background: #fff;
+        border-top: 1px solid rgba(0,0,0,0.10);
+      }
+
+      @media (max-width: 900px){
+        .brandLine{ white-space: normal; }
+        .hero{ min-height: 62vh; padding-bottom: 44px; }
+        .heroTitle{ font-size: 40px; }
+        .heroSub{ font-size: 22px; }
+        .embeds{ grid-template-columns: 1fr; }
+        .linkBlocks{ grid-template-columns: 1fr; }
+      }
+    </style>
+  </body>
 </html>

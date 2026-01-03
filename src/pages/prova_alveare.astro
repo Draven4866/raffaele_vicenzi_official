@@ -1,0 +1,323 @@
+---
+/**
+ * Prova-Alveare — v1.2.3
+ *
+ * Update v1.2.3:
+ * 1) Cornice bianca esagoni: 10px
+ * 2) Layout “3-2-3-2” (10 celle) incastrato in pointy-top usando coordinate assiali (q,r)
+ *
+ * Immagini: public/img/arte_sciamanica
+ */
+
+// ===== BASE URL (subpath safe) =====
+const baseHref = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : import.meta.env.BASE_URL + "/";
+
+const u = (p: string): string => baseHref + p.replace(/^\/+/, "");
+
+// ===== IMMAGINI (public/img/arte_sciamanica) =====
+const pad2 = (n: number) => String(n).padStart(2, "0");
+
+const imgNames = [
+  ...Array.from({ length: 10 }, (_, i) => `P01_S01_${pad2(i + 1)}.jpg`),
+  ...Array.from({ length: 7 }, (_, i) => `P01_S02_${pad2(i + 1)}.jpg`),
+  ...Array.from({ length: 5 }, (_, i) => `P02_S01_${pad2(i + 1)}.jpg`),
+  `P03_S01_01.jpg`,
+];
+
+const images = imgNames.map((name) => ({
+  name,
+  src: u(`img/arte_sciamanica/${name}`),
+}));
+
+// ===== HEX GEOMETRY (pointy-top) =====
+const size = 64;      // raggio (centro→punta)
+const borderPx = 10;  // ✅ cornice bianca 10px
+const hoverLift = 6;
+
+const SQRT3 = Math.sqrt(3);
+
+// axial(q,r) -> pixel(x,y) per pointy-top
+function axialToPixel(q: number, r: number) {
+  const x = size * SQRT3 * (q + r / 2);
+  const y = size * 1.5 * r;
+  return { x, y };
+}
+
+// ===== COORDS: schema 3-2-3-2 =====
+// r = riga; q = colonna assiale.
+// Questo genera 4 righe incastrate: 3,2,3,2 (10 celle totali)
+const coords = [
+  // riga 1 (3)
+  { q: 0, r: 0 }, { q: 1, r: 0 }, { q: 2, r: 0 },
+
+  // riga 2 (2) — naturalmente “sfalsata” grazie a r/2 nella formula
+  { q: 0, r: 1 }, { q: 1, r: 1 },
+
+  // riga 3 (3)
+  { q: 0, r: 2 }, { q: 1, r: 2 }, { q: 2, r: 2 },
+
+  // riga 4 (2)
+  { q: 0, r: 3 }, { q: 1, r: 3 },
+];
+
+const cells = coords.map((c, i) => {
+  const img = images[i % images.length];
+  const p = axialToPixel(c.q, c.r);
+  return { ...c, ...p, img };
+});
+
+// Bounding box per dimensionare il board (stabile, niente “sparizioni”)
+const hexW = SQRT3 * size;
+const hexH = 2 * size;
+
+const minX = Math.min(...cells.map((c) => c.x));
+const maxX = Math.max(...cells.map((c) => c.x));
+const minY = Math.min(...cells.map((c) => c.y));
+const maxY = Math.max(...cells.map((c) => c.y));
+
+const pad = Math.max(24, borderPx * 2 + 18);
+
+const boardW = Math.ceil((maxX - minX) + hexW + pad * 2);
+const boardH = Math.ceil((maxY - minY) + hexH + pad * 2);
+
+const offX = -minX + pad + hexW / 2;
+const offY = -minY + pad + hexH / 2;
+---
+
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <base href={baseHref} />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Prova Alveare</title>
+  </head>
+
+  <body>
+    <main class="stage">
+      <h1 class="title">Prova Alveare</h1>
+      <p class="sub">Pointy-top — schema 3-2-3-2 — cornice 10px.</p>
+
+      <section
+        class="board"
+        style={`--w:${boardW}px; --h:${boardH}px; --offX:${offX}px; --offY:${offY}px; --hexW:${hexW}px; --hexH:${hexH}px; --b:${borderPx}px; --lift:${hoverLift}px;`}
+        aria-label="Alveare"
+      >
+        {cells.map((c) => (
+          <button
+            class="hex"
+            type="button"
+            style={`--x:${c.x}px; --y:${c.y}px; --img:url('${c.img.src}');`}
+            aria-label={`Cella ${c.img.name} (q=${c.q}, r=${c.r})`}
+            data-src={c.img.src}
+          >
+            <span class="hexInner" aria-hidden="true"></span>
+          </button>
+        ))}
+      </section>
+
+      <div class="viewer" id="viewer" aria-hidden="true">
+        <div class="viewerBox" role="dialog" aria-modal="true" aria-label="Anteprima immagine">
+          <button class="viewerClose" type="button" id="viewerClose" aria-label="Chiudi">×</button>
+          <img class="viewerImg" id="viewerImg" alt="" />
+          <p class="viewerCap" id="viewerCap"></p>
+        </div>
+      </div>
+    </main>
+
+    <script is:inline>
+      (() => {
+        const viewer = document.getElementById("viewer");
+        const imgEl = document.getElementById("viewerImg");
+        const capEl = document.getElementById("viewerCap");
+        const closeBtn = document.getElementById("viewerClose");
+
+        function open(src, cap){
+          if (!viewer || !imgEl) return;
+          imgEl.src = src;
+          if (capEl) capEl.textContent = cap || "";
+          viewer.classList.add("isOn");
+          viewer.setAttribute("aria-hidden","false");
+        }
+        function close(){
+          if (!viewer || !imgEl) return;
+          viewer.classList.remove("isOn");
+          viewer.setAttribute("aria-hidden","true");
+          imgEl.src = "";
+          if (capEl) capEl.textContent = "";
+        }
+
+        document.querySelectorAll(".hex").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const src = btn.getAttribute("data-src");
+            const cap = btn.getAttribute("aria-label");
+            if (src) open(src, cap);
+          });
+        });
+
+        if (closeBtn) closeBtn.addEventListener("click", close);
+        if (viewer) viewer.addEventListener("click", (e) => { if (e.target === viewer) close(); });
+        window.addEventListener("keydown", (e) => { if (e.key === "Escape") close(); });
+      })();
+    </script>
+
+    <style>
+      :root{
+        --ink:#0b0b0b;
+        --paper:#f3f3f3;
+      }
+      *{ box-sizing:border-box; }
+      body{
+        margin:0;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+        line-height:1.45;
+      }
+
+      .stage{
+        padding: 28px 18px 60px;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      .title{
+        margin: 0 0 6px;
+        font-size: 22px;
+        letter-spacing: .02em;
+      }
+      .sub{
+        margin: 0 0 18px;
+        opacity: .78;
+      }
+
+      .board{
+        position: relative;
+        width: min(100%, var(--w));
+        height: var(--h);
+        margin: 0 auto;
+        border-radius: 18px;
+        background: rgba(200, 64, 64, 0.7);
+        border: 1px solid rgba(0,0,0,0.10);
+        box-shadow: 0 18px 55px rgba(0,0,0,.10);
+        overflow: hidden;
+      }
+
+      .hex{
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: var(--hexW);
+        height: var(--hexH);
+        transform: translate(
+          calc(var(--offX) + var(--x) - (var(--hexW) / 2)),
+          calc(var(--offY) + var(--y) - (var(--hexH) / 2))
+        );
+        padding: 0;
+        border: 0;
+        background: transparent;
+        cursor: pointer;
+        appearance: none;
+      }
+
+      .hexInner{
+        position: absolute;
+        inset: 0;
+        background-image: var(--img);
+        background-size: cover;
+        background-position: center;
+
+        clip-path: polygon(
+          50% 0%,
+          93% 25%,
+          93% 75%,
+          50% 100%,
+          7% 75%,
+          7% 25%
+        );
+
+        /* ✅ cornice bianca 10px */
+        box-shadow:
+          0 0 0 var(--b) rgba(255,255,255,0.98) inset,
+          0 16px 40px rgba(0,0,0,.18);
+
+        transition: transform .16s ease, filter .16s ease;
+        will-change: transform, filter;
+      }
+
+      .hexInner::after{
+        content:"";
+        position:absolute;
+        inset:0;
+        clip-path: inherit;
+        background: rgba(255,255,255,0.00);
+        transition: background .16s ease;
+      }
+
+      .hex:hover .hexInner{
+        transform: translateY(calc(-1 * var(--lift))) scale(1.03);
+        filter: saturate(1.02) contrast(1.02);
+      }
+      .hex:hover .hexInner::after{
+        background: rgba(255,255,255,0.28);
+      }
+
+      .hex:focus-visible .hexInner{
+        outline: 2px solid rgba(0,0,0,0.60);
+        outline-offset: 3px;
+      }
+
+      /* VIEWER */
+      .viewer{
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,0.55);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        z-index: 999;
+      }
+      .viewer.isOn{ display:flex; }
+
+      .viewerBox{
+        position: relative;
+        width: min(980px, 100%);
+        background: rgba(255,255,255,0.92);
+        border: 1px solid rgba(255,255,255,0.40);
+        border-radius: 18px;
+        backdrop-filter: blur(12px) saturate(160%);
+        box-shadow: 0 22px 70px rgba(0,0,0,.35);
+        overflow: hidden;
+      }
+      .viewerClose{
+        position: absolute;
+        right: 10px;
+        top: 8px;
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        border: 1px solid rgba(0,0,0,0.18);
+        background: rgba(255,255,255,0.80);
+        cursor: pointer;
+        font-size: 26px;
+        line-height: 1;
+      }
+      .viewerImg{
+        display: block;
+        width: 100%;
+        height: auto;
+        max-height: 72vh;
+        object-fit: contain;
+        background: rgba(0,0,0,0.06);
+      }
+      .viewerCap{
+        margin: 0;
+        padding: 12px 14px 14px;
+        font-size: 13px;
+        opacity: .8;
+      }
+    </style>
+  </body>
+</html>

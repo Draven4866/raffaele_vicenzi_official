@@ -1,0 +1,705 @@
+---
+/**
+ * MENU-05 — ESPERIENZE — Raffaele Vicenzi Autore — v1.0
+ *
+ * Base: derivata da MENU-04 (stessa topbar, stessi font, stessi fix BASE_URL).
+ *
+ * Struttura:
+ * - 4 TAB (una per esperienza) in ordine.
+ * - TAB attiva verde (Esperienza) o giallina (Lavoro).
+ * - Pannello sotto le schede si colora in base al tipo (esperienza/lavoro), pagina invariata.
+ *
+ * Note tecniche:
+ * - URL asset assoluti via BASE_URL (u()).
+ * - Font via @font-face INIETTATI in <head> (niente url("fonts/...") nel CSS estratto).
+ */
+
+// ===== BASE URL (subpath safe) =====
+const baseHref = import.meta.env.BASE_URL.endsWith("/")
+  ? import.meta.env.BASE_URL
+  : import.meta.env.BASE_URL + "/";
+
+const u = (p: string): string => baseHref + p.replace(/^\/+/, "");
+
+// ===== LINKS MENU (come index) =====
+const hrefHome = baseHref;
+const hrefM02 = u("menu-02/");
+const hrefM03 = u("menu-03/");
+const hrefM04 = u("menu-04/");
+const hrefM05 = u("menu-05/");
+const hrefM06 = u("menu-06/");
+
+// ===== ASSET =====
+const profileImg = u("img/profilo.jpg");
+const heroBgUrl = u("img/hero.jpg");
+
+// ===== FONTS (public/fonts) =====
+const candFontUrl = u("fonts/candara.ttf");
+const mrBFontUrl = u("fonts/MrB.ttf");
+const dsAccentFontUrl = u("fonts/DSAccent.ttf");
+
+const fontFaceCSS = `
+@font-face{
+  font-family:"Candara";
+  src:url("${candFontUrl}") format("truetype");
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:"MrB";
+  src:url("${mrBFontUrl}") format("truetype");
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:"DSAccent";
+  src:url("${dsAccentFontUrl}") format("truetype");
+  font-weight:400;
+  font-style:normal;
+  font-display:swap;
+}
+`;
+
+// ===== GALLERIE (public/img/esperienze) =====
+const P01 = Array.from({ length: 8 },  (_, i) => `img/esperienze/P01_${String(i + 1).padStart(2, "0")}.jpg`);
+const P02 = Array.from({ length: 15 }, (_, i) => `img/esperienze/P02_${String(i + 1).padStart(2, "0")}.jpg`);
+const P03 = Array.from({ length: 24 }, (_, i) => `img/esperienze/P03_${String(i + 1).padStart(2, "0")}.jpg`);
+
+// helper urls assolute
+const U = (rel: string) => u(rel);
+---
+
+<!doctype html>
+<html lang="it">
+  <head>
+    <meta charset="utf-8" />
+    <base href={baseHref} />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Raffaele Vicenzi — Esperienze</title>
+
+    <link rel="preload" href={candFontUrl} as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href={mrBFontUrl} as="font" type="font/ttf" crossorigin />
+    <link rel="preload" href={dsAccentFontUrl} as="font" type="font/ttf" crossorigin />
+
+    <style is:global set:html={fontFaceCSS}></style>
+  </head>
+
+  <body>
+    <!-- TOPBAR (uguale a index / menu-02) -->
+    <header class="topbar">
+      <a class="brand" href={hrefHome} aria-label="Home">
+        <img class="brandImg" src={profileImg} alt="" width="52" height="52" />
+        <span class="brandText">
+          <span class="brandName">Raffaele Vicenzi</span>
+          <span class="brandLine">| Autore | Esoterista | Sciamano | Artista-Artigiano |</span>
+        </span>
+      </a>
+
+      <nav class="nav" aria-label="Menu">
+        <a class="navItem" href={hrefHome}>Home</a>
+        <a class="navItem" href={hrefM02}>Bio</a>
+        <a class="navItem" href={hrefM03}>Il Campo Del Cuore</a>
+        <a class="navItem" href={hrefM04}>Arte Sciamanica</a>
+        <a class="navItem isActive" href={hrefM05} aria-current="page">Esperienze</a>
+        <span class="navItem navDisabled" aria-disabled="true" title="In arrivo">Contatti</span>
+      </nav>
+    </header>
+
+    <main>
+      <!-- STAGE + CARD -->
+      <section class="expStage" style={`--stageBkg: url('${heroBgUrl}');`}>
+        <div class="expCard" role="region" aria-label="Esperienze">
+          <header class="expHead">
+            <h1 class="expTitle">Esperienze</h1>
+            <p class="expSubtitle"></p>
+          </header>
+
+          <!-- TAB / PANNELLI -->
+          <div class="tabsWrap">
+            <div class="tabs" role="tablist" aria-label="Sezioni Esperienze">
+              <button class="tab isActive" data-kind="exp" type="button" role="tab" aria-selected="true" aria-controls="panelP01" id="tabP01" data-target="panelP01">
+                Hollywood L.A.
+              </button>
+              <button class="tab" data-kind="exp" type="button" role="tab" aria-selected="false" aria-controls="panelP02" id="tabP02" data-target="panelP02">
+                Scuola Palomar
+              </button>
+              <button class="tab" data-kind="work" type="button" role="tab" aria-selected="false" aria-controls="panelP03" id="tabP03" data-target="panelP03">
+                AI Trainer
+              </button>
+              <button class="tab" data-kind="exp" type="button" role="tab" aria-selected="false" aria-controls="panelP04" id="tabP04" data-target="panelP04">
+                FucinAlchemica
+              </button>
+            </div>
+
+            <!-- CONTENUTO sotto le schede -->
+            <section class="panelStage" data-kind="exp" aria-live="polite">
+            
+              <!-- P01 -->
+              <section class="panel isShow" data-kind="exp" id="panelP01" role="tabpanel" aria-labelledby="tabP01">
+                <h2 class="workTitle"><span class="workTitleMark">Hollywood L.A.</span></h2>
+                <p class="workSub">2011-2013: apprendistato musicale, registrazione del mio album "The Road Goes Ever On", lavoro con artisti major e vita losangeliana.</p>
+
+                <div class="ytRow" aria-label="Video YouTube">
+                    <div class="ytBox">
+                        <iframe
+                        src="https://www.youtube.com/embed/dBg4h0SxW2s"
+                        title="YouTube video 1"
+                        loading="lazy"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen
+                        ></iframe>
+                    </div>
+
+                    <div class="ytBox">
+                        <iframe
+                        src="https://www.youtube.com/embed/wXTDBgcjE7k"
+                        title="YouTube video 2"
+                        loading="lazy"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen
+                        ></iframe>
+                    </div>
+                </div>
+
+                <div class="honeyWrap">
+                  <div class="honeycomb" aria-label="Galleria Hollywood L.A.">
+                    {P01.map((rel, idx) => (
+                      <a class="hex" href={U(rel)} target="_blank" rel="noopener noreferrer" aria-label={`P01 ${String(idx + 1).padStart(2, "0")}`}>
+                        <span class="hexInner" style={`background-image:url('${U(rel)}');`}></span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+                <!-- DIDASCALIA (sotto la gallery) -->
+<div style="margin-top:12px; font-family:'Candara', system-ui, -apple-system, Segoe UI, Roboto, Arial; font-size:16px; line-height:1.45; text-align:justify; text-justify:inter-word; hyphens:auto;">
+  <p>
+    Foto 1 e 2: Andrea Lepori e me sullo sfondo.<br />
+    Foto 3: Brian Tichy<br />
+    Foto 4: Andrea Lepori, Brian Tichy e me<br />
+    Foto 5: Andrea Lepori, Heather Donavon e me.<br />
+    Foto 6: Teddy “Zig Zag” Andreadis e me.<br />
+    Foto 7 e 8: Eric Dover, Andrea Lepori e me.
+  </p>
+
+  <p>
+    Brian Tichy<em>(batterista)</em>: batterista statunitense <em>(n. 1968)</em> noto per il lavoro “da tour e da studio” in ambito hard rock: ha suonato con artisti/band come “Whitesnake”, “Billy Idol”, “Foreigner” e altri progetti della scena rock/metal, con uno stile molto solido e potente, da session-man di alto livello.
+  </p>
+
+  <p>
+    Johnny Griparic <em>(bassista)</em>: bassista nato in Svezia e attivo soprattutto a Los Angeles dagli anni ’90. Presenza frequente tra rock/blues e contesti “live/jam”, ha suonato con diversi artisti <em>(tra cui progetti legati a “Slash” e altri nomi della scena)</em>.
+  </p>
+
+  <p>
+    Teddy “Zig Zag” Andreadis <em>(tastiere/armonica/voce)</em>”: musicista americano polistrumentista <em>(tastiere, armonica, voce)</em> con una carriera lunghissima da collaboratore: ha lavorato con “Carole King”, e in ambito rock anche con nomi come “Guns N’ Roses”, “Chuck Berry”, “Alice Cooper”, ecc., noto per versatilità e groove “old school”.
+  </p>
+
+  <p>
+    Heather Donavon <em>(spesso cercata come “Heather Donovan”)</em>: cantante/artist”: è la voce <em>(e suona anche l’”Omnichord”)</em> del progetto “Love Me In The Dark”, duo di matrice Americana/Folk/Soul insieme a “Steve McCormick”. Si sono conosciuti suonando a “Venice, California”, e il progetto nasce come scrittura condivisa molto emotiva e “roots”, centrata su vulnerabilità, armonie vocali e songwriting intimo.
+  </p>
+
+  <p>
+    Eric Dover <em>(cantante/chitarrista)</em>: musicista americano <em>(n. 1967)</em> conosciuto come voce e chitarrista in progetti come “Jellyfish”, “Slash’s Snakepit” e “Imperial Drag”, oltre a collaborazioni con “Alice Cooper”; è apprezzato per un taglio melodico ma rock, da frontman “di razza”.
+  </p>
+
+  <p>
+    Andrea Lepori <em>(fonico / mixer / producer)</em>”: ingegnere del suono e produttore <em>(base a Londra)</em> attivo come “mixing engineer” e “audio engineer”, anche in formati moderni come “Dolby Atmos”, con crediti e collaborazioni su produzioni di alto profilo internazionale.
+  </p>
+</div>
+
+              </section>
+
+              <!-- P02 -->
+              <section class="panel" data-kind="exp" id="panelP02" role="tabpanel" aria-labelledby="tabP02" hidden>
+                <h2 class="workTitle"><span class="workTitleMark">Scuola Palomar</span></h2>
+                <p class="workSub">2018-2019: Master per imparare a capire come funziona il mondo dell'editoria, basi per la scrittura, ma, soprattutto, capire la differenza tra "amare scrivere" e "amare la scrittura".</p>
+
+                <div class="honeyWrap">
+                  <div class="honeycomb" aria-label="Galleria Scuola Palomar">
+                    {P02.map((rel, idx) => (
+                      <a class="hex" href={U(rel)} target="_blank" rel="noopener noreferrer" aria-label={`P02 ${String(idx + 1).padStart(2, "0")}`}>
+                        <span class="hexInner" style={`background-image:url('${U(rel)}');`}></span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </section>
+
+              <!-- P03 (LAVORO) -->
+              <section class="panel" data-kind="work" id="panelP03" role="tabpanel" aria-labelledby="tabP03" hidden>
+                <h2 class="workTitle"><span class="workTitleMark">AI Trainer</span></h2>
+                <p class="workSub">Capire come funziona l'AI Generativa e addestramento per farla imparare</p>
+                
+                <div class="panelText">
+                <div style="text-align:justify; text-justify:inter-word; hyphens:auto;">
+                    <p>Tra il 2022 e il 2023 ho avuto modo di lavorare presso COcisLab SL come AI Trainer.<br>
+Il mio compito era quello di collaborare con il team di ML Learning nella progettazione caratteriale, attraverso il linguaggio, di un assistente virtuale AI in grado di elaborare le richieste ed evolvere la propria personalità in modo adattivo nei confronti dell’utente all’interno di un contesto di gaming e servizi vari, più nello specifico:</p>
+
+<p>
+• Studio della personalità dell’AI rispetto target e relativo linguaggio.<br>
+• FAQ e possibili risposte da fornire all’utente di default.<br>
+• Struttura e percorso cognitivo per stimolare l’utente ad acquistare la versione premium
+dei servizi, potendo successivamente personalizzare l’Assistente AI, che passa dall’utilizzo di un linguaggio bot a uno più umano e cool.<br>
+</p>
+
+<p><strong>Competenze acquisite:</strong></p>
+
+<p>
+· Story<br>
+· Sviluppo di videogiochi<br>
+· Progettazione videogiochi<br>
+· Giocabilità<br>
+· Scrittura<br>
+· Capacità creative<br>
+· Problem solving<br>
+· Caraterizzazione AI<br>
+· Lingua italiana<br>
+· Contenuto online<br>
+· Copywriting · iOS
+</p>
+                </div>
+                </div>
+              </section>
+
+              <!-- P04 -->
+              <section class="panel" data-kind="exp" id="panelP04" role="tabpanel" aria-labelledby="tabP04" hidden>
+                <h2 class="workTitle"><span class="workTitleMark">FucinAlchemica</span></h2>
+                <p class="workSub">2021 ad oggi: trasmutazioni del campo e nell'opera quotidiana, dalla ferita alla grazia, sciamanesimo e comprensione dei simboli in allineamento con il corpo.</p>
+
+                <div class="honeyWrap">
+                  <div class="honeycomb" aria-label="Galleria FucinAlchemica">
+                    {P03.map((rel, idx) => (
+                      <a class="hex" href={U(rel)} target="_blank" rel="noopener noreferrer" aria-label={`P03 ${String(idx + 1).padStart(2, "0")}`}>
+                        <span class="hexInner" style={`background-image:url('${U(rel)}');`}></span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </section>
+            </section>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <small>© <span id="y"></span> Raffaele Vicenzi</small>
+    </footer>
+
+    <script is:inline>
+      (() => {
+        const y = document.getElementById("y");
+        if (y) y.textContent = String(new Date().getFullYear());
+
+        const tabs = Array.from(document.querySelectorAll(".tab"));
+        const panels = Array.from(document.querySelectorAll(".panel"));
+        const stage = document.querySelector(".panelStage");
+
+        function show(id){
+          panels.forEach((p) => {
+            const isTarget = p.id === id;
+            p.hidden = !isTarget;
+            p.classList.toggle("isShow", isTarget);
+          });
+
+          tabs.forEach((t) => {
+            const isActive = t.getAttribute("data-target") === id;
+            t.classList.toggle("isActive", isActive);
+            t.setAttribute("aria-selected", isActive ? "true" : "false");
+
+            if (isActive && stage) {
+              const k = t.getAttribute("data-kind") || "exp";
+              stage.setAttribute("data-kind", k);
+            }
+          });
+        }
+
+        tabs.forEach((t) => {
+          t.addEventListener("click", () => {
+            const id = t.getAttribute("data-target");
+            if (id) show(id);
+          });
+        });
+      })();
+    </script>
+
+    <style>
+      :root{
+        --ink:#0b0b0b;
+
+        /* Sfondo pagina */
+        --expPaper:#f7f1e8;
+
+        /* card trasparente */
+        --expCard: rgba(255,255,255,0.62);
+        --expBorder: rgba(0,0,0,0.12);
+
+        /* pannello base (neutro) */
+        --panelBase: rgba(35, 86, 150, 0.20);
+
+        /* cornici bianche spesse */
+        --frameWhite: rgba(255,255,255,0.95);
+
+        /* hover verdino menu + TAB esperienza attiva */
+        --menuHover: rgba(119, 194, 99, 0.28);
+
+        /* TAB lavoro attiva (giallino chiaro) */
+        --workHover: rgba(255, 236, 170, 0.72);
+
+        /* pannello colorato (solo il pannello) */
+        --panelExp: rgba(119, 194, 99, 0.14);
+        --panelWork: rgba(255, 236, 170, 0.18);
+
+        /* titolo mark */
+        --titleMark: rgba(255, 206, 150, 0.72);
+      }
+
+      *{ box-sizing:border-box; }
+      body{
+        margin:0;
+        color: var(--ink);
+        font-family: "Candara", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+        background: var(--expPaper);
+        line-height:1.45;
+      }
+      a{ color:inherit; text-decoration:none; }
+
+      /* TOPBAR (uguale a index) */
+      .topbar{
+        position: sticky;
+        top:0;
+        z-index: 50;
+        display:flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 18px;
+        background: rgba(255,255,255,0.92);
+        border-bottom: 1px solid rgba(0,0,0,0.08);
+        backdrop-filter: blur(10px) saturate(180%);
+        gap: 14px;
+      }
+      .brand{
+        display:flex;
+        align-items:center;
+        gap: 12px;
+        min-width: 220px;
+      }
+      .brandImg{
+        width: 52px;
+        height: 52px;
+        border-radius: 12px;
+        object-fit: cover;
+        border: 1px solid rgba(0,0,0,0.20);
+        background: #fff;
+        flex: 0 0 auto;
+      }
+      .brandText{ display:flex; flex-direction: column; line-height: 1.1; }
+      .brandName{
+        font-size: 18px;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+      }
+      .brandLine{
+        margin-top: 6px;
+        font-family:"MrB","Candara",system-ui,sans-serif;
+        font-size: 12px;
+        opacity: 0.92;
+        letter-spacing: 0.03em;
+        white-space: nowrap;
+      }
+
+      .nav{
+        display:flex;
+        align-items:center;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+      .navItem{
+        padding: 10px 12px;
+        border-radius: 999px;
+        background: rgba(0,0,0,0.05);
+        border: 1px solid rgba(0,0,0,0.10);
+        font-size: 14px;
+        transition: background-color .16s ease, transform .16s ease, filter .16s ease;
+        position: relative;
+        will-change: transform;
+      }
+      .navItem:not(.navDisabled):hover{
+        background: var(--menuHover);
+        animation: navShakeY 0.65s ease-in-out infinite;
+      }
+      .navItem:focus-visible{
+        outline: 2px solid rgba(0,0,0,0.55);
+        outline-offset: 3px;
+      }
+      .navDisabled{
+        opacity: 0.45;
+        cursor: default;
+        user-select:none;
+        background: rgba(0,0,0,0.03);
+      }
+      .isActive{
+        background: rgba(120,170,255,0.20);
+        border-color: rgba(0,0,0,0.10);
+      }
+
+      @keyframes navShakeY{
+        0%   { transform: translateY(0); }
+        25%  { transform: translateY(-2px); }
+        50%  { transform: translateY(0); }
+        75%  { transform: translateY(2px); }
+        100% { transform: translateY(0); }
+      }
+
+      /* STAGE */
+      .expStage{
+        position: relative;
+        min-height: calc(100vh - 72px);
+        padding: 42px 18px 56px;
+        background: var(--expPaper);
+      }
+
+      .expStage::before{
+        content:"";
+        position:absolute;
+        inset:0;
+        background-image: var(--stageBkg);
+        background-size: cover;
+        background-position: center;
+        opacity: 0.14;
+        filter: saturate(1.05) contrast(1.02);
+        pointer-events:none;
+      }
+      .expStage::after{
+        content:"";
+        position:absolute;
+        inset:0;
+        background: linear-gradient(to bottom, rgba(255,255,255,0.55), rgba(247,241,232,0.92));
+        pointer-events:none;
+      }
+
+      .expCard{
+        position: relative;
+        z-index: 1;
+        max-width: 980px;
+        width: 100%;
+        margin: 0 auto;
+
+        border-radius: 22px;
+        background: var(--expCard);
+        border: 1px solid var(--expBorder);
+        backdrop-filter: blur(12px) saturate(160%);
+        box-shadow: 0 18px 55px rgba(0,0,0,.12);
+        overflow: hidden;
+      }
+
+      .expHead{
+        padding: 20px 20px 12px;
+        border-bottom: 1px solid rgba(0,0,0,0.08);
+        background: rgba(255,255,255,0.30);
+      }
+      .expTitle{
+        margin: 0;
+        font-family:"DSAccent","Candara",system-ui,sans-serif;
+        font-weight: 400;
+        font-size: 34px;
+        line-height: 1.05;
+      }
+      .expSubtitle{
+        margin: 8px 0 0;
+        font-family:"MrB","Candara",system-ui,sans-serif;
+        font-size: 18px;
+        opacity: 0.92;
+        max-width: 80ch;
+      }
+
+      /* ===== TABS ATTACCATE ===== */
+      .tabsWrap{ padding: 16px 16px 20px; }
+      .tabs{
+        display:flex;
+        gap: 10px;
+        align-items:flex-end;
+        flex-wrap: wrap;
+        margin: 0;
+        padding: 0 2px;
+      }
+
+      .tab{
+        appearance: none;
+        border: 4px solid var(--frameWhite);
+        border-bottom: 0;
+        background: rgba(35, 86, 150, 0.22);
+        color: var(--ink);
+        font-family: "MrB","Candara",system-ui,sans-serif;
+        font-size: 14px;
+        padding: 12px 14px 11px;
+        border-radius: 16px 16px 0 0;
+        cursor: pointer;
+        box-shadow: 0 -10px 22px rgba(0,0,0,0.08);
+        position: relative;
+        transform: translateY(8px);
+        transition: background-color .16s ease, filter .16s ease, transform .16s ease;
+      }
+
+      .tab:hover{ filter: brightness(1.03); }
+
+      .tab.isActive{
+        transform: translateY(4px);
+      }
+      .tab.isActive[data-kind="exp"]{
+        background: var(--menuHover);
+      }
+      .tab.isActive[data-kind="work"]{
+        background: var(--workHover);
+      }
+
+      .tab:focus-visible{
+        outline: 2px solid rgba(0,0,0,0.55);
+        outline-offset: 3px;
+      }
+
+      /* ===== PANNELLO SOTTO ===== */
+      .panelStage{
+        margin-top: -4px;
+        border: 4px solid var(--frameWhite);
+        border-radius: 18px;
+        background: var(--panelBase);
+        overflow: hidden;
+      }
+      .panelStage[data-kind="exp"]{ background: var(--panelExp); }
+      .panelStage[data-kind="work"]{ background: var(--panelWork); }
+
+      .panel{ padding: 18px 16px 22px; }
+      .panel.isShow{ display:block; }
+      .panel[hidden]{ display:none; }
+
+      .workTitle{
+        margin: 0 0 10px;
+        font-family:"DSAccent","Candara",system-ui,sans-serif;
+        font-weight: 400;
+        font-size: 25px;
+        line-height: 1.15;
+      }
+      .workTitleMark{
+        display:inline-block;
+        padding: 6px 10px;
+        border-radius: 10px;
+        background: var(--titleMark);
+      }
+
+      .workSub{
+        margin: 0 0 12px;
+        font-family:"MrB","Candara",system-ui,sans-serif;
+        font-size: 18px;
+        opacity: 0.92;
+        max-width: 90ch;
+      }
+
+      /* ===== GALLERIA ===== */
+      .honeyWrap{ margin: 10px 0 0; }
+
+      .honeycomb{
+        display:grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0;
+        padding: 0;
+        border: 0;
+        border-radius: 18px;
+        background: rgba(255,255,255,0.00);
+      }
+
+      .hex{
+        position: relative;
+        display:block;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        outline: none;
+      }
+
+      .hexInner{
+        position:absolute;
+        inset:0;
+        border-radius: 0;
+        background: rgba(255,255,255,0.35);
+        border: 10px solid var(--frameWhite);
+        box-shadow: 0 14px 34px rgba(0,0,0,0.10);
+        overflow:hidden;
+
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+
+        clip-path: none;
+
+        transform: scale(1);
+        transition: transform .18s ease, filter .18s ease;
+      }
+
+      .hexInner::after{
+        content:"";
+        position:absolute;
+        inset:0;
+        background: rgba(255,255,255,0.00);
+        transition: background .18s ease;
+        pointer-events:none;
+      }
+
+      .hex:hover .hexInner{
+        transform: scale(1.04);
+        filter: brightness(1.02);
+      }
+      .hex:hover .hexInner::after{
+        background: rgba(255,255,255,0.28);
+      }
+
+      /* FOOTER */
+      .footer{
+        padding: 22px 18px;
+        background: rgba(255,255,255,0.85);
+        border-top: 1px solid rgba(0,0,0,0.10);
+      }
+
+      @media (max-width: 900px){
+        .brandLine{ white-space: normal; }
+        .tabs{ gap: 8px; }
+        .tab{ padding: 11px 12px 10px; }
+        .panel{ padding: 16px 14px 18px; }
+        .honeycomb{ grid-template-columns: repeat(3, 1fr); }
+      }
+       /* ===== Embed Youtube ===== */
+      .ytRow{
+        max-width: 980px;
+        margin: 14px auto 18px;
+        display: flex;
+        justify-content: center;
+        gap: 18px;
+        }
+
+      .ytBox{
+        flex: 1 1 0;
+        aspect-ratio: 16 / 9;
+        border: 10px solid var(--frameWhite);
+        box-shadow: 0 14px 34px rgba(0,0,0,0.10);
+        background: rgba(255,255,255,0.35);
+        overflow: hidden;
+        }
+
+      .ytBox iframe{
+        width: 100%;
+        height: 100%;
+        border: 0;
+        display: block;
+        }
+
+        @media (max-width: 900px){
+      .ytRow{
+            flex-direction: column;
+        }
+        }
+    </style>
+  </body>
+</html>
