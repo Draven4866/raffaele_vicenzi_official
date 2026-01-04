@@ -1,6 +1,7 @@
 ---
 /**
- * MENU-04 — ARTE SCIAMANICA — Raffaele Vicenzi Autore — v1.2
+ * MENU-04 — ARTE SCIAMANICA — Raffaele Vicenzi Autore — v1.2 
+ *                                 (aggiornamento DB "Strisce P02" 04/01/2026)
  *
  * Base: derivata da MENU-02 (stessa topbar, stessi font, stessi fix BASE_URL).
  *
@@ -72,10 +73,27 @@ const fontFaceCSS = `
 const P01S01 = Array.from({ length: 10 }, (_, i) => `img/arte_sciamanica/P01_S01_${String(i + 1).padStart(2, "0")}.jpg`);
 // P01 / S02 => 01..07
 const P01S02 = Array.from({ length: 7 }, (_, i) => `img/arte_sciamanica/P01_S02_${String(i + 1).padStart(2, "0")}.jpg`);
+
 // P02 / S01 => 01..05
 const P02S01 = Array.from({ length: 5 }, (_, i) => `img/arte_sciamanica/P02_S01_${String(i + 1).padStart(2, "0")}.jpg`);
+
+// ✅ NUOVE STRISCE P02
+// P02 / S02 => 01..09
+const P02S02 = Array.from({ length: 9 }, (_, i) => `img/arte_sciamanica/P02_S02_${String(i + 1).padStart(2, "0")}.jpg`);
+// P02 / S03 => 01..09
+const P02S03 = Array.from({ length: 9 }, (_, i) => `img/arte_sciamanica/P02_S03_${String(i + 1).padStart(2, "0")}.jpg`);
+// P02 / S04 => 01..09
+const P02S04 = Array.from({ length: 9 }, (_, i) => `img/arte_sciamanica/P02_S04_${String(i + 1).padStart(2, "0")}.jpg`);
+// P02 / S05 => 01..09
+const P02S05 = Array.from({ length: 9 }, (_, i) => `img/arte_sciamanica/P02_S05_${String(i + 1).padStart(2, "0")}.jpg`);
+// P02 / S06 => 01..09
+const P02S06 = Array.from({ length: 9 }, (_, i) => `img/arte_sciamanica/P02_S06_${String(i + 1).padStart(2, "0")}.jpg`);
+// P02 / S07 => 01..09
+const P02S07 = Array.from({ length: 9 }, (_, i) => `img/arte_sciamanica/P02_S07_${String(i + 1).padStart(2, "0")}.jpg`);
+
 // P03 / S01 => 01 (singola)
 const P03S01 = [`img/arte_sciamanica/P03_S01_01.jpg`];
+
 
 // helper urls assolute
 const U = (rel: string) => u(rel);
@@ -133,7 +151,7 @@ const U = (rel: string) => u(rel);
                 Bastoni rituali
               </button>
               <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="panelP02" id="tabP02" data-target="panelP02">
-                Ciondoli rituali
+                Pendagli Rituali
               </button>
               <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="panelP03" id="tabP03" data-target="panelP03">
                 Altri oggetti
@@ -218,10 +236,10 @@ Descrizione fotografie: <br>
 
               <!-- P02 -->
               <section class="panel" id="panelP02" role="tabpanel" aria-labelledby="tabP02" hidden>
-                <h2 class="workTitle"><span class="workTitleMark">CONDOLI RITUALI</span></h2>
+                <h2 class="workTitle"><span class="workTitleMark">PENDAGLI RITUALI</span></h2>
 
                 <div class="panelText">
-                  <p><em>Gallerie foto e spiegazioni delle simbologie, scelte materiali, colori e costruzione dei ciondoli rituali.</em></p>
+                  <p><em>Gallerie foto e spiegazioni delle simbologie, scelte materiali, colori e costruzione dei pendagli rituali.</em></p>
 
                   <h3 class="stripeTitle"><span class="stripeMark">Pendaglio Rituale per canalizzazione potere 5° Chakra</span></h3>
                   <div class="honeyWrap honeyFloat">
@@ -242,6 +260,103 @@ Dalle parti abbiamo il nero che rappresenta l'Ombra e il simbolo che nella mia f
 I due buchi per gli anelli di cuoio sono sfasati perché servono per bilanciare il pendaglio; infatti indossato è perfettamente bilanciato. Nel mezzo c'è un ulteriore foro che serve per aggiungerci un "oggetto di potere" o "oggetto di attivazione"; serve per attivare la connessione con il pendaglio e le forze interiori e esterne alle quali esso fa riferimento, che comunque ignoro. <br><br>
 <br><br>
                 </div>
+
+                <h3 class="stripeTitle"><span class="stripeMark">Striscia 2</span></h3>
+                <div class="honeyWrap honeyFloat">
+                  <div class="honeycomb" aria-label="Galleria P02 S02">
+                    {P02S02.map((rel, idx) => (
+                      <a class="hex" href={U(rel)} target="_blank" rel="noopener noreferrer" aria-label={`P02 S02 ${String(idx + 1).padStart(2, "0")}`}>
+                        <span class="hexInner" style={`background-image:url('${U(rel)}');`}>
+                          <span class="hexLabel">{`P02_S02_${String(idx + 1).padStart(2, "0")}`}</span>
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+                <p>Scrivere qui il testo descrittivo<br><br>
+                <br><br>
+                </p>
+
+                <h3 class="stripeTitle"><span class="stripeMark">Striscia 3</span></h3>
+                <div class="honeyWrap honeyFloat">
+                  <div class="honeycomb" aria-label="Galleria P02 S03">
+                    {P02S03.map((rel, idx) => (
+                      <a class="hex" href={U(rel)} target="_blank" rel="noopener noreferrer" aria-label={`P02 S03 ${String(idx + 1).padStart(2, "0")}`}>
+                        <span class="hexInner" style={`background-image:url('${U(rel)}');`}>
+                          <span class="hexLabel">{`P02_S03_${String(idx + 1).padStart(2, "0")}`}</span>
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+                <p>Scrivere qui il testo descrittivo<br><br>
+                <br><br>
+                </p>
+
+                <h3 class="stripeTitle"><span class="stripeMark">Striscia 4</span></h3>
+                <div class="honeyWrap honeyFloat">
+                  <div class="honeycomb" aria-label="Galleria P02 S04">
+                    {P02S04.map((rel, idx) => (
+                      <a class="hex" href={U(rel)} target="_blank" rel="noopener noreferrer" aria-label={`P02 S04 ${String(idx + 1).padStart(2, "0")}`}>
+                        <span class="hexInner" style={`background-image:url('${U(rel)}');`}>
+                          <span class="hexLabel">{`P02_S04_${String(idx + 1).padStart(2, "0")}`}</span>
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+                <p>Scrivere qui il testo descrittivo<br><br>
+                <br><br>
+                </p>
+
+                <h3 class="stripeTitle"><span class="stripeMark">Striscia 5</span></h3>
+                <div class="honeyWrap honeyFloat">
+                  <div class="honeycomb" aria-label="Galleria P02 S05">
+                    {P02S05.map((rel, idx) => (
+                      <a class="hex" href={U(rel)} target="_blank" rel="noopener noreferrer" aria-label={`P02 S05 ${String(idx + 1).padStart(2, "0")}`}>
+                        <span class="hexInner" style={`background-image:url('${U(rel)}');`}>
+                          <span class="hexLabel">{`P02_S05_${String(idx + 1).padStart(2, "0")}`}</span>
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+                <p>Scrivere qui il testo descrittivo<br><br>
+                <br><br>
+                </p>
+
+                <h3 class="stripeTitle"><span class="stripeMark">Striscia 6</span></h3>
+                <div class="honeyWrap honeyFloat">
+                  <div class="honeycomb" aria-label="Galleria P02 S06">
+                    {P02S06.map((rel, idx) => (
+                      <a class="hex" href={U(rel)} target="_blank" rel="noopener noreferrer" aria-label={`P02 S06 ${String(idx + 1).padStart(2, "0")}`}>
+                        <span class="hexInner" style={`background-image:url('${U(rel)}');`}>
+                          <span class="hexLabel">{`P02_S06_${String(idx + 1).padStart(2, "0")}`}</span>
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+                <p>Scrivere qui il testo descrittivo<br><br>
+                <br><br>
+                </p>
+
+                <h3 class="stripeTitle"><span class="stripeMark">Striscia 7</span></h3>
+                <div class="honeyWrap honeyFloat">
+                  <div class="honeycomb" aria-label="Galleria P02 S07">
+                    {P02S07.map((rel, idx) => (
+                      <a class="hex" href={U(rel)} target="_blank" rel="noopener noreferrer" aria-label={`P02 S07 ${String(idx + 1).padStart(2, "0")}`}>
+                        <span class="hexInner" style={`background-image:url('${U(rel)}');`}>
+                          <span class="hexLabel">{`P02_S07_${String(idx + 1).padStart(2, "0")}`}</span>
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+                <p>Scrivere qui il testo descrittivo<br><br>
+                <br><br>
+                </p>
+
               </section>
 
               <!-- P03 -->
