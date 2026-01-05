@@ -74,11 +74,19 @@ const P01S01 = Array.from({ length: 10 }, (_, i) => `img/arte_sciamanica/P01_S01
 // P01 / S02 => 01..07
 const P01S02 = Array.from({ length: 7 }, (_, i) => `img/arte_sciamanica/P01_S02_${String(i + 1).padStart(2, "0")}.jpg`);
 
+// ✅ NUOVE STRISCE P01
+// P01 / S03 => 01..09
+const P01S03 = Array.from({ length: 9 }, (_, i) => `img/arte_sciamanica/P01_S03_${String(i + 1).padStart(2, "0")}.jpg`);
+// P01 / S04 => 01..09
+const P01S04 = Array.from({ length: 9 }, (_, i) => `img/arte_sciamanica/P01_S04_${String(i + 1).padStart(2, "0")}.jpg`);
+// P01 / S05 => 01..07
+const P01S05 = Array.from({ length: 7 }, (_, i) => `img/arte_sciamanica/P01_S05_${String(i + 1).padStart(2, "0")}.jpg`);
+
 // P02 / S01 => 01..05
 const P02S01 = Array.from({ length: 5 }, (_, i) => `img/arte_sciamanica/P02_S01_${String(i + 1).padStart(2, "0")}.jpg`);
 
 // ✅ NUOVE STRISCE P02
-// P02 / S02 => 01..09
+// P02 / S02 => 01..06
 const P02S02 = Array.from({ length: 6 }, (_, i) => `img/arte_sciamanica/P02_S02_${String(i + 1).padStart(2, "0")}.jpg`);
 // P02 / S03 => 01..09
 const P02S03 = Array.from({ length: 9 }, (_, i) => `img/arte_sciamanica/P02_S03_${String(i + 1).padStart(2, "0")}.jpg`);
@@ -93,7 +101,6 @@ const P02S07 = Array.from({ length: 9 }, (_, i) => `img/arte_sciamanica/P02_S07_
 
 // P03 / S01 => 01 (singola)
 const P03S01 = [`img/arte_sciamanica/P03_S01_01.jpg`];
-
 
 // helper urls assolute
 const U = (rel: string) => u(rel);
@@ -167,7 +174,7 @@ const U = (rel: string) => u(rel);
                 <div class="panelText">
                   <p><em>Gallerie foto e spiegazioni delle simbologie, scelte materiali, colori e costruzione dei bastoni rituali.</em></p>
 
-                  <!-- STRISCIA 1 -->
+                  <!-- P01_STRISCIA 1 -->
                  <h3 class="stripeTitle"><span class="stripeMark">Bastone rituale "Keras Abrasax"</span></h3>
 
                 <div class="honeyWrap honeyFloat">
@@ -204,7 +211,7 @@ const U = (rel: string) => u(rel);
 10. Il bastone è un connettore tra Cielo e Terra, Abrasax e sul fondo la lingua (Rossa) che sta indicare il I Chakra che è radicato alla terra. Figura antropomorfa con la Testa di Gallo, il corpo umano e le gambe di serpente. Figura Sacra ai Templari.
 <br></p><br>
 
-                  <!-- STRISCIA 2 -->
+                  <!-- P01_STRISCIA 2 -->
                   <h3 class="stripeTitle"><span class="stripeMark">Bastone rituale "Rishlat Mor-Righain"</span></h3>
                   
                     <div class="honeyWrap honeyFloat">
@@ -232,9 +239,215 @@ Descrizione fotografie: <br>
 5-6-7. Panoramica delle varie impugnature e "vene" dove dalla terra scorrono i canali che conducono al Mondo degli Spiriti; bastone è un conduttore e un collegamento a quel mondo con il nostro. <br><br>
                   </p>
                 </div>
+                <!-- P01_STRISCIA 3 -->
+                <h3 class="stripeTitle"><span class="stripeMark">Bastone rituale ḥqꜣ n Inpw (was en Inpu = L'asta del Potere di Anubi)</span></h3>
+
+                <div class="honeyWrap honeyFloat">
+                  <div class="honeycomb" aria-label="Galleria P01 S03">
+                    {P01S03.map((rel, idx) => (
+                      <a class="hex" href={U(rel)} target="_blank" rel="noopener noreferrer" aria-label={`P01 S03 ${String(idx + 1).padStart(2, "0")}`}>
+                        <span class="hexInner" style={`background-image:url('${U(rel)}');`}>
+                          <span class="hexLabel">{`P01_S03_${String(idx + 1).padStart(2, "0")}`}</span>
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+
+                <p>Questo bastone rappresenta la guida del mio maschile (forza/energia maschile). La divinità che regola questa forza/energia è il dio egizio Anubi. <br><br>
+
+Anubi (Inpw) è il dio dalla testa di sciacallo legato alle necropoli, alla mummificazione e al passaggio tra vita e morte. Nel pantheon egizio è guardiano delle tombe e psicopompo: accompagna i defunti nell’Oltretomba e presiede ai riti che preservano il corpo, rendendo possibile la continuità dell’anima. Nella “pesatura del cuore” è associato alla bilancia che verifica la rettitudine del morto. Il suo potere è proteggere, purificare, sigillare soglie e guidare trasformazioni irreversibili senza smarrimento. <br><br>
+
+Simboli che danno potere/magia/scopo al bastone:
+
+1. Pendaglio-amuleto della Soglia-Varco è un disco cerchiato da un bordo metallico: un contenitore stabile che chiude e protegge il ciclo. Dentro, un triangolo di fuoco ospita una figura rotante simile a spirale: non un centro chiuso, ma una soglia viva, un passaggio che richiama e irradia. Sullo sfondo, una trama geometrica sacra sostiene la coerenza del campo, come una rete che mantiene l’ordine nel transito. Il suo significato è chiaro: non protegge, certifica. “Io non ho paura del Varco: l’ho già attraversato. Questo sigillo mi ricorda chi sono.” <br><br>
+
+2. Pietre di potere:<br>
+
+- Ossidiana: pietra-specchio e lama di verità. Simbolicamente assorbe e rivela l’ombra, taglia legami energetici stagnanti, rafforza confini e protezione. “Curativamente” in senso non medico: favorisce radicamento, lucidità, scarico di tensioni, centratura dopo shock o caos emotivo. <br><br>
+
+- Berillo rosso: fuoco raro del cuore-volontà. Simbolicamente accende desiderio pulito, coraggio e scelta, rendendo il valore (Bilancia) coerente con l’azione (Gemelli). “Curativamente” in senso non medico: sostiene vitalità, motivazione, autostima e ripartenza; aiuta a trasformare passione in direzione stabile. <br><br>
+
+3. (Premessa tua integrata: Gemelli = numero di unità; Bilancia = valore dell’unità; insieme determinano “karma”/possibilità operative.)<br>
+
+- Gemelli (simbolo zodiacale)
+Operatore di moltiplicazione: genera unità, scambi, connessioni, possibilità. Aumenta il “numero” di lingotti: idee, contatti, strade, combinazioni. Se disperso frammenta; se centrato, crea rete intelligente. È quantità, versatilità, mobilità mentale.<br><br>
+
+- Bilancia (simbolo zodiacale)
+Operatore di pesatura: assegna valore, misura, equivalenza. Stabilisce quanto vale un lingotto e quindi il risultato reale della quantità prodotta dai Gemelli. Se indecisa, oscilla; se integra, giudica con giustizia. È qualità, armonia, prezzo karmico della scelta.<br><br>
+
+4. L’Ankh è la “chiave della vita” e del passaggio. Legato ad Anubi, diventa sigillo di attraversamento protetto: custodisce la soglia tra dissoluzione e ricomposizione, garantendo continuità di coscienza nel cambiamento. È vita come corrente iniziatica, non solo biologica: morte ordinata, trasformazione, rinascita guidata, integrità preservata durante il transito.<br><br>
+
+5. Yesod è il “Fondamento”: il livello di interfaccia tra il mondo sottile e la manifestazione. È la matrice psichica dove immagini, desideri, memorie e simboli diventano forma possibile; per questo governa sogni, immaginazione, riflessi, automatismi e sessualità come potenza generativa. È il filtro: se è limpido, trasmette; se è confuso, distorce. Lavorare su Yesod significa ripulire la base—così ciò che scende dall’alto arriva integro nel mondo.<br><br>
+
+6. Con il nome di Anubi in geroglifico e segni evidenti nel legno di un cane (enorme rottweiler) che ha azzannato in molteplici punti il bastone, Anubi non è solo invocato, è “marcato”. Le impronte dentate sono prova di guardia, soglia, protezione ferina e consacrazione istintiva.<br><br>
+
+7. Rune:<br>
+-Eivath (E / Eihwaz)
+Runa dell’asse tra mondi: resistenza, trasformazione lenta, protezione nelle soglie. Indica stabilità interiore, coraggio silenzioso e crescita attraverso prove che raffinano il carattere.
+
+-Algiz (Z)<br><br>
+Scudo e antenne: protezione attiva, intuito che “sente” il pericolo, connessione con il sacro. Invita a confini chiari, vigilanza e benedizione quando si cammina con rettitudine.
+
+-Raido (R)<br><br>
+Viaggio, ordine del cammino, legge del movimento. Parla di direzione, scelte coerenti, ritmi giusti. Porta allineamento tra intenzione e realtà: ciò che muovi, ti muove.
+
+-Anshuz (A / Ansuz)<br><br>
+Voce, respiro, parola ispirata: messaggi, segni, comunicazione con forze superiori. Indica rivelazione, insegnamento, verità detta al momento giusto, e mente che si apre al “soffio”.
+
+-Hagalatz (H / Hagalaz)<br><br>
+Grandine: rottura necessaria, shock che libera, caos che ripulisce. Distrugge strutture deboli per far emergere l’essenziale. È crisi-alchimia: ciò che cade, lascia spazio a forma più vera.<br><br>
+
+8. Thelema è una via di realizzazione centrata sulla Vera Volontà: non capriccio, ma traiettoria essenziale dell’essere. La libertà è disciplina dell’allineamento: “fare ciò che sei” fino a renderlo legge vivente. L’esagramma unicorsale esprime questo principio in un segno tracciabile con un solo gesto: unità operativa, integrazione degli opposti, macrocosmo e microcosmo in continuità. È un sigillo di coerenza: energia e direzione in un unico circuito.<br><br>
+
+Potere del Bastone: Il potere di questo bastone è governare il tuo maschile come forza di soglia: presenza, disciplina, protezione e capacità di attraversare cambiamenti senza perdere l’asse. Anubi lo presiede come custode e psicopompo: purifica, sigilla ciò che va chiuso, accompagna ciò che deve passare e misura la rettitudine dell’intento. Il pendaglio del Varco non “difende”: certifica l’avvenuto passaggio e mantiene coerente il campo nel transito. L’ossidiana assorbe e rivela l’ombra, recidendo legami stagnanti; il berillo rosso accende volontà e coraggio, trasformando passione in direzione. Gemelli e Bilancia operano insieme: moltiplicano possibilità e ne stabiliscono il valore, convertendo scelta in karma operativo. L’Ankh garantisce continuità durante la trasformazione; Yesod ripulisce la matrice perché ciò che scende diventi forma pulita. Il nome di Anubi e i morsi del cane sono marchi di guardia: consacrano il legno come territorio protetto. Le rune aprono asse, difesa, cammino, parola e rottura liberatoria; Thelema unifica tutto nella Vera Volontà. Così il bastone guida, pesa, taglia, apre varchi.
+
+Per quanto riguarda il processo di realizzazione del pendaglio segue le medesime modalità e procedure dei precedenti bastoni.<br><br><br><br>
+                  </p>
+
+                <!-- P01_STRISCIA 4 -->
+                
+                <h3 class="stripeTitle"><span class="stripeMark">Bastone rituale Phílē Némesis (Nemesi Cara/Nemesi Amata)</span></h3>
+
+                <div class="honeyWrap honeyFloat">
+                  <div class="honeycomb" aria-label="Galleria P01 S04">
+                    {P01S04.map((rel, idx) => (
+                      <a class="hex" href={U(rel)} target="_blank" rel="noopener noreferrer" aria-label={`P01 S04 ${String(idx + 1).padStart(2, "0")}`}>
+                        <span class="hexInner" style={`background-image:url('${U(rel)}');`}>
+                          <span class="hexLabel">{`P01_S04_${String(idx + 1).padStart(2, "0")}`}</span>
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+
+                <p>Questo bastone rappresenta la guida del mio femminile (forza/energia femminile). La divinità che regola questa forza/energia è la dea greca Nemesis <br><br>
+
+Nemesi (Némesis) è, nella tradizione greca, la forza che ristabilisce l’equilibrio quando qualcuno supera la giusta misura: non è vendetta impulsiva, ma compensazione etica del cosmo. Il suo potere è riportare proporzione tra azione e conseguenza, ridimensionare l’hybris (arroganza) e riallineare ciò che è stato forzato. Agisce come bilancia invisibile: premia la rettitudine e corregge l’eccesso, spesso attraverso eventi che rivelano la verità dei comportamenti. È anche tutela dei limiti: confini, responsabilità, misura. <br><br>
+
+Simboli che danno potere/magia/scopo al bastone:<br>
+1. Le piume d’oca come corona richiamano il messaggero tra terra e acqua: equilibrio emotivo, protezione del viaggio e vigilanza silenziosa. In chiave nativa, la corona sancisce dignità e alleanza con lo spirito-guida, portando calma, direzione e confini sacri.<br><br>
+
+2. Pietre di potere:<br>
+- Berillo blu: pietra di chiarezza e comunicazione limpida. Simbolicamente rafforza verità, ascolto e coerenza tra pensiero e parola; “magicamente” agisce come filtro anti-rumore, stabilizzando l’aura mentale; calma ansia, regola respiro e favorisce lucidità. <br><br>
+
+- Smeraldo: cuore verde della guarigione e della visione armonica. Simbolicamente unisce amore e discernimento, rinnova fiducia e lealtà; “magicamente” attira equilibrio, prosperità sobria e relazioni sane; sostiene recupero emotivo, pacifica stress e riporta vitalità costante. <br><br>
+
+3. Sopra l'impugnatura davanti troviamo nella parte frontale: <br>
+
+- Bilancia (simbolo zodiacale)
+Operatore di pesatura: assegna valore, misura, equivalenza. Stabilisce quanto vale un lingotto e quindi il risultato reale della quantità prodotta dai Gemelli. Se indecisa, oscilla; se integra, giudica con giustizia. È qualità, armonia, prezzo karmico della scelta.br>br>
+
+- Simbolo alchemico della Terra: indica densità, gravità e fissazione: ciò che rende stabile e durevole; richiama radicamento, confini, protezione e manifestazione concreta e favorisce centratura, presenza nel corpo, calma, disciplina e capacità di costruire senza dispersione.<br><br>
+
+Mentre dietro in opposizione per mantenere l'equilibrio i due simboli frontali, dietro il bastone, alla stessa altezza, in opposizione a loro il simbolo del:<br>
+
+- Tridente: è un simbolo di sovranità su forze multiple: tre punte, un unico manico. In senso generale rappresenta dominio su tre livelli (corpo-mente-spirito, passato-presente-futuro, creazione-conservazione-trasformazione) e la capacità di indirizzare energia in tre direzioni senza perderne il controllo. È arma e scettro: difesa e comando; indica potere di separare, scegliere e colpire il punto giusto; aiuta a ripristinare centratura e decisione quando tutto è disperso.<br><br>
+
+4. Gevurah (“Forza”, “Severità”) è la sefira della disciplina e del limite: il potere di dire no, tagliare l’eccesso, applicare legge e misura. È il fuoco che purifica, la spada che separa il vero dal superfluo, la giustizia che ristabilisce equilibrio senza sentimentalismo. In lavoro interiore governa coraggio, autocontrollo, responsabilità e capacità di sostenere conseguenze. Quando è integra, protegge il confine e rende l’azione precisa; quando è distorta diventa durezza, rabbia o rigidità punitiva.<br><br>
+
+5. Ci sono due simboli alchilici allineati con il tridente, il primo al altezza dell'impugnatura (bastone orientato orrizontalmente) la quale impugnatura ha da una parte la testa di un'oca che mangia il bastone e dall'altra la testa di un serpente che fa la stessa cosa:<br>
+
+- Simbolo alchemico di Saturno (sull'impugnatura): sull’impugnatura centrale funziona da attivatore di gravità: quando stringi il bastone con una mano e lo porti in orizzontale, agganci il principio di limite, tempo e struttura. L’orizzontale crea un asse di bilanciamento; la presa diventa firma e autorizzazione. In attivazione Saturno chiude le dispersioni, raffredda l’impulso e rende il comando preciso. Dopo l’innesco resta come forza sostenitrice: tenuta, pazienza, resistenza e continuità dell’opera, sotto pressione, senza cedere al rumore dello Scenario, fino al completamento.<br><br>
+
+- Simbolo alchemico del Sodio: Il simbolo del Sodio (Na) richiama il sale vivo: conduttore, catalizzatore e purificatore. È materia che scioglie e trasporta carica, rendendo il campo più leggibile e reattivo. In chiave egizia riecheggia il natron: conservazione, disidratazione del superfluo, pulizia dei residui. Inoltre indica scambio e decisione rapida che attiva, separa, apre canali, ma chiede contenimento. È utile nei passaggi poiché impedisce ristagni, mantiene la soglia netta, e rende stabile il segnale. Porta igiene: ciò che non serve viene sciolto e rimosso dal campo.<br><br>
+
+6. Rune:<br> 
+- Teiwaz. Runa della lancia e del diritto: orienta l’azione verso un bersaglio chiaro. Simbolicamente è coraggio, disciplina e scelta netta; magicamente taglia il superfluo e rende l’intento “rettilineo”. È il sigillo della vittoria ottenuta con coerenza e responsabilità.<br><br>
+
+- Dagaz. Runa dell’alba e del salto di stato: il momento in cui buio e luce si scambiano. Simbolicamente indica svolta, risveglio, integrazione degli opposti; magicamente accelera chiarimenti e “reset” positivi. Porta lucidità improvvisa, come apertura di una finestra sul reale.<br><br>
+
+- Hagalatz. Grandine: rottura necessaria, shock che libera, caos che ripulisce. Distrugge strutture deboli per far emergere l’essenziale. È crisi-alchimia: ciò che cade, lascia spazio a forma più vera.<br><br>
+
+- Sowilo. Runa del Sole: vittoria, energia centrale, integrità. Simbolicamente è luce cosciente, forza vitale e direzione; magicamente “carica” il campo, chiarisce, protegge dalla dispersione e alimenta il successo. È un sigillo di potenza pulita: brillare senza bruciare.<br><br>
+
+- Isa. Runa del ghiaccio: immobilità, sospensione, precisione. Simbolicamente è il fermo che conserva e definisce; magicamente blocca interferenze, raffredda l’eccesso emotivo e crea confini netti. Non è stallo sterile: è concentrazione. Invita a attendere il momento esatto.<br><br>
+
+- Perthro. Runa del dado/calice: mistero, destino, rivelazione. Simbolicamente parla di ciò che è nascosto e della sorte che si svela; magicamente apre l’oracolo, sincronicità e intuizioni. Porta “informazioni segrete” del campo, ma richiede fiducia e ascolto profondo.<br><br>
+
+- Jera: Runa del raccolto e del ciclo: tempo giusto, maturazione, ricompensa. Simbolicamente è legge di semina e conseguenza; magicamente stabilizza processi, favorisce risultati costanti e chiude cicli correttamente. Insegna pazienza operativa: ciò che nutri, torna a te, a stagione.<br><br>
+
+7. L’impugnatura con due teste che “mordono” il bastone è un sigillo di doppia presa sul potere: due guardiani che trattengono e regolano il flusso, impedendo dispersione. La testa superiore, collegata a Bilancia-Terra-Tridente e a berillo blu/smeraldo, governa misura, radicamento e comando: dà valore, struttura e coerenza al segnale. La testa opposta, il serpente che ingloba rune e Sodio, è il circuito iniziatico: custodisce il mistero, attiva trasformazione e purifica tramite cicli, rotture e rivelazioni. Insieme: disciplina + trasmutazione, tenute in equilibrio dalla presa.<br>
+NB: la “testa di Freezer” (bianco/viola) richiama un nucleo di potere freddo e concentrato, controllato. La biforcazione rossa con un solo punto d’appoggio indica energia canalizzata a terra: scarico selettivo, stabilità senza irrigidire tutto il sistema.<br><br>
+
+Potere del Bastone: Questo bastone è la guida del femminile come potere di misura: ristabilisce equilibrio, confini e conseguenze, secondo Nemesi. La corona di piume d’oca porta vigilanza silenziosa e direzione emotiva; berillo blu e smeraldo uniscono parola limpida e guarigione del cuore. Bilancia, Terra e Tridente regolano valore, radicamento e sovranità su tre livelli. Gevurah dona disciplina e taglio dell’eccesso. Saturno, in presa orizzontale, attiva struttura e tenuta; il Sodio purifica e mantiene netta la soglia. Le rune guidano: diritto, svolta, rottura, luce, pausa, oracolo, raccolto. Le due teste sull’impugnatura sigillano tutto: trattenere, trasmettere, trasformare senza dispersione. <br><br>
+
+Per quanto riguarda il processo di realizzazione del pendaglio segue le medesime modalità e procedure dei precedenti bastoni.<br><br><br><br>
+                </p>
+
+              <!-- P01_STRISCIA 5 -->
+
+              <h3 class="stripeTitle"><span class="stripeMark">Il Bastone Rituale delle Direzioni</span></h3>
+
+              <div class="honeyWrap honeyFloat">
+                <div class="honeycomb" aria-label="Galleria P01 S05">
+                  {P01S05.map((rel, idx) => (
+                    <a class="hex" href={U(rel)} target="_blank" rel="noopener noreferrer" aria-label={`P01 S05 ${String(idx + 1).padStart(2, "0")}`}>
+                      <span class="hexInner" style={`background-image:url('${U(rel)}');`}>
+                        <span class="hexLabel">{`P01_S05_${String(idx + 1).padStart(2, "0")}`}</span>
+                      </span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+
+              <p>Questo bastone rappresenta il Bastone delle Direzioni, protezione e chiarezza nella scelta della via, fondamentale per un viandante.<br><br>
+
+1. Il bastone è protetto da due divinità romane:
+
+- Nel retro del bastone c'è Trivia che è la dea dei crocevia (le “tre vie”), delle soglie, della notte e della luna: guida chi attraversa passaggi interiori, quando la strada non è lineare ma triplice. Esotericamente rappresenta la coscienza liminale, cioè vedere nel buio, reggere l’ambiguità, scegliere senza appoggi esterni. È protettrice di magie di confine, divinazione e protezione, ma anche custode dell’Ombra: non punisce, ma rivela. Il suo potere è l’orientamento nel mistero. <br><br>
+
+- Nel fronte del bastone c'è invece Giano (Janus) che è il dio romano delle porte, degli inizi e delle fine, raffigurato con due volti: uno guarda indietro, l’altro avanti. Simbolicamente è il principio che rende possibile ogni passaggio che va dal pensiero all’atto, dal vecchio ciclo al nuovo. Esotericamente è la sovranità della soglia: stabilisce quando qualcosa è davvero concluso e quando può cominciare. Non è “tempo” in astratto, ma decisione, il punto in cui il destino diventa scelta. È il guardiano del “varco” che separa e consacra. <br><br>
+
+2. Pietra di potere:<br>
+- La Cianite Blu agisce come una lama di chiarezza: allinea senza forzare, separa il vero dal rumore e indica la direzione con naturalezza. Porta quiete mentale, precisione interiore e ascolto profondo, favorendo decisioni limpide nel presente. Non trattiene pesi, non confonde, non accumula: scorre. Rafforza la comunicazione autentica, dissolve blocchi sottili e sostiene il contatto con il proprio asse interiore, rendendo stabile il cammino e silenziosa la mente. <br><br>
+
+3. Abbiamo due simboli uno nel retro come forza sostenitrice di Trivia e uno davanti come forza di sostegno per Giano (Janus), rispettivamente:<br>
+
+- Simbolo del centro che decide: una sfera al cuore del crocevia, da cui si irradiano quattro frecce verso i punti cardinali. Indica orientamento, scelta e governo del movimento. Il centro resta stabile mentre le direzioni si aprono: presenza, comando, equilibrio tra espansione e ritorno.<br><br> 
+
+- L’esagramma crowleyano, due triangoli interlacciati opposti, unisce Fuoco e Acqua, sopra e sotto, volontà e ricettività. È sigillo di integrazione: macrocosmo e microcosmo si compenetrano senza annullarsi. In Thelema rappresent simmetria attiva, equilibrio dinamico e potere di dirigere forze contrarie in un unico circuito. <br><br>
+
+4. Ci sono 5 Rune che definiscono le forze e i poter espressi da Trivia e 5 per Gianus, rispettivamente:<br> 
+- Teiwaz. Runa della lancia e del diritto: orienta l’azione verso un bersaglio chiaro. Simbolicamente è coraggio, disciplina e scelta netta; magicamente taglia il superfluo e rende l’intento “rettilineo”. È il sigillo della vittoria ottenuta con coerenza e responsabilità.<br><br>
+
+TRIVIA<br>
+
+- Perthro. Runa del dado/calice: mistero, destino, rivelazione. Simbolicamente parla di ciò che è nascosto e della sorte che si svela; magicamente apre l’oracolo, sincronicità e intuizioni. Porta “informazioni segrete” del campo, ma richiede fiducia e ascolto profondo.<br><br>
+
+- Hagalatz. Grandine: rottura necessaria, shock che libera, caos che ripulisce. Distrugge strutture deboli per far emergere l’essenziale. È crisi-alchimia: ciò che cade, lascia spazio a forma più vera.<br><br>
+
+- Eihwaz. Runa del ghiaccio: fermo, precisione, confine netto. Per Trivia è il comando “stop” al crocevia: sospendere l’impulso per ascoltare la via corretta. Magicamente blocca interferenze e disperisione emotiva; rende la scelta chirurgica. È silenzio che decide.<br><br>
+
+- Isa. Runa del ghiaccio: immobilità, sospensione, precisione. Simbolicamente è il fermo che conserva e definisce; magicamente blocca interferenze, raffredda l’eccesso emotivo e crea confini netti. Non è stallo sterile: è concentrazione. Invita a attendere il momento esatto.<br><br>
+
+- Laguz. Runa dell’acqua: flusso, intuizione, mare interno. Per Trivia è la corrente sotterranea che collega le strade: non scegli solo con la mente, scegli col sentire profondo. Magicamente affina percezione e sogno; guida attraverso segni fluidi, evitando rigidità e forzature.<br><br>
+
+
+GIANO (JANUS)
+
+- Jera. Runa del raccolto e del ciclo: tempo giusto, maturazione, ricompensa. Simbolicamente è legge di semina e conseguenza; magicamente stabilizza processi, favorisce risultati costanti e chiude cicli correttamente. Insegna pazienza operativa: ciò che nutri, torna a te, a stagione.<br><br>
+
+Ehwaz. Runa del cavallo: alleanza, movimento sincronizzato, passaggio. Per Giano è il ponte tra due sponde: tu e la soglia collaborate, non la forzi. Magicamente facilita transizioni, viaggi e cambi di fase; chiede fiducia reciproca e ritmo. È il “varco in corsa” controllata. <br><br>
+
+- Raido. Runa del viaggio e dell’ordine del cammino. Per Giano è la strada che attraversa la porta: direzione, legge del movimento, coerenza tra intenzione e passo. Magicamente allinea scelte e destino, impedisce deviazioni inutili. È il sigillo del “procedere giusto” attraverso la soglia. <br><br>
+
+- Dagaz. Runa dell’alba e del salto di stato: il momento in cui buio e luce si scambiano. Simbolicamente indica svolta, risveglio, integrazione degli opposti; magicamente accelera chiarimenti e “reset” positivi. Porta lucidità improvvisa, come apertura di una finestra sul reale.<br><br>
+
+- Gebo. Runa del dono e del patto: scambio sacro, reciprocità. Per Giano è la chiave etica della porta: ogni passaggio implica un prezzo/contratto, un “dare per entrare”. Magicamente sigilla alleanze e protezioni; mantiene equilibrio tra prendere e restituire. È la legge del varco: passa chi è in patto. <br><br>
+
+5. Frase finale in lingua edochiana, "ZACAR OD IAIDA", che con traduzione libera può significare sia, “Mi arrendo, e trovo pace”, sia “Offro me stesso e ricevo grazia”. In realtà essa unisce due movimenti complementari. "Zacar/Zodacar/Zodacare" significa muoversi, avanzare, mettersi in cammino; "Iaida" indica l’Alto, il degno, il beato, ciò che appartiene ai cieli. Letteralmente è un “muoversi verso l’Alto”. Ma il senso profondo nasce da una comprensione interiore: l’ascesa autentica non avviene per sforzo o conquista, bensì per "abbandono consapevole". Quando l’io smette di trattenere, l’energia si riallinea spontaneamente. Offrire sé stessi non è rinuncia, è fiducia; arrendersi non è perdita, è silenzio fertile. In quel silenzio emerge la pace, e la grazia non è cercata: "accade". Zodacar od Iaida diventa così un atto interiore: muoversi verso l’Alto lasciando andare.<br><br>
+
+6. La testa del cigno nero è un simbolo di soglia e trasformazione profonda. Il cigno nero incarna l’ignoto che irrompe, l’evento iniziatico che spezza le certezze e costringe a una nuova visione: non distrugge, rivela. Il becco rosso richiama il 1° chakra, la forza vitale, l’istinto incarnato, il radicamento nella materia e nel sangue della vita; è l’energia che permette di stare nel mondo senza fuggire. La punta viola richiama il 7° chakra, la trascendenza, la coscienza superiore, l’apertura al divino. Tra rosso e viola il cigno fa da ponte: trasforma l’istinto in visione, la materia in consapevolezza. Il bastone diventa asse iniziatico: dalla terra al cielo, passando per l’ombra accettata.<br><br>
+
+
+Potere del Bastone: questo bastone è il Bastone delle Direzioni, strumento di orientamento, protezione e decisione per il viandante interiore. Custodito da Trivia, guida nel mistero dei crocevia, insegna a sostare, ascoltare e vedere nell’ombra; sostenuto da Giano, apre e chiude i cicli, rende possibile il passaggio corretto tra ciò che è stato e ciò che deve iniziare. La Cianite Blu allinea l’asse interiore, separa il vero dal rumore e rende limpida la scelta. I simboli stabiliscono centro e integrazione degli opposti; le rune dirigono caos, tempo, flusso e patto. La formula Zodacar od Iaida attiva la resa consapevole come via più alta. Il cigno nero, dal rosso al viola, unisce terra e cielo: il bastone trasforma l’istinto in visione e la scelta in destino.<br><br>
+
+Per quanto riguarda il processo di realizzazione del pendaglio segue le medesime modalità e procedure dei precedenti bastoni.<br><br><br><br>
+                </p>
               </section>
 
-              <!-- P02 -->
+              <!-- P02_STRISCIA 1 -->
               <section class="panel" id="panelP02" role="tabpanel" aria-labelledby="tabP02" hidden>
                 <h2 class="workTitle"><span class="workTitleMark">PENDAGLI RITUALI</span></h2>
 
@@ -263,6 +476,7 @@ Potere del Pendaglio: questo pendaglio agisce come antenna di legge e bilanciame
 <br><br>
                   </p>
 
+                  <!-- P02_STRISCIA 2 -->
                   <h3 class="stripeTitle"><span class="stripeMark">Canalizzatore del 7° Chakra: Il Regolatore di Soglia</span></h3>
                   <div class="honeyWrap honeyFloat">
                     <div class="honeycomb" aria-label="Galleria P02 S02">
@@ -293,7 +507,7 @@ Per quanto riguarda il processo di realizzazione del pendaglio segue le medesime
 
 Potere del Pendaglio: è un regolatore di soglia che unisce il sopra e il sotto (decagramma) e li fa circolare senza scissione. Il pentagramma dritto ancora alla Natura e protegge, quello rovescio apre il labirinto dell’istinto e del mistero; insieme trasformano conflitto in asse. L’ouroboros-∞ mantiene il circuito sempre attivo, mentre la sfera centrale richiama il Sé-pivot che decide cosa passa. La legge “morte/nascita” sigilla la reversibilità. L’Ankh, custode, stabilizza e “accende” l’intero sistema, guidando attivazione ed emanazione verso manifestazione equilibrata.<br><br>
                     </p>
-
+                  <!-- P02_STRISCIA 3 -->
                   <h3 class="stripeTitle"><span class="stripeMark">Canalizzatore del 3° Chakra: La Purificazione che Fiorisce </span></h3>
                   <div class="honeyWrap honeyFloat">
                     <div class="honeycomb" aria-label="Galleria P02 S03">
@@ -323,6 +537,7 @@ Per quanto riguarda il processo di realizzazione del pendaglio segue le medesime
 Potere del Pendaglio: Questo pendaglio attiva la purificazione che fiorisce: il Loto ti permette di emergere dal caos senza portartelo addosso, trasformando il fango in nutrimento e presenza. Il Sole/Oro accende la nobiltà interiore: chiarezza, centratura, forza generativa e incorruzione del proposito. La III Legge (“1→2→3→1”) stabilisce la dinamica: ciò che separi ritorna integrato, e ciò che chiami “resto” si rivela parte di te. Hod governa l’equilibrio: disciplina mentale, linguaggio preciso e gratitudine rendono la trasformazione stabile, leggibile, replicabile. <br><br>
                     </p>
 
+                  <!-- P02_STRISCIA 4 -->
                   <h3 class="stripeTitle"><span class="stripeMark">Canalizzatore del 2° Chakra: Attivatore della Metamorfosi Custodita</span></h3>
                   <div class="honeyWrap honeyFloat">
                     <div class="honeycomb" aria-label="Galleria P02 S04">
@@ -354,6 +569,7 @@ Per quanto riguarda il processo di realizzazione del pendaglio segue le medesime
 Potere del Pendaglio: attiva la Legge della Metamorfosi custodita. La Farfalla apre il passaggio: lasciare una pelle senza perdere il cuore. Vacham/An-Vachmah fornisce la chiave operativa: scegliere, custodire, unire gli opposti con volontà e onore. La II Legge (“2 = 1+1”) stabilisce la dinamica: separazione necessaria e ritorno consapevole. Il Vaso Ermetico con Bismuto sigilla il lavoro: trasforma il grezzo in geometria, tenendo il fuoco giusto dentro confini sani.<br><br>
                     </p>
 
+                  <!-- P02_STRISCIA 5 -->
                   <h3 class="stripeTitle"><span class="stripeMark">Canalizzatore del 1° Chakra: Stabilizzatore del Ciclio di Potere interno-esterno </span></h3>
                   <div class="honeyWrap honeyFloat">
                     <div class="honeycomb" aria-label="Galleria P02 S05">
@@ -383,7 +599,7 @@ Per quanto riguarda il processo di realizzazione del pendaglio segue le medesime
 
 Potere del Pendaglio: puesto pendaglio stabilizza il tuo ciclo di potere nel corpo e nello Scenario: semina → consacra → rilascia senza dispersione. La Triplice Luna regola i tempi (quando iniziare, quando spingere, quando chiudere). La Terra alchemica fissa il risultato: radicamento, confine, forma durevole. La I Legge (“1 è 1”) ti riporta all’asse: il Sé come unità non negoziabile. La Tavola della Terra (Torre del Nord) attiva guardiani e strutture: ordine, protezione, manifestazione concreta. <br><br>
                     </p>
-
+                  <!-- P02_STRISCIA 6 -->
                   <h3 class="stripeTitle"><span class="stripeMark">Canalizzatore del 6° Chakra: Sigillatore di ricomposizione e avanzamento</span></h3>
                   <div class="honeyWrap honeyFloat">
                     <div class="honeycomb" aria-label="Galleria P02 S06">
@@ -412,7 +628,7 @@ Per quanto riguarda il processo di realizzazione del pendaglio segue le medesime
 
 Potere del Pendaglio: questo pendaglio opera come sigillo di ricomposizione e avanzamento. L’Occhio di Horus protegge e guarisce, ricuce le fratture e ti sostiene nei passaggi ciclici (perdita/ritorno). Il Mercurio alchemico apre il “tra”: scioglie i blocchi, collega stati opposti e rende possibile la trasformazione senza rotture. La VI Legge impone crescita continua: in ogni epoca la legge va incrementata, non ripetuta. Esagramma unicorsale e Awen custodiscono l’equilibrio: macrocosmo e microcosmo si allineano, l’ispirazione diventa ordine e direzione.<br><br>
                     </p>
-              
+                  <!-- P02_STRISCIA 7 -->
                   <h3 class="stripeTitle"><span class="stripeMark">Canalizzatore del 4° Chakra: Attivatore della Coerenza del Cuore</span></h3>
                   <div class="honeyWrap honeyFloat">
                     <div class="honeycomb" aria-label="Galleria P02 S07">
@@ -444,7 +660,7 @@ Potere del Pendaglio: questo pendaglio attiva la coerenza del Cuore come comando
                 </div>
               </section>
 
-              <!-- P03 -->
+              <!-- P03_STRISCIA 1 -->
               <section class="panel" id="panelP03" role="tabpanel" aria-labelledby="tabP03" hidden>
                 <h2 class="workTitle"><span class="workTitleMark">ALTRE OPERE E COSTRUZIONI</span></h2>
 
