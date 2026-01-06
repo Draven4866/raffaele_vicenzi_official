@@ -168,6 +168,7 @@ const sliderItems: {
         </div>
       </section>
 
+      <div class="stripsWrap" style={`--stripsBkg: url('${u("img/home_bkg.jpg")}');`}>
       <!-- STRISCIA 01 — SLIDER / NEWS (reveal) -->
       <section class="strip" data-reveal>
         <div class="stripInner">
@@ -283,6 +284,7 @@ const sliderItems: {
           </div>
         </div>
       </section>
+      </div>
     </main>
 
     <footer class="footer">
@@ -417,11 +419,21 @@ const sliderItems: {
     <style>
       :root{
         --ink: #0b0b0b;
-        --paper: #f2f2f2;
-        --paper2:#e7e7e7;
+
+        /* colori base (come prima) */
+        --paper:  #f2f2f2;
+        --paper2: #e7e7e7;
+
+        /* versioni semi-trasparenti (per far vedere il background sotto) */
+        --paperA:  rgba(242,242,242,0.86);
+        --paper2A: rgba(231,231,231,0.86);
+        --paper3A: rgba(247,239,226,0.86);
 
         /* hover verdino trasparente per menu */
         --menuHover: rgba(119, 194, 99, 0.28);
+
+        /* watermark background strips (regolabile) */
+        --stripsBkgOpacity: 0.12;
       }
 
       *{ box-sizing:border-box; }
@@ -647,17 +659,44 @@ const sliderItems: {
         opacity: 0.78;
       }
 
+      /* ==========================================================
+        WRAPPER STRISCE: 1 immagine unica sotto Striscia 1–2–3
+        (NON tocca la HERO perché la HERO sta fuori dal wrapper)
+        ========================================================== */
+      .stripsWrap{
+        position: relative;
+        overflow: hidden;
+      }
+
+      .stripsWrap::before{
+        content:"";
+        position:absolute;
+        inset:0;
+        background: var(--stripsBkg, none) center / cover no-repeat;
+        opacity: var(--stripsBkgOpacity);
+        pointer-events:none;
+        z-index: 0;
+        filter: saturate(1.05);
+      }
+
+      .stripsWrap > .strip{
+        position: relative;
+        z-index: 1;
+      }
+
       /* STRIP + REVEAL con “velo bianco” */
       .strip{
         position: relative;
         padding: 56px 18px;
-        background: var(--paper);
+        background: var(--paperA); /* semi-trasparente per vedere l'immagine sotto */
         overflow:hidden;
         border-top: 1px solid rgba(0,0,0,0.06);
       }
-      .strip:nth-of-type(2){ background: var(--paper2); }
-      .strip:nth-of-type(3){ background: #f7efe2; }
-      .strip:nth-of-type(4){ background: #eaf3ff; }
+
+      /* IMPORTANTISSIMO:
+        nth-of-type reso LOCALE alle strisce (evita interferenze con la HERO) */
+      .stripsWrap .strip:nth-of-type(2){ background: var(--paper2A); }
+      .stripsWrap .strip:nth-of-type(3){ background: var(--paper3A); }
 
       .stripInner{
         position: relative;
@@ -729,7 +768,6 @@ const sliderItems: {
         transform: translateY(0);
       }
 
-      /* sfondo slide: immagine opzionale via --slideBkg; altrimenti gradients per “tono” */
       .slide::before{
         content:"";
         position:absolute;
