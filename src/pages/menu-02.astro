@@ -1,6 +1,6 @@
 ---
 /**
- * MENU-02 — BIO — Raffaele Vicenzi Autore — v1.2
+ * MENU-02 — BIOGRAFIA — Raffaele Vicenzi Autore — v1.2
  *
  * Modifica v1.2:
  * - SOLO box: ridotta la larghezza della card (.bioCard) per eliminare lo spazio vuoto a destra.
@@ -9,7 +9,7 @@
  * Note tecniche:
  * - URL asset assoluti via BASE_URL (u()).
  * - Font via @font-face INIETTATI in <head> (niente url("fonts/...") nel CSS estratto).
- * - Layout bio: card trasparente sopra background + foto “dentro” al testo (float) + reveal on scroll.
+ * - Layout biografia: card trasparente sopra background + foto “dentro” al testo (float) + reveal on scroll.
  */
 
 // ===== BASE URL (subpath safe) =====
@@ -67,7 +67,7 @@ const fontFaceCSS = `
     <meta charset="utf-8" />
     <base href={baseHref} />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Raffaele Vicenzi — Bio</title>
+    <title>Raffaele Vicenzi — Biografia</title>
 
     <link rel="preload" href={candFontUrl} as="font" type="font/ttf" crossorigin />
     <link rel="preload" href={mrBFontUrl} as="font" type="font/ttf" crossorigin />
@@ -90,7 +90,7 @@ const fontFaceCSS = `
       <!-- MENU -->
       <nav id="siteNav" class="nav" aria-label="Menu">
         <a class="navItem" href={hrefHome}>Home</a>
-        <a class="navItem isActive" href={hrefM02} aria-current="page">Bio</a>
+        <a class="navItem isActive" href={hrefM02} aria-current="page">Biografia</a>
         <a class="navItem" href={hrefM03}>Il Campo Del Cuore</a>
         <a class="navItem" href={hrefM04}>Arte Sciamanica</a>
         <a class="navItem" href={hrefM05}>Esperienze</a>
@@ -201,7 +201,7 @@ const fontFaceCSS = `
       <small>© <span id="y"></span> Raffaele Vicenzi</small>
     </footer>
 
-    <!-- Year + Reveal on scroll (blocchi bio) -->
+    <!-- Year + Reveal on scroll (blocchi Biografia) -->
     <script is:inline>
       (() => {
         const y = document.getElementById("y");
