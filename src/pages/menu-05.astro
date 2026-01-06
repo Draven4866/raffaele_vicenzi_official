@@ -152,29 +152,27 @@ const U = (rel: string) => u(rel);
                 <h2 class="workTitle"><span class="workTitleMark">Hollywood L.A.</span></h2>
                 <p class="workSub">2011-2013: apprendistato musicale, registrazione del mio album "The Road Goes Ever On", lavoro con artisti major e vita losangeliana.</p>
 
-                <div class="ytRow" aria-label="Video YouTube">
-                    <div class="ytBox">
-                        <iframe
-                        src="https://www.youtube.com/embed/dBg4h0SxW2s"
-                        title="YouTube video 1"
-                        loading="lazy"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen
-                        ></iframe>
-                    </div>
-
-                    <div class="ytBox">
-                        <iframe
-                        src="https://www.youtube.com/embed/wXTDBgcjE7k"
-                        title="YouTube video 2"
-                        loading="lazy"
-                        referrerpolicy="strict-origin-when-cross-origin"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen
-                        ></iframe>
-                    </div>
+              <div class="ytRow" aria-label="Video YouTube">
+                <div class="ytBox">
+                  <iframe
+                    src="https://www.youtube-nocookie.com/embed/dBg4h0SxW2s?playsinline=1"
+                    title="YouTube video 1"
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                  ></iframe>
                 </div>
+
+                <div class="ytBox">
+                  <iframe
+                    src="https://www.youtube-nocookie.com/embed/wXTDBgcjE7k?playsinline=1"
+                    title="YouTube video 2"
+                    loading="lazy"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                  ></iframe>
+                </div>
+              </div>
 
                 <div class="honeyWrap">
                   <div class="honeycomb" aria-label="Galleria Hollywood L.A.">
@@ -791,36 +789,47 @@ dei servizi, potendo successivamente personalizzare l’Assistente AI, che passa
         .panel{ padding: 16px 14px 18px; }
         .honeycomb{ grid-template-columns: repeat(3, 1fr); }
       }
-       /* ===== Embed Youtube ===== */
+      /* YouTube row */
       .ytRow{
-        max-width: 980px;
-        margin: 14px auto 18px;
-        display: flex;
-        justify-content: center;
-        gap: 18px;
-        }
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
 
+      /* Box 16:9 (funziona su mobile) */
       .ytBox{
-        flex: 1 1 0;
-        aspect-ratio: 16 / 9;
-        border: 10px solid var(--frameWhite);
-        box-shadow: 0 14px 34px rgba(0,0,0,0.10);
-        background: rgba(255,255,255,0.35);
+        position: relative;
+        width: 100%;
+        border-radius: 16px;
         overflow: hidden;
+        background: #000;
+        border: 1px solid rgba(0,0,0,0.12);
+
+        /* metodo moderno */
+        aspect-ratio: 16 / 9;
+      }
+
+      /* fallback per browser vecchi che non supportano aspect-ratio */
+      @supports not (aspect-ratio: 16 / 9){
+        .ytBox{
+          height: 0;
+          padding-top: 56.25%; /* 16:9 */
         }
+      }
 
       .ytBox iframe{
+        position: absolute;
+        inset: 0;
         width: 100%;
         height: 100%;
         border: 0;
         display: block;
-        }
+      }
 
-        @media (max-width: 900px){
-      .ytRow{
-            flex-direction: column;
-        }
-        }
+      /* mobile: 1 colonna */
+      @media (max-width: 900px){
+        .ytRow{ grid-template-columns: 1fr; }
+      }
     </style>
   </body>
 </html>
