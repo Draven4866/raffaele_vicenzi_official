@@ -33,6 +33,7 @@ const hrefM06 = u("menu-06/");
 const profileImg = u("img/profilo.jpg");
 const heroBgUrl = u("img/hero.jpg");
 
+
 // ===== FONTS (public/fonts) =====
 const candFontUrl = u("fonts/candara.ttf");
 const mrBFontUrl = u("fonts/MrB.ttf");
@@ -116,6 +117,8 @@ const sliderItems: {
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Raffaele Vicenzi — Autore</title>
 
+    <link rel="icon" type="image/png" href={u("favicon.png?v=2")} />
+
     <!-- Preload font -->
     <link rel="preload" href={candFontUrl} as="font" type="font/ttf" crossorigin />
     <link rel="preload" href={mrBFontUrl} as="font" type="font/ttf" crossorigin />
@@ -172,7 +175,6 @@ const sliderItems: {
       <!-- STRISCIA 01 — SLIDER / NEWS (reveal) -->
       <section class="strip" data-reveal>
         <div class="stripInner">
-          <h2>Striscia 01</h2>
 
           <div class="slider" id="homeSlider" aria-label="Slide e News">
             <div class="sliderViewport">
@@ -208,15 +210,13 @@ const sliderItems: {
               ))}
             </div>
           </div>
-
-          <p class="stripHint">Slide / News — cambia automaticamente ogni pochi secondi.</p>
         </div>
       </section>
 
       <!-- STRISCIA 02 — EMBED YT + IG (reveal) -->
       <section class="strip" data-reveal>
         <div class="stripInner">
-          <h2>Striscia 02</h2>
+          <h2>Social</h2>
 
           <div class="embeds">
             <!-- YouTube -->
@@ -260,7 +260,7 @@ const sliderItems: {
       <!-- STRISCIA 03 — LINK ESTERNI (reveal) -->
       <section class="strip" data-reveal>
         <div class="stripInner">
-          <h2>Striscia 03</h2>
+          <h2>Altri Link</h2>
 
           <div class="linkBlocks" aria-label="Link esterni">
             <a class="linkBlock" href={hrefM03}>
@@ -269,16 +269,16 @@ const sliderItems: {
               <div class="lbCta">Apri</div>
             </a>
 
-            <!-- Blog (per ora interno; se poi diventa esterno, metti URL completo) -->
-            <a class="linkBlock" href={u("blog/")}>
-              <div class="lbTitle">Blog</div>
+           <!-- Blog (esterno) -->
+            <a class="linkBlock" href="https://theworldofkreo.com" target="_blank" rel="noopener noreferrer">
+              <div class="lbTitle">The World Of Kreo</div>
               <div class="lbText">Appunti, testi, aggiornamenti (in arrivo).</div>
               <div class="lbCta">Apri</div>
             </a>
 
             <a class="linkBlock" href={u("link/")}>
               <div class="lbTitle">Altri link esterni</div>
-              <div class="lbText">Raccolta ordinata di risorse e rimandi.</div>
+              <div class="lbText">Raccolta ordinata di risorse e rimandi (in arrivo).</div>
               <div class="lbCta">Apri</div>
             </a>
           </div>
@@ -425,15 +425,15 @@ const sliderItems: {
         --paper2: #e7e7e7;
 
         /* versioni semi-trasparenti (per far vedere il background sotto) */
-        --paperA:  rgba(242,242,242,0.86);
-        --paper2A: rgba(231,231,231,0.86);
-        --paper3A: rgba(247,239,226,0.86);
+        --paperA:  rgba(242,242,242,0.60);
+        --paper2A: rgba(231,231,231,0.60);
+        --paper3A: rgba(247,239,226,0.60);
 
         /* hover verdino trasparente per menu */
         --menuHover: rgba(119, 194, 99, 0.28);
 
         /* watermark background strips (regolabile) */
-        --stripsBkgOpacity: 0.12;
+        --stripsBkgOpacity: 0,1;
       }
 
       *{ box-sizing:border-box; }

@@ -1,15 +1,11 @@
 ---
 /**
- * MENU-03 — IL CAMPO DEL CUORE — Raffaele Vicenzi Autore — v1.0
+ * MENU-03 — IL CAMPO DEL CUORE — Raffaele Vicenzi Autore — v2.0
  *
- * Derivato da MENU-02 (Biografia):
- * - Cambiato SOLO il colore “azzurrino” dello sfondo (variabile --bioPaper).
- * - Contenuti sostituiti (titolo/sottotitolo/testo).
- * - Aggiunto bottone finale “Visita al Sitoweb” tutto a destra linkato al sito esterno.
- *
- * Note tecniche:
- * - URL asset assoluti via BASE_URL (u()).
- * - Font via @font-face INIETTATI in <head> (niente url("fonts/...") nel CSS estratto).
+ * v2.0:
+ * - Background full-screen sotto topbar (immagine + velo leggero)
+ * - Card molto più trasparente (glass) per vedere lo sfondo dietro
+ * - Tutto il resto invariato
  */
 
 const baseHref = import.meta.env.BASE_URL.endsWith("/")
@@ -27,8 +23,9 @@ const hrefM05 = u("menu-05/");
 const hrefM06 = u("menu-06/");
 
 // ===== ASSET =====
-const profileImg = u("img/campocuore_hero.jpg");
-const heroBgUrl = u("img/hero.jpg");
+const profileImg = u("img/campocuore_hero.jpg"); // immagine “badge” nella topbar + float nel testo
+const pageBkgUrl = u("img/campocuore_hero.jpg"); // ✅ sfondo full-screen sotto topbar (cambia qui se vuoi)
+const heroBgUrl = u("img/hero.jpg"); // lasciato, non indispensabile
 
 // ===== FONTS (public/fonts) =====
 const candFontUrl = u("fonts/candara.ttf");
@@ -71,6 +68,8 @@ const campoUrl = "https://draven4866.github.io/campo_del_cuore";
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Raffaele Vicenzi — Il Campo del Cuore</title>
 
+    <link rel="icon" type="image/png" href={u("favicon.png?v=2")} />
+
     <link rel="preload" href={candFontUrl} as="font" type="font/ttf" crossorigin />
     <link rel="preload" href={mrBFontUrl} as="font" type="font/ttf" crossorigin />
     <link rel="preload" href={dsAccentFontUrl} as="font" type="font/ttf" crossorigin />
@@ -90,30 +89,29 @@ const campoUrl = "https://draven4866.github.io/campo_del_cuore";
       </a>
 
       <!-- MENU -->
-        <nav id="siteNav" class="nav" aria-label="Menu">
-          <a class="navItem" href={hrefHome}>Home</a>
-          <a class="navItem" href={hrefM02}>Biografia</a>
-          <a class="navItem isActive" href={hrefM03} aria-current="page">Il Campo Del Cuore</a>
-          <a class="navItem" href={hrefM04}>Arte Sciamanica</a>
-          <a class="navItem" href={hrefM05}>Esperienze</a>
-          <span class="navItem navDisabled" aria-disabled="true" title="In arrivo">Contatti</span>
-        </nav>
+      <nav id="siteNav" class="nav" aria-label="Menu">
+        <a class="navItem" href={hrefHome}>Home</a>
+        <a class="navItem" href={hrefM02}>Biografia</a>
+        <a class="navItem isActive" href={hrefM03} aria-current="page">Il Campo Del Cuore</a>
+        <a class="navItem" href={hrefM04}>Arte Sciamanica</a>
+        <a class="navItem" href={hrefM05}>Esperienze</a>
+        <span class="navItem navDisabled" aria-disabled="true" title="In arrivo">Contatti</span>
+      </nav>
 
-        <button
-          class="navToggle"
-          type="button"
-          aria-expanded="false"
-          aria-controls="siteNav"
-          aria-label="Apri menu"
-        >
-          <span class="navBars" aria-hidden="true"></span>
-        </button>
-
+      <button
+        class="navToggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="siteNav"
+        aria-label="Apri menu"
+      >
+        <span class="navBars" aria-hidden="true"></span>
+      </button>
     </header>
 
     <main>
-      <!-- BACKGROUND + CARD -->
-      <section class="bioStage" style={`--stageBkg: url('${heroBgUrl}');`}>
+      <!-- STAGE: full screen sotto topbar -->
+      <section class="bioStage" style={`--pageBkg: url('${pageBkgUrl}');`}>
         <div class="bioCard" role="region" aria-label="Che cos'è Il Campo del Cuore">
           <header class="bioHead">
             <h1 class="bioTitle">Che cos&apos;è Il Campo del Cuore</h1>
@@ -132,13 +130,13 @@ const campoUrl = "https://draven4866.github.io/campo_del_cuore";
                 con più precisione. Non è un “metodo per stare sempre bene” e non pretende di spiegare la vita con una teoria totale:
                 è una grammatica essenziale per riconoscere cosa succede dentro e fuori di noi quando qualcosa ci tocca, ci attiva o ci spegne.
               </p>
-              
+
               <p>
                 L’idea è arrivata per necessità: anni di scrittura, ascolto, ricerca e pratica mi hanno mostrato che la differenza non la fa
                 l’autoanalisi infinita, ma la capacità di cogliere i segnali giusti al momento giusto. Da qui nasce il sito: una porta sobria
                 che introduce il tono del lavoro e accompagna verso i materiali principali.
               </p>
-            
+
               <p>
                 Il cuore del progetto sono due strumenti complementari. Il <strong>Volume 1</strong> (Manuale) è una sequenza modulare di cornici e
                 pratiche brevi: non chiede ritualismi né performance, ma continuità e una cosa per volta. Serve a costruire leggibilità:
@@ -146,7 +144,7 @@ const campoUrl = "https://draven4866.github.io/campo_del_cuore";
                 archetipica per l’indagine del presente: una serie di Arcani che funzionano come specchi operativi. Ogni Arcano apre un campo di significato
                 e si articola in vocaboli-archetipo che aiutano a nominare atteggiamenti, blocchi, risorse e contraddizioni senza giudizio.
               </p>
-              
+
               <p>
                 Insieme, Manuale e Mazzo formano un percorso unico: il primo dà struttura e metodo, il secondo dà linguaggio e profondità. Il sito raccoglie
                 la cornice, l’etica del lavoro (privacy, confini, sobrietà) e una galleria video introduttiva: abbastanza per orientarti, senza “spoilerare”
@@ -197,6 +195,7 @@ const campoUrl = "https://draven4866.github.io/campo_del_cuore";
       })();
     </script>
 
+    <!-- Hamburger -->
     <script is:inline>
       (() => {
         const topbar = document.querySelector(".topbar");
@@ -225,7 +224,6 @@ const campoUrl = "https://draven4866.github.io/campo_del_cuore";
           toggle();
         });
 
-        // chiudi cliccando fuori
         document.addEventListener("click", (e) => {
           if (!topbar.classList.contains("navOpen")) return;
           const t = e.target;
@@ -233,12 +231,10 @@ const campoUrl = "https://draven4866.github.io/campo_del_cuore";
           if (!topbar.contains(t)) close();
         });
 
-        // chiudi con ESC
         document.addEventListener("keydown", (e) => {
           if (e.key === "Escape") close();
         });
 
-        // chiudi quando clicchi un link
         nav.querySelectorAll("a.navItem").forEach((a) => {
           a.addEventListener("click", () => close());
         });
@@ -249,11 +245,15 @@ const campoUrl = "https://draven4866.github.io/campo_del_cuore";
       :root{
         --ink:#0b0b0b;
 
-        /* ✅ qui cambia SOLO lo “sfondo azzurrino” rispetto a menu-02 */
+        /* MENU-03 base paper */
         --bioPaper:#f3efe8;
 
-        --bioCard: rgba(255,255,255,0.62);
+        /* ✅ card più trasparente */
+        --bioCard: rgba(255,255,255,0.22);
         --bioBorder: rgba(0,0,0,0.12);
+
+        /* ✅ intensità sfondo */
+        --bkgOpacity: 1; /* alza a 0.55 se vuoi più visibile */
 
         /* hover verdino menu */
         --menuHover: rgba(119, 194, 99, 0.28);
@@ -269,7 +269,7 @@ const campoUrl = "https://draven4866.github.io/campo_del_cuore";
       }
       a{ color:inherit; text-decoration:none; }
 
-      /* TOPBAR (uguale a index) */
+      /* TOPBAR */
       .topbar{
         position: sticky;
         top:0;
@@ -359,7 +359,7 @@ const campoUrl = "https://draven4866.github.io/campo_del_cuore";
 
       /* ===== MOBILE HAMBURGER MENU ===== */
       .navToggle{
-        display:none; /* desktop: nascosto */
+        display:none;
         appearance:none;
         border: 1px solid rgba(0,0,0,0.10);
         background: rgba(0,0,0,0.05);
@@ -371,8 +371,6 @@ const campoUrl = "https://draven4866.github.io/campo_del_cuore";
         justify-content:center;
         flex: 0 0 auto;
       }
-
-      /* icona 3 barre */
       .navBars{
         width: 22px;
         height: 2px;
@@ -398,7 +396,7 @@ const campoUrl = "https://draven4866.github.io/campo_del_cuore";
         .navToggle{ display:flex; }
 
         .nav{
-          display:none; /* chiusa di default */
+          display:none;
           position:absolute;
           top: calc(100% + 10px);
           right: 0;
@@ -415,7 +413,6 @@ const campoUrl = "https://draven4866.github.io/campo_del_cuore";
           z-index: 60;
         }
 
-        /* quando è aperto */
         .topbar.navOpen .nav{ display:flex; }
 
         .navItem{
@@ -424,12 +421,12 @@ const campoUrl = "https://draven4866.github.io/campo_del_cuore";
         }
       }
 
-
-      /* STAGE */
+      /* ===== STAGE FULLSCREEN SOTTO TOPBAR ===== */
       .bioStage{
         position: relative;
         min-height: calc(100vh - 72px);
         padding: 42px 18px 56px;
+        overflow: hidden;
         background: var(--bioPaper);
       }
 
@@ -437,31 +434,40 @@ const campoUrl = "https://draven4866.github.io/campo_del_cuore";
         content:"";
         position:absolute;
         inset:0;
-        background-image: var(--stageBkg);
-        background-size: cover;
-        background-position: center;
-        opacity: 0.18;
-        filter: saturate(1.05) contrast(1.02);
+        background: var(--pageBkg) center / cover no-repeat;
+        opacity: var(--bkgOpacity);
         pointer-events:none;
+        z-index: 0;
+        filter: saturate(1.06) contrast(1.02);
+        transform: scale(1.08);
+        transform-origin: center;
       }
+
       .bioStage::after{
         content:"";
         position:absolute;
         inset:0;
-        background: linear-gradient(to bottom, rgba(255,255,255,0.45), rgba(243,239,232,0.92));
+        background: linear-gradient(
+          to bottom,
+          rgba(255,255,255,0.10),
+          rgba(255,255,255,0.22)
+        );
         pointer-events:none;
+        z-index: 0;
       }
 
+      /* CARD */
       .bioCard{
         position: relative;
         z-index: 1;
         max-width: 800px;
         width: 100%;
         margin: 0 auto;
+
         border-radius: 22px;
         background: var(--bioCard);
         border: 1px solid var(--bioBorder);
-        backdrop-filter: blur(12px) saturate(160%);
+        backdrop-filter: blur(18px) saturate(165%);
         box-shadow: 0 18px 55px rgba(0,0,0,.12);
         overflow: hidden;
       }
@@ -469,7 +475,7 @@ const campoUrl = "https://draven4866.github.io/campo_del_cuore";
       .bioHead{
         padding: 20px 20px 10px;
         border-bottom: 1px solid rgba(0,0,0,0.08);
-        background: rgba(255,255,255,0.30);
+        background: rgba(255,255,255,0.14);
       }
 
       .bioTitle{
@@ -500,7 +506,7 @@ const campoUrl = "https://draven4866.github.io/campo_del_cuore";
         margin: 6px 18px 10px 0;
         border: 1px solid rgba(0,0,0,0.16);
         box-shadow: 0 16px 40px rgba(0,0,0,.14);
-        background: rgba(255,255,255,0.50);
+        background: rgba(255,255,255,0.30);
       }
 
       .bioBlock{

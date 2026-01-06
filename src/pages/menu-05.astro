@@ -1,17 +1,14 @@
 ---
 /**
- * MENU-05 — ESPERIENZE — Raffaele Vicenzi Autore — v1.0
+ * MENU-05 — ESPERIENZE — Raffaele Vicenzi Autore — v1.1
  *
- * Base: derivata da MENU-04 (stessa topbar, stessi font, stessi fix BASE_URL).
- *
- * Struttura:
- * - 4 TAB (una per esperienza) in ordine.
- * - TAB attiva verde (Esperienza) o giallina (Lavoro).
- * - Pannello sotto le schede si colora in base al tipo (esperienza/lavoro), pagina invariata.
+ * Modifica v1.1:
+ * - Aggiunto sfondo "gen_bkg.jpg" dietro la card (a tutta pagina sotto la topbar).
+ * - PANNELLI (area sotto le TAB) resi OPACHI: niente trasparenza dove stanno testi/gallerie.
  *
  * Note tecniche:
  * - URL asset assoluti via BASE_URL (u()).
- * - Font via @font-face INIETTATI in <head> (niente url("fonts/...") nel CSS estratto).
+ * - Font via @font-face INIETTATI in <head>.
  */
 
 // ===== BASE URL (subpath safe) =====
@@ -32,6 +29,7 @@ const hrefM06 = u("menu-06/");
 // ===== ASSET =====
 const profileImg = u("img/profilo.jpg");
 const heroBgUrl = u("img/hero.jpg");
+const pageBkgUrl = u("img/gen_bkg.jpg");
 
 // ===== FONTS (public/fonts) =====
 const candFontUrl = u("fonts/candara.ttf");
@@ -79,6 +77,8 @@ const U = (rel: string) => u(rel);
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>Raffaele Vicenzi — Esperienze</title>
 
+    <link rel="icon" type="image/png" href={u("favicon.png?v=2")} />
+
     <link rel="preload" href={candFontUrl} as="font" type="font/ttf" crossorigin />
     <link rel="preload" href={mrBFontUrl} as="font" type="font/ttf" crossorigin />
     <link rel="preload" href={dsAccentFontUrl} as="font" type="font/ttf" crossorigin />
@@ -87,7 +87,7 @@ const U = (rel: string) => u(rel);
   </head>
 
   <body>
-    <!-- TOPBAR (uguale a index / menu-02) -->
+    <!-- TOPBAR -->
     <header class="topbar">
       <a class="brand" href={hrefHome} aria-label="Home">
         <img class="brandImg" src={profileImg} alt="" width="52" height="52" />
@@ -120,14 +120,13 @@ const U = (rel: string) => u(rel);
 
     <main>
       <!-- STAGE + CARD -->
-      <section class="expStage" style={`--stageBkg: url('${heroBgUrl}');`}>
+      <section class="expStage" style={`--stageBkg: url('${heroBgUrl}'); --pageBkg: url('${pageBkgUrl}');`}>
         <div class="expCard" role="region" aria-label="Esperienze">
           <header class="expHead">
             <h1 class="expTitle">Esperienze</h1>
             <p class="expSubtitle"></p>
           </header>
 
-          <!-- TAB / PANNELLI -->
           <div class="tabsWrap">
             <div class="tabs" role="tablist" aria-label="Sezioni Esperienze">
               <button class="tab isActive" data-kind="exp" type="button" role="tab" aria-selected="true" aria-controls="panelP01" id="tabP01" data-target="panelP01">
@@ -146,33 +145,32 @@ const U = (rel: string) => u(rel);
 
             <!-- CONTENUTO sotto le schede -->
             <section class="panelStage" data-kind="exp" aria-live="polite">
-            
               <!-- P01 -->
               <section class="panel isShow" data-kind="exp" id="panelP01" role="tabpanel" aria-labelledby="tabP01">
                 <h2 class="workTitle"><span class="workTitleMark">Hollywood L.A.</span></h2>
                 <p class="workSub">2011-2013: apprendistato musicale, registrazione del mio album "The Road Goes Ever On", lavoro con artisti major e vita losangeliana.</p>
 
-              <div class="ytRow" aria-label="Video YouTube">
-                <div class="ytBox">
-                  <iframe
-                    src="https://www.youtube-nocookie.com/embed/dBg4h0SxW2s?playsinline=1"
-                    title="YouTube video 1"
-                    loading="lazy"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen
-                  ></iframe>
-                </div>
+                <div class="ytRow" aria-label="Video YouTube">
+                  <div class="ytBox">
+                    <iframe
+                      src="https://www.youtube-nocookie.com/embed/dBg4h0SxW2s?playsinline=1"
+                      title="YouTube video 1"
+                      loading="lazy"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowfullscreen
+                    ></iframe>
+                  </div>
 
-                <div class="ytBox">
-                  <iframe
-                    src="https://www.youtube-nocookie.com/embed/wXTDBgcjE7k?playsinline=1"
-                    title="YouTube video 2"
-                    loading="lazy"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen
-                  ></iframe>
+                  <div class="ytBox">
+                    <iframe
+                      src="https://www.youtube-nocookie.com/embed/wXTDBgcjE7k?playsinline=1"
+                      title="YouTube video 2"
+                      loading="lazy"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                      allowfullscreen
+                    ></iframe>
+                  </div>
                 </div>
-              </div>
 
                 <div class="honeyWrap">
                   <div class="honeycomb" aria-label="Galleria Hollywood L.A.">
@@ -183,48 +181,50 @@ const U = (rel: string) => u(rel);
                     ))}
                   </div>
                 </div>
-                <!-- DIDASCALIA (sotto la gallery) -->
-<div style="margin-top:12px; font-family:'Candara', system-ui, -apple-system, Segoe UI, Roboto, Arial; font-size:16px; line-height:1.45; text-align:justify; text-justify:inter-word; hyphens:auto;">
-  <p>
-    Foto 1 e 2: Andrea Lepori e me sullo sfondo.<br />
-    Foto 3: Brian Tichy<br />
-    Foto 4: Andrea Lepori, Brian Tichy e me<br />
-    Foto 5: Andrea Lepori, Heather Donavon e me.<br />
-    Foto 6: Teddy “Zig Zag” Andreadis e me.<br />
-    Foto 7 e 8: Eric Dover, Andrea Lepori e me.
-  </p>
 
-  <p>
-    Brian Tichy<em>(batterista)</em>: batterista statunitense <em>(n. 1968)</em> noto per il lavoro “da tour e da studio” in ambito hard rock: ha suonato con artisti/band come “Whitesnake”, “Billy Idol”, “Foreigner” e altri progetti della scena rock/metal, con uno stile molto solido e potente, da session-man di alto livello.
-  </p>
+                <!-- DIDASCALIA -->
+                <div class="captionBlock">
+                  <p>
+                    Foto 1 e 2: Andrea Lepori e me sullo sfondo.<br />
+                    Foto 3: Brian Tichy<br />
+                    Foto 4: Andrea Lepori, Brian Tichy e me<br />
+                    Foto 5: Andrea Lepori, Heather Donavon e me.<br />
+                    Foto 6: Teddy “Zig Zag” Andreadis e me.<br />
+                    Foto 7 e 8: Eric Dover, Andrea Lepori e me.
+                  </p>
 
-  <p>
-    Johnny Griparic <em>(bassista)</em>: bassista nato in Svezia e attivo soprattutto a Los Angeles dagli anni ’90. Presenza frequente tra rock/blues e contesti “live/jam”, ha suonato con diversi artisti <em>(tra cui progetti legati a “Slash” e altri nomi della scena)</em>.
-  </p>
+                  <p>
+                    Brian Tichy <em>(batterista)</em>: batterista statunitense <em>(n. 1968)</em> noto per il lavoro “da tour e da studio” in ambito hard rock:
+                    ha suonato con artisti/band come “Whitesnake”, “Billy Idol”, “Foreigner” e altri progetti della scena rock/metal.
+                  </p>
 
-  <p>
-    Teddy “Zig Zag” Andreadis <em>(tastiere/armonica/voce)</em>”: musicista americano polistrumentista <em>(tastiere, armonica, voce)</em> con una carriera lunghissima da collaboratore: ha lavorato con “Carole King”, e in ambito rock anche con nomi come “Guns N’ Roses”, “Chuck Berry”, “Alice Cooper”, ecc., noto per versatilità e groove “old school”.
-  </p>
+                  <p>
+                    Johnny Griparic <em>(bassista)</em>: bassista nato in Svezia e attivo soprattutto a Los Angeles dagli anni ’90.
+                  </p>
 
-  <p>
-    Heather Donavon <em>(spesso cercata come “Heather Donovan”)</em>: cantante/artist”: è la voce <em>(e suona anche l’”Omnichord”)</em> del progetto “Love Me In The Dark”, duo di matrice Americana/Folk/Soul insieme a “Steve McCormick”. Si sono conosciuti suonando a “Venice, California”, e il progetto nasce come scrittura condivisa molto emotiva e “roots”, centrata su vulnerabilità, armonie vocali e songwriting intimo.
-  </p>
+                  <p>
+                    Teddy “Zig Zag” Andreadis <em>(tastiere/armonica/voce)</em>: polistrumentista con lunga carriera da collaboratore; in ambito rock anche con
+                    “Guns N’ Roses”, “Chuck Berry”, “Alice Cooper”, ecc.
+                  </p>
 
-  <p>
-    Eric Dover <em>(cantante/chitarrista)</em>: musicista americano <em>(n. 1967)</em> conosciuto come voce e chitarrista in progetti come “Jellyfish”, “Slash’s Snakepit” e “Imperial Drag”, oltre a collaborazioni con “Alice Cooper”; è apprezzato per un taglio melodico ma rock, da frontman “di razza”.
-  </p>
+                  <p>
+                    Heather Donavon <em>(spesso cercata come “Heather Donovan”)</em>: cantante/artist; voce (e Omnichord) del progetto “Love Me In The Dark”.
+                  </p>
 
-  <p>
-    Andrea Lepori <em>(fonico / mixer / producer)</em>”: ingegnere del suono e produttore <em>(base a Londra)</em> attivo come “mixing engineer” e “audio engineer”, anche in formati moderni come “Dolby Atmos”, con crediti e collaborazioni su produzioni di alto profilo internazionale.
-  </p>
-</div>
+                  <p>
+                    Eric Dover <em>(cantante/chitarrista)</em>: conosciuto per progetti come “Jellyfish”, “Slash’s Snakepit” e “Imperial Drag”.
+                  </p>
 
+                  <p>
+                    Andrea Lepori <em>(fonico / mixer / producer)</em>: ingegnere del suono e produttore (base a Londra), anche in “Dolby Atmos”.
+                  </p>
+                </div>
               </section>
 
               <!-- P02 -->
               <section class="panel" data-kind="exp" id="panelP02" role="tabpanel" aria-labelledby="tabP02" hidden>
                 <h2 class="workTitle"><span class="workTitleMark">Scuola Palomar</span></h2>
-                <p class="workSub">2018-2019: Master per imparare a capire come funziona il mondo dell'editoria, basi per la scrittura, ma, soprattutto, capire la differenza tra "amare scrivere" e "amare la scrittura".</p>
+                <p class="workSub">2018-2019: Master per imparare a capire come funziona il mondo dell'editoria, basi per la scrittura, e capire la differenza tra "amare scrivere" e "amare la scrittura".</p>
 
                 <div class="honeyWrap">
                   <div class="honeycomb" aria-label="Galleria Scuola Palomar">
@@ -241,35 +241,27 @@ const U = (rel: string) => u(rel);
               <section class="panel" data-kind="work" id="panelP03" role="tabpanel" aria-labelledby="tabP03" hidden>
                 <h2 class="workTitle"><span class="workTitleMark">AI Trainer</span></h2>
                 <p class="workSub">Capire come funziona l'AI Generativa e addestramento per farla imparare</p>
-                
+
                 <div class="panelText">
-                <div style="text-align:justify; text-justify:inter-word; hyphens:auto;">
-                    <p>Tra il 2022 e il 2023 ho avuto modo di lavorare presso COcisLab SL come AI Trainer.<br>
-Il mio compito era quello di collaborare con il team di ML Learning nella progettazione caratteriale, attraverso il linguaggio, di un assistente virtuale AI in grado di elaborare le richieste ed evolvere la propria personalità in modo adattivo nei confronti dell’utente all’interno di un contesto di gaming e servizi vari, più nello specifico:</p>
+                  <div style="text-align:justify; text-justify:inter-word; hyphens:auto;">
+                    <p>
+                      Tra il 2022 e il 2023 ho avuto modo di lavorare presso COcisLab SL come AI Trainer.<br />
+                      Il mio compito era quello di collaborare con il team di ML Learning nella progettazione caratteriale, attraverso il linguaggio,
+                      di un assistente virtuale AI in grado di elaborare le richieste ed evolvere la propria personalità in modo adattivo.
+                    </p>
 
-<p>
-• Studio della personalità dell’AI rispetto target e relativo linguaggio.<br>
-• FAQ e possibili risposte da fornire all’utente di default.<br>
-• Struttura e percorso cognitivo per stimolare l’utente ad acquistare la versione premium
-dei servizi, potendo successivamente personalizzare l’Assistente AI, che passa dall’utilizzo di un linguaggio bot a uno più umano e cool.<br>
-</p>
+                    <p>
+                      • Studio della personalità dell’AI rispetto target e relativo linguaggio.<br />
+                      • FAQ e possibili risposte da fornire all’utente di default.<br />
+                      • Struttura e percorso cognitivo per stimolare l’utente ad acquistare la versione premium dei servizi.
+                    </p>
 
-<p><strong>Competenze acquisite:</strong></p>
+                    <p><strong>Competenze acquisite:</strong></p>
 
-<p>
-· Story<br>
-· Sviluppo di videogiochi<br>
-· Progettazione videogiochi<br>
-· Giocabilità<br>
-· Scrittura<br>
-· Capacità creative<br>
-· Problem solving<br>
-· Caraterizzazione AI<br>
-· Lingua italiana<br>
-· Contenuto online<br>
-· Copywriting · iOS
-</p>
-                </div>
+                    <p>
+                      · Story · Sviluppo videogiochi · Progettazione videogiochi · Giocabilità · Scrittura · Capacità creative · Problem solving · Caraterizzazione AI · Copywriting · iOS
+                    </p>
+                  </div>
                 </div>
               </section>
 
@@ -391,8 +383,10 @@ dei servizi, potendo successivamente personalizzare l’Assistente AI, che passa
         --expCard: rgba(255,255,255,0.62);
         --expBorder: rgba(0,0,0,0.12);
 
-        /* pannello base (neutro) */
-        --panelBase: rgba(35, 86, 150, 0.20);
+        /* ✅ PANNELLO OPACO (niente trasparenze) */
+        --panelBase: #eef4ff;  /* neutro */
+        --panelExp:  #f2fff1;  /* esperienza */
+        --panelWork: #fff7dd;  /* lavoro */
 
         /* cornici bianche spesse */
         --frameWhite: rgba(255,255,255,0.95);
@@ -403,12 +397,12 @@ dei servizi, potendo successivamente personalizzare l’Assistente AI, che passa
         /* TAB lavoro attiva (giallino chiaro) */
         --workHover: rgba(255, 236, 170, 0.72);
 
-        /* pannello colorato (solo il pannello) */
-        --panelExp: rgba(119, 194, 99, 0.14);
-        --panelWork: rgba(255, 236, 170, 0.18);
-
         /* titolo mark */
         --titleMark: rgba(255, 206, 150, 0.72);
+
+        /* sfondo foto dietro la card */
+        --pageBkgOpacity: 0,1; /* aumenta/diminuisci qui */
+        --pageBkgSize: 140%;    /* più alto = più "zoom" */
       }
 
       *{ box-sizing:border-box; }
@@ -421,7 +415,7 @@ dei servizi, potendo successivamente personalizzare l’Assistente AI, che passa
       }
       a{ color:inherit; text-decoration:none; }
 
-      /* TOPBAR (uguale a index) */
+      /* TOPBAR */
       .topbar{
         position: sticky;
         top:0;
@@ -574,14 +568,18 @@ dei servizi, potendo successivamente personalizzare l’Assistente AI, che passa
         }
       }
 
-      /* STAGE */
+      /* STAGE con doppio sfondo (hero + gen_bkg) */
       .expStage{
         position: relative;
         min-height: calc(100vh - 72px);
         padding: 42px 18px 56px;
-        background: var(--expPaper);
+        background:
+          linear-gradient(to bottom, rgba(255,255,255,0.55), rgba(247,241,232,0.92)),
+          var(--expPaper);
+        overflow:hidden;
       }
 
+      /* hero (leggero) */
       .expStage::before{
         content:"";
         position:absolute;
@@ -589,16 +587,26 @@ dei servizi, potendo successivamente personalizzare l’Assistente AI, che passa
         background-image: var(--stageBkg);
         background-size: cover;
         background-position: center;
-        opacity: 0.14;
+        opacity: 0.12;
         filter: saturate(1.05) contrast(1.02);
         pointer-events:none;
+        z-index: 0;
       }
+
+      /* gen_bkg (più visibile) */
       .expStage::after{
         content:"";
         position:absolute;
         inset:0;
-        background: linear-gradient(to bottom, rgba(255,255,255,0.55), rgba(247,241,232,0.92));
+        background-image: var(--pageBkg);
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: var(--pageBkgSize) center / 200% cover no-repeat;
+        background-repeat: repeat-y;
+        opacity: var(--pageBkgOpacity);
+        filter: saturate(1.05);
         pointer-events:none;
+        z-index: 0;
       }
 
       .expCard{
@@ -607,7 +615,6 @@ dei servizi, potendo successivamente personalizzare l’Assistente AI, che passa
         max-width: 980px;
         width: 100%;
         margin: 0 auto;
-
         border-radius: 22px;
         background: var(--expCard);
         border: 1px solid var(--expBorder);
@@ -636,7 +643,7 @@ dei servizi, potendo successivamente personalizzare l’Assistente AI, che passa
         max-width: 80ch;
       }
 
-      /* ===== TABS ATTACCATE ===== */
+      /* ===== TABS ===== */
       .tabsWrap{ padding: 16px 16px 20px; }
       .tabs{
         display:flex;
@@ -666,22 +673,16 @@ dei servizi, potendo successivamente personalizzare l’Assistente AI, che passa
 
       .tab:hover{ filter: brightness(1.03); }
 
-      .tab.isActive{
-        transform: translateY(4px);
-      }
-      .tab.isActive[data-kind="exp"]{
-        background: var(--menuHover);
-      }
-      .tab.isActive[data-kind="work"]{
-        background: var(--workHover);
-      }
+      .tab.isActive{ transform: translateY(4px); }
+      .tab.isActive[data-kind="exp"]{ background: var(--menuHover); }
+      .tab.isActive[data-kind="work"]{ background: var(--workHover); }
 
       .tab:focus-visible{
         outline: 2px solid rgba(0,0,0,0.55);
         outline-offset: 3px;
       }
 
-      /* ===== PANNELLO SOTTO ===== */
+      /* ===== PANNELLO SOTTO (OPACO) ===== */
       .panelStage{
         margin-top: -4px;
         border: 4px solid var(--frameWhite);
@@ -728,7 +729,7 @@ dei servizi, potendo successivamente personalizzare l’Assistente AI, che passa
         padding: 0;
         border: 0;
         border-radius: 18px;
-        background: rgba(255,255,255,0.00);
+        background: transparent;
       }
 
       .hex{
@@ -752,8 +753,6 @@ dei servizi, potendo successivamente personalizzare l’Assistente AI, che passa
         background-position: center;
         background-repeat: no-repeat;
 
-        clip-path: none;
-
         transform: scale(1);
         transition: transform .18s ease, filter .18s ease;
       }
@@ -775,6 +774,46 @@ dei servizi, potendo successivamente personalizzare l’Assistente AI, che passa
         background: rgba(255,255,255,0.28);
       }
 
+      /* DIDASCALIA */
+      .captionBlock{
+        margin-top:12px;
+        font-size:16px;
+        line-height:1.45;
+        text-align:justify;
+        text-justify:inter-word;
+        hyphens:auto;
+      }
+      .captionBlock p{ margin: 0 0 12px; }
+
+      /* YouTube row */
+      .ytRow{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+
+      .ytBox{
+        position: relative;
+        width: 100%;
+        border-radius: 16px;
+        overflow: hidden;
+        background: #000;
+        border: 1px solid rgba(0,0,0,0.12);
+        aspect-ratio: 16 / 9;
+      }
+      @supports not (aspect-ratio: 16 / 9){
+        .ytBox{ height: 0; padding-top: 56.25%; }
+      }
+
+      .ytBox iframe{
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        display: block;
+      }
+
       /* FOOTER */
       .footer{
         padding: 22px 18px;
@@ -788,46 +827,6 @@ dei servizi, potendo successivamente personalizzare l’Assistente AI, che passa
         .tab{ padding: 11px 12px 10px; }
         .panel{ padding: 16px 14px 18px; }
         .honeycomb{ grid-template-columns: repeat(3, 1fr); }
-      }
-      /* YouTube row */
-      .ytRow{
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
-      }
-
-      /* Box 16:9 (funziona su mobile) */
-      .ytBox{
-        position: relative;
-        width: 100%;
-        border-radius: 16px;
-        overflow: hidden;
-        background: #000;
-        border: 1px solid rgba(0,0,0,0.12);
-
-        /* metodo moderno */
-        aspect-ratio: 16 / 9;
-      }
-
-      /* fallback per browser vecchi che non supportano aspect-ratio */
-      @supports not (aspect-ratio: 16 / 9){
-        .ytBox{
-          height: 0;
-          padding-top: 56.25%; /* 16:9 */
-        }
-      }
-
-      .ytBox iframe{
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        border: 0;
-        display: block;
-      }
-
-      /* mobile: 1 colonna */
-      @media (max-width: 900px){
         .ytRow{ grid-template-columns: 1fr; }
       }
     </style>
