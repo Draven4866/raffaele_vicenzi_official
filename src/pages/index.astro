@@ -136,19 +136,26 @@ const sliderItems: {
         </span>
       </a>
 
-    <!-- MENU -->
-    <button class="navToggle" type="button" aria-expanded="false" aria-controls="siteNav" aria-label="Apri menu">
-      <span class="navBars" aria-hidden="true"></span>
-    </button>
+      <!-- MENU -->
+      <nav id="siteNav" class="nav" aria-label="Menu">
+        <a class="navItem" href={hrefHome}>Home</a>
+        <a class="navItem" href={hrefM02}>Bio</a>
+        <a class="navItem" href={hrefM03}>Il Campo Del Cuore</a>
+        <a class="navItem" href={hrefM04}>Arte Sciamanica</a>
+        <a class="navItem" href={hrefM05}>Esperienze</a>
+        <span class="navItem navDisabled" aria-disabled="true" title="In arrivo">Contatti</span>
+      </nav>
 
-    <nav id="siteNav" class="nav" aria-label="Menu">
-      <a class="navItem" href={hrefHome}>Home</a>
-      <a class="navItem" href={hrefM02}>Bio</a>
-      <a class="navItem" href={hrefM03}>Il Campo Del Cuore</a>
-      <a class="navItem" href={hrefM04}>Arte Sciamanica</a>
-      <a class="navItem" href={hrefM05}>Esperienze</a>
-      <span class="navItem navDisabled" aria-disabled="true" title="In arrivo">Contatti</span>
-    </nav>
+      <button
+        class="navToggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="siteNav"
+        aria-label="Apri menu"
+      >
+        <span class="navBars" aria-hidden="true"></span>
+      </button>
+    </header>
 
     <main>
       <!-- HERO (bg enorme + titolo/sottotitolo a sinistra) -->
@@ -400,7 +407,7 @@ const sliderItems: {
           if (e.key === "Escape") close();
         });
 
-        // chiudi quando clicchi un link (non il disabled)
+        // chiudi quando clicchi un link
         nav.querySelectorAll("a.navItem").forEach((a) => {
           a.addEventListener("click", () => close());
         });
@@ -495,32 +502,6 @@ const sliderItems: {
         will-change: transform;
       }
 
-      /* ✅ HOVER: verdino trasparente + tremolio su/giù (finché hover) */
-      .navItem:not(.navDisabled):hover{
-        background: var(--menuHover);
-        border-color: rgba(0,0,0,0.10);
-        animation: navShakeY 0.65s ease-in-out infinite;
-      }
-      .navItem:not(.navDisabled):focus-visible{
-        outline: 2px solid rgba(0,0,0,0.55);
-        outline-offset: 3px;
-      }
-
-      @keyframes navShakeY{
-        0%   { transform: translateY(0); }
-        25%  { transform: translateY(-2px); }
-        50%  { transform: translateY(0); }
-        75%  { transform: translateY(2px); }
-        100% { transform: translateY(0); }
-      }
-
-      .navDisabled{
-        opacity: 0.45;
-        cursor: default;
-        user-select:none;
-        background: rgba(0,0,0,0.03);
-      }
-
       /* ===== MOBILE HAMBURGER MENU ===== */
       .navToggle{
         display:none; /* desktop: nascosto */
@@ -558,7 +539,6 @@ const sliderItems: {
       .navBars::before{ top: -7px; }
       .navBars::after{ top: 7px; }
 
-      /* su mobile: mostra bottone, trasforma la nav in dropdown */
       @media (max-width: 900px){
         .navToggle{ display:flex; }
 
@@ -566,7 +546,7 @@ const sliderItems: {
           display:none; /* chiusa di default */
           position:absolute;
           top: calc(100% + 10px);
-          right: 18px;
+          right: 0;
           width: min(320px, 92vw);
           flex-direction: column;
           align-items: stretch;
@@ -583,11 +563,36 @@ const sliderItems: {
         /* quando è aperto */
         .topbar.navOpen .nav{ display:flex; }
 
-        /* su mobile i bottoni menu meglio full-width */
         .navItem{
           width: 100%;
           border-radius: 14px;
         }
+      }
+
+      /* ✅ HOVER: verdino trasparente + tremolio su/giù (finché hover) */
+      .navItem:not(.navDisabled):hover{
+        background: var(--menuHover);
+        border-color: rgba(0,0,0,0.10);
+        animation: navShakeY 0.65s ease-in-out infinite;
+      }
+      .navItem:not(.navDisabled):focus-visible{
+        outline: 2px solid rgba(0,0,0,0.55);
+        outline-offset: 3px;
+      }
+
+      @keyframes navShakeY{
+        0%   { transform: translateY(0); }
+        25%  { transform: translateY(-2px); }
+        50%  { transform: translateY(0); }
+        75%  { transform: translateY(2px); }
+        100% { transform: translateY(0); }
+      }
+
+      .navDisabled{
+        opacity: 0.45;
+        cursor: default;
+        user-select:none;
+        background: rgba(0,0,0,0.03);
       }
 
       /* HERO */
