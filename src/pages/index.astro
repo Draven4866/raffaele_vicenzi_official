@@ -136,16 +136,19 @@ const sliderItems: {
         </span>
       </a>
 
-      <!-- MENU -->
-      <nav class="nav" aria-label="Menu">
-        <a class="navItem" href={hrefHome}>Home</a>
-        <a class="navItem" href={hrefM02}>Bio</a>
-        <a class="navItem" href={hrefM03}>Il Campo Del Cuore</a>
-        <a class="navItem" href={hrefM04}>Arte Sciamanica</a>
-        <a class="navItem" href={hrefM05}>Esperienze</a>
-        <span class="navItem navDisabled" aria-disabled="true" title="In arrivo">Contatti</span>
-      </nav>
-    </header>
+    <!-- MENU -->
+    <button class="navToggle" type="button" aria-expanded="false" aria-controls="siteNav" aria-label="Apri menu">
+      <span class="navBars" aria-hidden="true"></span>
+    </button>
+
+    <nav id="siteNav" class="nav" aria-label="Menu">
+      <a class="navItem" href={hrefHome}>Home</a>
+      <a class="navItem" href={hrefM02}>Bio</a>
+      <a class="navItem" href={hrefM03}>Il Campo Del Cuore</a>
+      <a class="navItem" href={hrefM04}>Arte Sciamanica</a>
+      <a class="navItem" href={hrefM05}>Esperienze</a>
+      <span class="navItem navDisabled" aria-disabled="true" title="In arrivo">Contatti</span>
+    </nav>
 
     <main>
       <!-- HERO (bg enorme + titolo/sottotitolo a sinistra) -->
@@ -356,6 +359,54 @@ const sliderItems: {
       })();
     </script>
 
+    <script is:inline>
+      (() => {
+        const topbar = document.querySelector(".topbar");
+        const btn = document.querySelector(".navToggle");
+        const nav = document.getElementById("siteNav");
+
+        if (!topbar || !btn || !nav) return;
+
+        const open = () => {
+          topbar.classList.add("navOpen");
+          btn.setAttribute("aria-expanded", "true");
+        };
+
+        const close = () => {
+          topbar.classList.remove("navOpen");
+          btn.setAttribute("aria-expanded", "false");
+        };
+
+        const toggle = () => {
+          const isOpen = topbar.classList.contains("navOpen");
+          isOpen ? close() : open();
+        };
+
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          toggle();
+        });
+
+        // chiudi cliccando fuori
+        document.addEventListener("click", (e) => {
+          if (!topbar.classList.contains("navOpen")) return;
+          const t = e.target;
+          if (!(t instanceof Node)) return;
+          if (!topbar.contains(t)) close();
+        });
+
+        // chiudi con ESC
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") close();
+        });
+
+        // chiudi quando clicchi un link (non il disabled)
+        nav.querySelectorAll("a.navItem").forEach((a) => {
+          a.addEventListener("click", () => close());
+        });
+      })();
+    </script>
+
     <style>
       :root{
         --ink: #0b0b0b;
@@ -468,6 +519,75 @@ const sliderItems: {
         cursor: default;
         user-select:none;
         background: rgba(0,0,0,0.03);
+      }
+
+      /* ===== MOBILE HAMBURGER MENU ===== */
+      .navToggle{
+        display:none; /* desktop: nascosto */
+        appearance:none;
+        border: 1px solid rgba(0,0,0,0.10);
+        background: rgba(0,0,0,0.05);
+        border-radius: 12px;
+        width: 46px;
+        height: 46px;
+        cursor:pointer;
+        align-items:center;
+        justify-content:center;
+        flex: 0 0 auto;
+      }
+
+      /* icona 3 barre */
+      .navBars{
+        width: 22px;
+        height: 2px;
+        background: rgba(0,0,0,0.70);
+        position: relative;
+        display:block;
+        border-radius: 2px;
+      }
+      .navBars::before,
+      .navBars::after{
+        content:"";
+        position:absolute;
+        left:0;
+        width: 22px;
+        height: 2px;
+        background: rgba(0,0,0,0.70);
+        border-radius: 2px;
+      }
+      .navBars::before{ top: -7px; }
+      .navBars::after{ top: 7px; }
+
+      /* su mobile: mostra bottone, trasforma la nav in dropdown */
+      @media (max-width: 900px){
+        .navToggle{ display:flex; }
+
+        .nav{
+          display:none; /* chiusa di default */
+          position:absolute;
+          top: calc(100% + 10px);
+          right: 18px;
+          width: min(320px, 92vw);
+          flex-direction: column;
+          align-items: stretch;
+          gap: 8px;
+          padding: 12px;
+          border-radius: 16px;
+          background: rgba(255,255,255,0.96);
+          border: 1px solid rgba(0,0,0,0.10);
+          box-shadow: 0 18px 55px rgba(0,0,0,.16);
+          backdrop-filter: blur(10px) saturate(180%);
+          z-index: 60;
+        }
+
+        /* quando è aperto */
+        .topbar.navOpen .nav{ display:flex; }
+
+        /* su mobile i bottoni menu meglio full-width */
+        .navItem{
+          width: 100%;
+          border-radius: 14px;
+        }
       }
 
       /* HERO */
