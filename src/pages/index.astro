@@ -107,6 +107,33 @@ const sliderItems: {
     tone: "d",
   },
 ];
+
+const igItems: Array<any> = [];
+
+try {
+  const token = import.meta.env.INSTAGRAM_TOKEN;
+
+  if (token) {
+    const endpoint =
+      `https://graph.instagram.com/me/media?fields=id,media_type,media_url,thumbnail_url,permalink,caption,timestamp&limit=16&access_token=${token}`;
+
+    const r = await fetch(endpoint);
+    const j = await r.json();
+
+    const data = Array.isArray(j?.data) ? j.data : [];
+    igItems.push(
+      ...data
+        .filter((x: any) =>
+          x.media_type === "IMAGE" ||
+          x.media_type === "CAROUSEL_ALBUM" ||
+          x.media_type === "VIDEO"
+        )
+        .slice(0, 16)
+    );
+  }
+} catch (e) {
+  // lascia igItems vuoto
+}
 ---
 
 <!doctype html>
@@ -181,6 +208,7 @@ const sliderItems: {
     <div class="stripsWrap" style={`--stripsBkg: url('${u("img/home_bkg.jpg")}');`}>
 
       <div class="stripsWrap" style={`--stripsBkg: url('${u("img/home_bkg.jpg")}');`}>
+        
       <!-- STRISCIA 01 — SLIDER / NEWS (reveal) -->
       <section class="strip" data-reveal>
         <div class="stripInner">
@@ -232,6 +260,7 @@ const sliderItems: {
             <div class="embedCard">
               <h3 class="embedTitle">YouTube</h3>
               <div class="ratio16x9">
+                
                 <!-- Sostituisci l'ID video quando vuoi -->
                 <iframe
                   src="https://www.youtube-nocookie.com/embed/RUIxBlup5Y0"
@@ -242,17 +271,105 @@ const sliderItems: {
               </div>
               <p class="embedNote">Embed YouTube (placeholder: cambia ID quando vuoi).</p>
             </div>
-
+      
             <!-- Instagram (placeholder + struttura pronta) -->
             <div class="embedCard">
               <h3 class="embedTitle">Instagram</h3>
 
-              <!-- Opzione A (consigliata): embed ufficiale di un post (incolla qui il blockquote del post) -->
-              <div class="igBox">
-                <p class="embedNote">
-                  Instagram: per mostrare “ultime immagini” servono embed ufficiali (post singoli) o un widget esterno.
-                  Qui puoi incollare l’embed di un post (blockquote) e verrà renderizzato dallo script.
-                </p>
+              <!-- Instagram Grid (ultime 16) -->
+                <div class="igBox">
+                  <p class="embedNote">Instagram — ultime 16</p>
+
+                  {igItems.length > 0 ? (
+                    <div class="igGrid" aria-label="Instagram ultime 16">
+                      {igItems.map((it) => {
+                        const src = it.media_type === "VIDEO" ? it.thumbnail_url : it.media_url;
+                        return (
+                          <a class="igItem" href={it.permalink} target="_blank" rel="noopener noreferrer" aria-label="Apri post Instagram">
+                            <img
+                              src={src}
+                              alt={it.caption ? String(it.caption).slice(0, 80) : "Post Instagram"}
+                              loading="lazy"
+                              decoding="async"
+                              referrerpolicy="no-referrer"
+                            />
+                          </a>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <p class="embedNote">Feed (in arrivo).</p>
+                  )}
+                </div>
+          </section>
+
+            <!-- STRISCIA 03 — LINK ESTERNI (reveal) -->
+            <section class="strip" data-reveal>
+              <div class="stripInner">
+                <h2>Altri Link</h2>
+
+              <div class="linkBlocks">
+                <!-- COLONNA SINISTRA: B1 sopra B2 -->
+                <div class="linkCol">
+                  <!-- B1 -->
+                  <div class="linkBlockCard">
+                    <div class="lbTopRow">
+                      <div class="lbCopy">
+                        <div class="lbTitle">Il Campo del Cuore</div>
+                        <div class="lbText">Breve spiegazione + link al sito dedicato.</div>
+                      </div>
+                      <a class="lbCta" href={hrefM03} target="_blank" rel="noopener noreferrer">VAI</a>
+                    </div>
+                  </div>
+
+                  <!-- B2 -->
+                  <div class="linkBlockCard">
+                    <div class="lbTopRow">
+                      <div class="lbCopy">
+                        <div class="lbTitle">The World Of Kreo</div>
+                        <div class="lbText">Appunti, testi, aggiornamenti (in arrivo).</div>
+                      </div>
+                      <a class="lbCta" href="https://theworldofkreo.com" target="_blank" rel="noopener noreferrer">VAI</a>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- COLONNA DESTRA: B3 -->
+                <div class="linkBlockCard b3">
+                  <div class="lbTitle">Raccolta link</div>
+                  <div class="lbText">Risorse divise per tema (clicca i nomi).</div>
+
+                  <div class="miniPanels">
+                    <div class="miniPanel">
+                      <div class="miniPanelTitle">INTERESSI</div>
+                      <div class="miniLinks">
+                        <a class="miniLink" href="https://www.scuolapalomar.it" target="_blank" rel="noopener noreferrer">Scuola Palomar</a>
+                      </div>
+                    </div>
+
+                    <div class="miniPanel">
+                      <div class="miniPanelTitle">SPIRITUALITÀ</div>
+                      <div class="miniLinks">
+                        <a class="miniLink" href="https://www.fucinalchemica.it" target="_blank" rel="noopener noreferrer">FucinAlchemica</a>
+                        <span class="tri">▸</span>
+                        <a class="miniLink" href="https://orionmultidimensional.com" target="_blank" rel="noopener noreferrer">Orion Multi Dimensional</a>
+                        <span class="tri">▸</span>
+                        <a class="miniLink" href="https://raidho-healinghorses.com" target="_blank" rel="noopener noreferrer">Raidho Healing Horses</a>
+                        <span class="tri">▸</span>
+                        <a class="miniLink" href="https://www.4biddenknowledge.com" target="_blank" rel="noopener noreferrer">Billy Carson – 4bidden</a>
+                      </div>
+                    </div>
+
+                    <div class="miniPanel">
+                      <div class="miniPanelTitle">SELF-HELPING</div>
+                      <div class="miniLinks">
+                        <a class="miniLink" href="https://eckharttolle.com" target="_blank" rel="noopener noreferrer">Eckhart Tolle</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </section>
 
                 <!-- ESEMPIO STRUTTURA (incolla qui l'embed di Instagram quando lo hai):
                 <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/p/XXXXXXXXX/" data-instgrm-version="14"></blockquote>
@@ -265,36 +382,6 @@ const sliderItems: {
           </div>
         </div>
       </section>
-
-      <!-- STRISCIA 03 — LINK ESTERNI (reveal) -->
-      <section class="strip" data-reveal>
-        <div class="stripInner">
-          <h2>Altri Link</h2>
-
-          <div class="linkBlocks" aria-label="Link esterni">
-            <a class="linkBlock" href={hrefM03}>
-              <div class="lbTitle">Il Campo del Cuore</div>
-              <div class="lbText">Breve spiegazione + link al sito dedicato.</div>
-              <div class="lbCta">Apri</div>
-            </a>
-
-           <!-- Blog (esterno) -->
-            <a class="linkBlock" href="https://theworldofkreo.com" target="_blank" rel="noopener noreferrer">
-              <div class="lbTitle">The World Of Kreo</div>
-              <div class="lbText">Appunti, testi, aggiornamenti (in arrivo).</div>
-              <div class="lbCta">Apri</div>
-            </a>
-
-            <a class="linkBlock" href={u("link/")}>
-              <div class="lbTitle">Altri link esterni</div>
-              <div class="lbText">Raccolta ordinata di risorse e rimandi (in arrivo).</div>
-              <div class="lbCta">Apri</div>
-            </a>
-          </div>
-        </div>
-      </section>
-      </div>
-    </main>
 
     <footer class="footer">
       <small>© <span id="y"></span> Raffaele Vicenzi</small>
@@ -972,49 +1059,192 @@ const sliderItems: {
         min-height: 180px;
       }
 
-      /* ===== STRISCIA 03: LINK BLOCKS ===== */
+      /* ===== STRISCIA 03: ALTRI LINK (B1 sopra B2 + B3 a fianco) ===== */
       .linkBlocks{
-        margin-top: 14px;
         display:grid;
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr; /* sinistra / destra */
         gap: 14px;
+        align-items: stretch; /* IMPORTANT: stessa altezza colonne */
       }
-      .linkBlock{
-        border-radius: 18px;
-        background: rgba(255,255,255,0.70);
-        border: 1px solid rgba(0,0,0,0.12);
-        backdrop-filter: blur(12px) saturate(160%);
-        box-shadow: 0 18px 55px rgba(0,0,0,.10);
-        padding: 14px;
+
+      @media (max-width: 900px){
+        .linkBlocks{ grid-template-columns: 1fr; }
+      }
+
+      /* colonna sinistra: due card impilate */
+      .linkCol{
         display:flex;
         flex-direction: column;
-        gap: 10px;
-        transition: transform .12s ease, filter .12s ease, background-color .12s ease;
+        gap: 10px;            /* ✅ qui i 10px tra B1 e B2 */
+        height: 100%;         /* riempie l’altezza della riga della grid */
       }
-      .linkBlock:hover{
-        transform: translateY(-2px);
-        filter: brightness(1.02);
-        background: rgba(255,255,255,0.82);
+
+      /* card base */
+      .linkBlockCard{
+        border-radius: 18px;
+        background: rgba(255,255,255,0.70);
+        border: 1px solid rgba(0,0,0,0.10);
+        padding: 14px 14px 12px;
+        box-shadow: 0 14px 34px rgba(0,0,0,0.10);
+        display:flex;
+        flex-direction: column;
+        gap: 8px;
       }
-      .lbTitle{
+
+      /* fa sì che B1 e B2 si dividano l’altezza della colonna sinistra */
+      .linkCol > .linkBlockCard{ flex: 1; min-height: 0; }
+
+      /* B3 deve stirarsi in altezza come la colonna sinistra */
+      .linkBlockCard.b3{ height: 100%; }
+
+      /* riga titolo+sottotitolo + bottone “Vai” a destra */
+      .lbTopRow{
+        display:flex;
+        align-items:flex-start;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .lbCopy{ min-width: 0; }
+
+      .linkBlockCard .lbTitle{
         font-family:"DSAccent","Candara",system-ui,sans-serif;
         font-weight: 400;
         font-size: 20px;
-        line-height: 1.05;
+        line-height: 1.1;
       }
-      .lbText{
-        margin:0;
-        opacity: .92;
-        max-width: 60ch;
+
+      .linkBlockCard .lbText{
+        font-family:"Candara",system-ui,sans-serif;
+        font-size: 13px;
+        opacity: 0.85;
       }
-      .lbCta{
+
+      /* bottone Vai */
+      .linkBlockCard .lbCta{
+        margin-top: 6px;
         align-self: flex-start;
-        padding: 9px 13px;
-        border-radius: 999px;
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+
+        /* prima: padding: 10px 12px; */
+        padding: 10px 24px;   /* raddoppia la “lunghezza” */
+        min-width: 88px;      /* assicura larghezza costante */
+
+        border-radius: 12px;
         border: 1px solid rgba(0,0,0,0.14);
+        background: rgba(0,0,0,0.06);
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration:none;
+        transition: transform .16s ease, filter .16s ease, background-color .16s ease;
+      }
+
+      .linkBlockCard .lbCta:hover{
+        filter: brightness(1.03);
         background: rgba(119, 194, 99, 0.22);
+        animation: ctaWiggle .38s ease-in-out infinite;
+        will-change: transform;
+      }
+
+      @keyframes ctaWiggle{
+        0%   { transform: translate(0,0) rotate(0deg); }
+        15%  { transform: translate(-2px,-2px) rotate(-1.4deg); }
+        30%  { transform: translate(2px,0px)  rotate(1.4deg); }
+        45%  { transform: translate(-2px,1px) rotate(-1.1deg); }
+        60%  { transform: translate(2px,-1px) rotate(1.1deg); }
+        75%  { transform: translate(-1px,2px) rotate(-0.9deg); }
+        100% { transform: translate(0,0) rotate(0deg); }
+      }
+
+
+      /* B3 links */
+      .miniPanels{
+        margin-top: 6px;
+        display:flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .miniPanelTitle{
         font-family:"MrB","Candara",system-ui,sans-serif;
         font-size: 14px;
+        opacity: 0.9;
+        letter-spacing: 0.02em;
+      }
+
+      .miniLinks{
+        display:flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        font-family:"Candara",system-ui,sans-serif;
+        font-size: 13px;
+      }
+
+      .tri{
+        opacity: 0.65;
+        user-select:none;
+      }
+
+      .miniLink{
+        text-decoration: none;
+        border-bottom: 1px solid rgba(0,0,0,0.18);
+        padding-bottom: 1px;
+        transition: color .14s ease, border-color .14s ease, filter .14s ease;
+      }
+
+      .miniLink:hover{
+        color: rgba(25, 110, 45, 0.95);
+        border-color: rgba(25, 110, 45, 0.55);
+        animation: miniWiggle .65s ease-in-out infinite;
+      }
+
+      @keyframes miniWiggle{
+        0%   { transform: translateY(0); }
+        25%  { transform: translateY(-2px); }
+        50%  { transform: translateY(0); }
+        75%  { transform: translateY(2px); }
+        100% { transform: translateY(0); }
+      }
+
+      /* INSTAGRAM EMBED */
+      .igBox{
+        margin-top: 18px;
+      }
+
+      .igGrid{
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+
+      .igItem{
+        display:block;
+        border-radius: 14px;
+        overflow:hidden;
+        border: 1px solid rgba(0,0,0,0.10);
+        background: rgba(255,255,255,0.55);
+      }
+
+      .igItem img{
+        width:100%;
+        height:100%;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        display:block;
+        transform: scale(1);
+        transition: transform .18s ease, filter .18s ease;
+      }
+
+      .igItem:hover img{
+        transform: scale(1.03);
+        filter: brightness(1.02);
+      }
+
+      @media (max-width: 900px){
+        .igGrid{ grid-template-columns: repeat(2, 1fr); }
       }
 
       /* FOOTER */
@@ -1022,6 +1252,8 @@ const sliderItems: {
         padding: 22px 18px;
         background: #fff;
         border-top: 1px solid rgba(0,0,0,0.10);
+        position: relative;
+        z-index: 5;
       }
 
       @media (max-width: 900px){
@@ -1032,6 +1264,7 @@ const sliderItems: {
         .embeds{ grid-template-columns: 1fr; }
         .linkBlocks{ grid-template-columns: 1fr; }
       }
+      
     </style>
   </body>
 </html>
