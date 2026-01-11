@@ -808,7 +808,7 @@ const U = (rel: string) => u(rel);
       aria-modal="true"
       aria-label="Anteprima immagine"
     >
-      <button id="lbClose" class="lbClose" type="button" aria-label="Chiudi">×</button>
+      <button id="lbClose" class="lbClose" type="button" aria-label="Chiudi">X</button>
 
       <div class="lbInner" role="document">
         <img id="lbImg" class="lbImg" alt="" />
@@ -818,7 +818,7 @@ const U = (rel: string) => u(rel);
           href="#"
           target="_blank"
           rel="noopener noreferrer"
-        >Apri originale</a>
+        >Visualizza foto</a>
       </div>
     </div>
 
@@ -1068,8 +1068,11 @@ const U = (rel: string) => u(rel);
         --artCard: rgba(255,255,255,0.62);
         --artBorder: rgba(0,0,0,0.12);
 
-        /* pannello sotto le schede */
+        /* pannello sotto le schede (lasciato per compat) */
         --panelBlue: rgba(35, 86, 150, 0.20);
+
+        /* ✅ PANNELLO OPACO (come menu-05) */
+        --panelBase: #eef4ff;
 
         /* cornici bianche spesse */
         --frameWhite: rgba(255,255,255,0.95);
@@ -1079,6 +1082,10 @@ const U = (rel: string) => u(rel);
 
         /* hover verdino menu + stesso verdino per TAB attiva */
         --menuHover: rgba(119, 194, 99, 0.28);
+
+        /* ✅ sfondo foto dietro la card (come menu-05) */
+        --pageBkgOpacity: 0.10; /* aumenta/diminuisci qui */
+        --pageBkgSize: 140%;    /* più alto = più "zoom" */
       }
 
       *{ box-sizing:border-box; }
@@ -1244,33 +1251,46 @@ const U = (rel: string) => u(rel);
         }
       }
 
-      /* STAGE */
+      /* =========================
+        STAGE — come menu-05 (doppio sfondo)
+        ========================= */
       .artStage{
         position: relative;
         min-height: calc(100vh - 72px);
         padding: 42px 18px 56px;
-        background: var(--artPaper);
+        background:
+          linear-gradient(to bottom, rgba(255,255,255,0.55), rgba(247,241,232,0.92)),
+          var(--artPaper);
+        overflow:hidden;
       }
 
+      /* hero leggero */
       .artStage::before{
         content:"";
         position:absolute;
         inset:0;
         background-image: var(--stageBkg);
-        background-repeat: repeat-y;
-        background-position: center top;
-        background-size: 200% auto;
-        opacity: 0.9;
+        background-size: cover;
+        background-position: center;
+        opacity: 0.12;
         filter: saturate(1.05) contrast(1.02);
         pointer-events:none;
+        z-index: 0;
       }
 
+      /* gen_bkg più visibile */
       .artStage::after{
         content:"";
         position:absolute;
         inset:0;
-        background: transparent;
+        background-image: var(--pageBkg);
+        background-repeat: repeat-y;
+        background-position: center top;
+        background-size: var(--pageBkgSize) auto;
+        opacity: var(--pageBkgOpacity);
+        filter: saturate(1.05);
         pointer-events:none;
+        z-index: 0;
       }
 
       .artCard{
@@ -1308,10 +1328,10 @@ const U = (rel: string) => u(rel);
         max-width: 80ch;
       }
 
-      /* ===== TABS ATTACCATE ===== */
+      /* ===== TABS ATTACCATE (lasciate come le avevi) ===== */
       .tabsWrap{
         padding: 16px 16px 20px;
-        background: #ffffff; /* ✅ opaco */
+        background: #ffffff; /* opaco */
       }
 
       .tabs{
@@ -1342,7 +1362,6 @@ const U = (rel: string) => u(rel);
 
       .tab:hover{ filter: brightness(1.03); }
 
-      /* ✅ TAB/PANNELLO SELEZIONATO = verdino come menu top */
       .tab.isActive{
         background: var(--menuHover);
         transform: translateY(4px);
@@ -1353,12 +1372,12 @@ const U = (rel: string) => u(rel);
         outline-offset: 3px;
       }
 
-      /* ===== PANNELLO SOTTO ===== */
+      /* ===== PANNELLO SOTTO (opaco come 05) ===== */
       .panelStage{
         margin-top: -4px;
         border: 4px solid var(--frameWhite);
         border-radius: 18px;
-        background: #ffffff; /* ✅ opaco */
+        background: #ffffff; /* opaco */
         overflow: hidden;
       }
 
@@ -1366,7 +1385,7 @@ const U = (rel: string) => u(rel);
       .panel.isShow{ display:block; }
       .panel[hidden]{ display:none; }
 
-      /* ✅ Titolo opere con DSAccent + 25px */
+      /* Titolo opere con DSAccent + 25px */
       .workTitle{
         margin: 0 0 12px;
         font-family:"DSAccent","Candara",system-ui,sans-serif;
@@ -1412,7 +1431,7 @@ const U = (rel: string) => u(rel);
         float: left;
         width: 50%;
         max-width: 520px;
-        margin: 12px 18px 12px 0; /* spazio a destra per il testo */
+        margin: 12px 18px 12px 0;
       }
 
       .clearFloat{ clear: both; }
@@ -1433,7 +1452,7 @@ const U = (rel: string) => u(rel);
         padding: 0;
         border: 0;
         border-radius: 18px;
-        background: rgba(255,255,255,0.00);
+        background: transparent;
       }
 
       /* singola foto: cella grande */
@@ -1442,14 +1461,28 @@ const U = (rel: string) => u(rel);
         justify-content: start;
       }
 
+      /* ✅ BLANK (menu-05): reset + interazione */
       .hex{
         position: relative;
         display:block;
         width: 100%;
         aspect-ratio: 1 / 1;
         outline: none;
+
+        border: 0;
+        padding: 0;
+        background: transparent;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
       }
 
+      .hex:focus-visible .hexInner{
+        outline: 2px solid rgba(0,0,0,0.55);
+        outline-offset: -6px;
+      }
+
+      /* ✅ BLANK (menu-05): cornice + hover */
       .hexInner{
         position:absolute;
         inset:0;
@@ -1458,23 +1491,15 @@ const U = (rel: string) => u(rel);
         border: 10px solid var(--frameWhite);
         box-shadow: 0 14px 34px rgba(0,0,0,0.10);
         overflow:hidden;
-        display:flex;
-        align-items:center;
-        justify-content:center;
 
-        /* anteprima */
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
-
-        /* “quadrato” */
-        clip-path: none;
 
         transform: scale(1);
         transition: transform .18s ease, filter .18s ease;
       }
 
-      /* hover: evidenzia + velo bianco */
       .hexInner::after{
         content:"";
         position:absolute;
@@ -1492,31 +1517,8 @@ const U = (rel: string) => u(rel);
         background: rgba(255,255,255,0.28);
       }
 
-      /* label: invisibile, appare su hover/focus */
-      .hexLabel{
-        position: absolute;
-        left: 10px;
-        right: 10px;
-        bottom: 10px;
-        z-index: 1;
-
-        font-family:"MrB","Candara",system-ui,sans-serif;
-        font-size: 13px;
-        padding: 8px 10px;
-        border-radius: 10px;
-        background: rgba(255,255,255,0.78);
-        border: 1px solid rgba(0,0,0,0.10);
-
-        opacity: 0;
-        transform: translateY(6px);
-        transition: opacity .18s ease, transform .18s ease;
-        pointer-events: none;
-      }
-      .hex:hover .hexLabel,
-      .hex:focus-visible .hexLabel{
-        opacity: 1;
-        transform: translateY(0);
-      }
+      /* ✅ NIENTE ETICHETTE SU HOVER (kill-switch anche se l'HTML le contiene) */
+      .hexLabel{ display:none !important; }
 
       /* FOOTER */
       .footer{
@@ -1539,68 +1541,107 @@ const U = (rel: string) => u(rel);
         .hex:hover .hexInner{ transform: none !important; }
       }
 
-      /* ===== LIGHTBOX — v1.3.1 ===== */
+      /* =========================
+        LIGHTBOX — reso uguale a menu-05
+        (X tonda bianca + bordo bianco spesso 10px)
+        ========================= */
+
+      /* supporta sia .lightbox (menu-05) che .lb (menu-04) */
+      .lightbox,
       .lb{
         position: fixed;
         inset: 0;
-        z-index: 9999;
-        background: rgba(0,0,0,0.88);
-        display: grid;
-        place-items: center;
-        padding: 18px;
+        z-index: 120;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
-
+      .lightbox[hidden],
       .lb[hidden]{ display:none; }
 
+      /* backdrop: se hai un div .lbBackdrop ok; se usi .lb senza backdrop, la pseudo copre */
+      .lbBackdrop{
+        position:absolute;
+        inset:0;
+        background: rgba(0,0,0,0.72);
+        backdrop-filter: blur(2px);
+      }
+      .lb::before{
+        content:"";
+        position:absolute;
+        inset:0;
+        background: rgba(0,0,0,0.72);
+        backdrop-filter: blur(2px);
+      }
+
+      .lbDialog,
       .lbInner{
         position: relative;
+        z-index: 1;
         width: min(980px, 96vw);
-        max-height: 92dvh;
-        display: grid;
-        gap: 10px;
-        justify-items: center;
+        height: min(92vh, 900px);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        pointer-events: none;
       }
 
       .lbImg{
+        pointer-events: auto;
         max-width: 96vw;
-        max-height: 84dvh;
+        max-height: 86vh;
         width: auto;
         height: auto;
+        border-radius: 18px;
+        border: 10px solid rgba(255,255,255,0.92);
+        box-shadow: 0 20px 70px rgba(0,0,0,0.35);
+        background: rgba(0,0,0,0.55);
         object-fit: contain;
-        border-radius: 14px;
-        border: 1px solid rgba(255,255,255,0.15);
-        background: rgba(255,255,255,0.06);
+        display:block;
       }
 
-      /* X sempre visibile (iOS safe-area) */
+      /* X sempre presente (fixed viewport) — TONDA BIANCA come menu-05 */
       .lbClose{
         position: fixed;
-        top: calc(12px + env(safe-area-inset-top));
-        right: calc(12px + env(safe-area-inset-right));
-        width: 48px;
-        height: 48px;
-        border-radius: 14px;
-        border: 1px solid rgba(255,255,255,0.22);
-        background: rgba(0,0,0,0.35);
-        color: #fff;
+        top: calc(14px + env(safe-area-inset-top));
+        right: calc(14px + env(safe-area-inset-right));
+        z-index: 2;
+        width: 46px;
+        height: 46px;
+        border-radius: 999px;
+        border: 1px solid rgba(0,0,0,0.18);
+        background: rgba(255,255,255,0.92);
+        color: rgba(0,0,0,0.85);
         font-size: 30px;
         line-height: 1;
-        cursor: pointer;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        cursor:pointer;
+        pointer-events: auto;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+        box-shadow: 0 10px 28px rgba(0,0,0,0.18);
       }
-
       .lbClose:focus-visible{
-        outline: 2px solid rgba(255,255,255,0.80);
-        outline-offset: 3px;
+        outline: 2px solid rgba(255,255,255,0.95);
+        outline-offset: 4px;
       }
 
-      .lbOpenOriginal{
-        display: inline-block;
-        padding: 10px 12px;
-        border-radius: 999px;
-        border: 1px solid rgba(255,255,255,0.22);
-        background: rgba(0,0,0,0.35);
-        color: #fff;
-        font-family: "Candara", system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      @media (max-width: 900px){
+        .lbClose{
+          top: calc(10px + env(safe-area-inset-top));
+          right: calc(10px + env(safe-area-inset-right));
+          width: 44px;
+          height: 44px;
+          font-size: 28px;
+        }
+        .lbImg{
+          max-width: 96vw;
+          max-height: 82vh;
+          border-width: 8px;
+          border-radius: 16px;
+        }
       }
     </style>
   </body>
