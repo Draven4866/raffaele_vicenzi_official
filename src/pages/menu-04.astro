@@ -1541,65 +1541,65 @@ const U = (rel: string) => u(rel);
         .hex:hover .hexInner{ transform: none !important; }
       }
 
-      /* =========================
-        LIGHTBOX — reso uguale a menu-05
-        (X tonda bianca + bordo bianco spesso 10px)
-        ========================= */
+      /* ===== LIGHTBOX FIX (menu-04 vs menu-05) — incolla IN FONDO ===== */
 
-      /* supporta sia .lightbox (menu-05) che .lb (menu-04) */
-      .lightbox,
-      .lb{
+      /* overlay identico per .lightbox e .lb */
+      :where(.lightbox, .lb){
         position: fixed;
         inset: 0;
-        z-index: 120;
+        z-index: 9999;
         display: flex;
         align-items: center;
         justify-content: center;
-      }
-      .lightbox[hidden],
-      .lb[hidden]{ display:none; }
 
-      /* backdrop: se hai un div .lbBackdrop ok; se usi .lb senza backdrop, la pseudo copre */
-      .lbBackdrop{
-        position:absolute;
-        inset:0;
-        background: rgba(0,0,0,0.72);
-        backdrop-filter: blur(2px);
+        /* spazio reale su iOS (safe area) */
+        padding:
+          calc(12px + env(safe-area-inset-top))
+          calc(12px + env(safe-area-inset-right))
+          calc(12px + env(safe-area-inset-bottom))
+          calc(12px + env(safe-area-inset-left));
       }
-      .lb::before{
+
+      :where(.lightbox, .lb)[hidden]{
+        display: none !important;
+      }
+
+      /* backdrop unico, sempre dietro */
+      :where(.lightbox, .lb)::before{
         content:"";
         position:absolute;
         inset:0;
         background: rgba(0,0,0,0.72);
         backdrop-filter: blur(2px);
+        z-index: 0;
       }
 
-      .lbDialog,
-      .lbInner{
+      /* container (dialog/inner) sempre sopra */
+      :where(.lbDialog, .lbInner){
         position: relative;
         z-index: 1;
-        width: min(980px, 96vw);
-        height: min(92vh, 900px);
+        width: min(980px, 100%);
+        max-height: 100%;
         display:flex;
         align-items:center;
         justify-content:center;
         pointer-events: none;
       }
 
-      .lbImg{
+      /* immagine: fit viewport VERO su mobile */
+      :where(.lbImg, .lbDialog img, .lbInner img){
         pointer-events: auto;
-        max-width: 96vw;
-        max-height: 86vh;
+        display: block;
+        box-sizing: border-box;
+
+        /* il segreto: niente vh “secco”, usa dvh e togli spazio X/padding */
+        max-width: 100%;
+        max-height: calc(100dvh - 140px);
+
         width: auto;
         height: auto;
-        border-radius: 18px;
-        border: 10px solid rgba(255,255,255,0.92);
-        box-shadow: 0 20px 70px rgba(0,0,0,0.35);
-        background: rgba(0,0,0,0.55);
         object-fit: contain;
       }
-
-      
 
       /* X sempre presente (fixed viewport) — TONDA BIANCA come menu-05 */
       .lbClose{
