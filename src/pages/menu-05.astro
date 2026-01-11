@@ -1,10 +1,16 @@
 ---
 /**
- * MENU-05 — ESPERIENZE — Raffaele Vicenzi Autore — v1.1
+ * MENU-05 — ESPERIENZE — Raffaele Vicenzi Autore — v1.2
  *
  * Modifica v1.1:
  * - Aggiunto sfondo "gen_bkg.jpg" dietro la card (a tutta pagina sotto la topbar).
  * - PANNELLI (area sotto le TAB) resi OPACHI: niente trasparenza dove stanno testi/gallerie.
+ *
+ * Modifica v1.2 (GALLERIE come MENU-04):
+ * - Niente più target="_blank" (bug Chrome/Safari mobile): tap apre LIGHTBOX in-page.
+ * - X sempre presente.
+ * - Tap fuori chiude.
+ * - Back del browser chiude la lightbox (senza incastrarti / senza perdere la pagina).
  *
  * Note tecniche:
  * - URL asset assoluti via BASE_URL (u()).
@@ -175,9 +181,14 @@ const U = (rel: string) => u(rel);
                 <div class="honeyWrap">
                   <div class="honeycomb" aria-label="Galleria Hollywood L.A.">
                     {P01.map((rel, idx) => (
-                      <a class="hex" href={U(rel)} target="_blank" rel="noopener noreferrer" aria-label={`P01 ${String(idx + 1).padStart(2, "0")}`}>
+                      <button
+                        class="hex"
+                        type="button"
+                        data-full={U(rel)}
+                        aria-label={`Apri immagine P01 ${String(idx + 1).padStart(2, "0")}`}
+                      >
                         <span class="hexInner" style={`background-image:url('${U(rel)}');`}></span>
-                      </a>
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -229,9 +240,14 @@ const U = (rel: string) => u(rel);
                 <div class="honeyWrap">
                   <div class="honeycomb" aria-label="Galleria Scuola Palomar">
                     {P02.map((rel, idx) => (
-                      <a class="hex" href={U(rel)} target="_blank" rel="noopener noreferrer" aria-label={`P02 ${String(idx + 1).padStart(2, "0")}`}>
+                      <button
+                        class="hex"
+                        type="button"
+                        data-full={U(rel)}
+                        aria-label={`Apri immagine P02 ${String(idx + 1).padStart(2, "0")}`}
+                      >
                         <span class="hexInner" style={`background-image:url('${U(rel)}');`}></span>
-                      </a>
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -273,9 +289,14 @@ const U = (rel: string) => u(rel);
                 <div class="honeyWrap">
                   <div class="honeycomb" aria-label="Galleria FucinAlchemica">
                     {P03.map((rel, idx) => (
-                      <a class="hex" href={U(rel)} target="_blank" rel="noopener noreferrer" aria-label={`P03 ${String(idx + 1).padStart(2, "0")}`}>
+                      <button
+                        class="hex"
+                        type="button"
+                        data-full={U(rel)}
+                        aria-label={`Apri immagine P03 ${String(idx + 1).padStart(2, "0")}`}
+                      >
                         <span class="hexInner" style={`background-image:url('${U(rel)}');`}></span>
-                      </a>
+                      </button>
                     ))}
                   </div>
                 </div>
@@ -284,6 +305,21 @@ const U = (rel: string) => u(rel);
           </div>
         </div>
       </section>
+
+      <!-- LIGHTBOX (v1.2) -->
+      <div
+        id="lb"
+        class="lightbox"
+        hidden
+        aria-hidden="true"
+      >
+        <div class="lbBackdrop" data-lb-close="1" aria-hidden="true"></div>
+
+        <div class="lbDialog" role="dialog" aria-modal="true" aria-label="Immagine">
+          <button class="lbClose" type="button" aria-label="Chiudi immagine">×</button>
+          <img class="lbImg" alt="" />
+        </div>
+      </div>
     </main>
 
     <footer class="footer">
@@ -368,6 +404,133 @@ const U = (rel: string) => u(rel);
 
         nav.querySelectorAll("a.navItem").forEach((a) => {
           a.addEventListener("click", () => close());
+        });
+      })();
+    </script>
+
+    <!-- LIGHTBOX SCRIPT (v1.2) -->
+    <script is:inline>
+      (() => {
+        const lb = document.getElementById("lb");
+        if (!lb) return;
+
+        const img = lb.querySelector(".lbImg");
+        const btnClose = lb.querySelector(".lbClose");
+        const backdrop = lb.querySelector(".lbBackdrop");
+
+        if (!(img instanceof HTMLImageElement)) return;
+        if (!(btnClose instanceof HTMLButtonElement)) return;
+        if (!(backdrop instanceof HTMLDivElement)) return;
+
+        const triggers = Array.from(document.querySelectorAll(".hex[data-full]"));
+
+        let isOpen = false;
+        let lastFocus = null;
+        let scrollY = 0;
+
+        const lockScroll = () => {
+          scrollY = window.scrollY || document.documentElement.scrollTop || 0;
+          document.body.style.position = "fixed";
+          document.body.style.top = `-${scrollY}px`;
+          document.body.style.left = "0";
+          document.body.style.right = "0";
+          document.body.style.width = "100%";
+        };
+
+        const unlockScroll = () => {
+          const top = document.body.style.top;
+          document.body.style.position = "";
+          document.body.style.top = "";
+          document.body.style.left = "";
+          document.body.style.right = "";
+          document.body.style.width = "";
+          const y = top ? parseInt(top, 10) : 0;
+          window.scrollTo(0, Number.isFinite(y) ? -y : scrollY);
+        };
+
+        const showLb = () => {
+          lb.hidden = false;
+          lb.setAttribute("aria-hidden", "false");
+          lockScroll();
+          btnClose.focus({ preventScroll: true });
+        };
+
+        const hideLb = () => {
+          lb.hidden = true;
+          lb.setAttribute("aria-hidden", "true");
+          unlockScroll();
+          if (lastFocus && typeof lastFocus.focus === "function") {
+            lastFocus.focus({ preventScroll: true });
+          }
+        };
+
+        const pushLbState = () => {
+          try {
+            history.pushState({ ...(history.state || {}), __lb: true }, "", location.href);
+          } catch (_e) {
+            // se non supportato, pace: su back potrebbe uscire dalla pagina
+          }
+        };
+
+        const open = (src, altText) => {
+          if (isOpen) return;
+          isOpen = true;
+
+          lastFocus = document.activeElement;
+          img.src = src;
+          img.alt = altText || "";
+
+          // stato dedicato: back chiude senza "incastrare"
+          pushLbState();
+          showLb();
+        };
+
+        const close = (fromPop) => {
+          if (!isOpen) return;
+          isOpen = false;
+
+          img.removeAttribute("src");
+          img.alt = "";
+          hideLb();
+
+          // Se chiudo io (X o tap fuori), torno indietro di 1 stato per rimuovere __lb
+          if (!fromPop) {
+            try {
+              if (history.state && history.state.__lb === true) history.back();
+            } catch (_e) {}
+          }
+        };
+
+        // apri su tap
+        triggers.forEach((el) => {
+          el.addEventListener("click", (e) => {
+            e.preventDefault();
+            const src = el.getAttribute("data-full") || "";
+            if (!src) return;
+            const altText = el.getAttribute("aria-label") || "Immagine";
+            open(src, altText);
+          });
+        });
+
+        // X sempre presente
+        btnClose.addEventListener("click", () => close(false));
+
+        // tap fuori chiude
+        backdrop.addEventListener("click", () => close(false));
+        lb.addEventListener("click", (e) => {
+          // sicurezza: se tocchi proprio il contenitore (non dialog), chiudi
+          if (e.target === lb) close(false);
+        });
+
+        // ESC chiude
+        document.addEventListener("keydown", (e) => {
+          if (!isOpen) return;
+          if (e.key === "Escape") close(false);
+        });
+
+        // Back del browser chiude (senza incastrarti)
+        window.addEventListener("popstate", () => {
+          if (isOpen) close(true);
         });
       })();
     </script>
@@ -738,6 +901,19 @@ const U = (rel: string) => u(rel);
         width: 100%;
         aspect-ratio: 1 / 1;
         outline: none;
+
+        /* reset button */
+        border: 0;
+        padding: 0;
+        background: transparent;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+      }
+
+      .hex:focus-visible .hexInner{
+        outline: 2px solid rgba(0,0,0,0.55);
+        outline-offset: -6px;
       }
 
       .hexInner{
@@ -814,6 +990,76 @@ const U = (rel: string) => u(rel);
         display: block;
       }
 
+      /* ===== LIGHTBOX (v1.2) ===== */
+      .lightbox{
+        position: fixed;
+        inset: 0;
+        z-index: 120;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .lightbox[hidden]{ display:none; }
+
+      .lbBackdrop{
+        position:absolute;
+        inset:0;
+        background: rgba(0,0,0,0.72);
+        backdrop-filter: blur(2px);
+      }
+
+      .lbDialog{
+        position: relative;
+        z-index: 1;
+        width: min(980px, 96vw);
+        height: min(92vh, 900px);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        pointer-events: none; /* così il tap fuori è facile: interagisci solo su img/close */
+      }
+
+      .lbImg{
+        pointer-events: auto;
+        max-width: 96vw;
+        max-height: 86vh;
+        width: auto;
+        height: auto;
+        border-radius: 18px;
+        border: 10px solid rgba(255,255,255,0.92);
+        box-shadow: 0 20px 70px rgba(0,0,0,0.35);
+        background: rgba(0,0,0,0.55);
+        object-fit: contain;
+      }
+
+      /* X sempre presente (fixed viewport) */
+      .lbClose{
+        position: fixed;
+        top: 14px;
+        right: 14px;
+        z-index: 2;
+        width: 46px;
+        height: 46px;
+        border-radius: 999px;
+        border: 1px solid rgba(0,0,0,0.18);
+        background: rgba(255,255,255,0.92);
+        color: rgba(0,0,0,0.85);
+        font-size: 30px;
+        line-height: 1;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        cursor:pointer;
+        pointer-events: auto;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+        box-shadow: 0 10px 28px rgba(0,0,0,0.18);
+      }
+      .lbClose:focus-visible{
+        outline: 2px solid rgba(255,255,255,0.95);
+        outline-offset: 4px;
+      }
+
       /* FOOTER */
       .footer{
         padding: 22px 18px;
@@ -828,6 +1074,20 @@ const U = (rel: string) => u(rel);
         .panel{ padding: 16px 14px 18px; }
         .honeycomb{ grid-template-columns: repeat(3, 1fr); }
         .ytRow{ grid-template-columns: 1fr; }
+
+        .lbClose{
+          top: 10px;
+          right: 10px;
+          width: 44px;
+          height: 44px;
+          font-size: 28px;
+        }
+        .lbImg{
+          max-width: 96vw;
+          max-height: 82vh;
+          border-width: 8px;
+          border-radius: 16px;
+        }
       }
     </style>
   </body>

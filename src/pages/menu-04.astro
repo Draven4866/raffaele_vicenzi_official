@@ -1,11 +1,15 @@
 ---
-/**
- * MENU-04 — ARTE SCIAMANICA — Raffaele Vicenzi Autore — v1.3
+/** 
+ * MENU-04 — ARTE SCIAMANICA — Raffaele Vicenzi Autore — v1.3.1
  *                                 (aggiornamento DB "Strisce P02" 04/01/2026)
  *
  * Base: derivata da MENU-02 (stessa topbar, stessi font, stessi fix BASE_URL).
  *
- * Modifiche v1.3:
+ * Modifiche v1.3.1:
+ * - FIX mobile gallery: rimosso target="_blank" sulle immagini (bug Chrome/Safari mobile).
+ * - Aggiunta LIGHTBOX overlay con X, tap-fuori, ESC e Back che chiude correttamente.
+ *
+ * Modifiche v1.3 (pre-esistenti):
  * - Fix chiusure HTML mancanti (tabsWrap / panelStage / artCard / artStage).
  * - Nav item attivo allineato al verdino (--menuHover), coerente con TAB attiva.
  * - Fix typo CSS "transparent" + pulizia duplicati border.
@@ -218,10 +222,8 @@ const U = (rel: string) => u(rel);
                     <div class="honeycomb" aria-label="Galleria P01 S01">
                       {P01S01.map((rel, idx) => (
                         <a
-                          class="hex"
+                          class="hex jsLightbox"
                           href={U(rel)}
-                          target="_blank"
-                          rel="noopener noreferrer"
                           aria-label={`P01 S01 ${String(idx + 1).padStart(2, "0")}`}
                         >
                           <span class="hexInner" style={`background-image:url('${U(rel)}');`}>
@@ -255,10 +257,8 @@ const U = (rel: string) => u(rel);
                     <div class="honeycomb" aria-label="Galleria P01 S02">
                       {P01S02.map((rel, idx) => (
                         <a
-                          class="hex"
+                          class="hex jsLightbox"
                           href={U(rel)}
-                          target="_blank"
-                          rel="noopener noreferrer"
                           aria-label={`P01 S02 ${String(idx + 1).padStart(2, "0")}`}
                         >
                           <span class="hexInner" style={`background-image:url('${U(rel)}');`}>
@@ -289,10 +289,8 @@ const U = (rel: string) => u(rel);
                     <div class="honeycomb" aria-label="Galleria P01 S03">
                       {P01S03.map((rel, idx) => (
                         <a
-                          class="hex"
+                          class="hex jsLightbox"
                           href={U(rel)}
-                          target="_blank"
-                          rel="noopener noreferrer"
                           aria-label={`P01 S03 ${String(idx + 1).padStart(2, "0")}`}
                         >
                           <span class="hexInner" style={`background-image:url('${U(rel)}');`}>
@@ -363,10 +361,8 @@ const U = (rel: string) => u(rel);
                     <div class="honeycomb" aria-label="Galleria P01 S04">
                       {P01S04.map((rel, idx) => (
                         <a
-                          class="hex"
+                          class="hex jsLightbox"
                           href={U(rel)}
-                          target="_blank"
-                          rel="noopener noreferrer"
                           aria-label={`P01 S04 ${String(idx + 1).padStart(2, "0")}`}
                         >
                           <span class="hexInner" style={`background-image:url('${U(rel)}');`}>
@@ -403,7 +399,7 @@ const U = (rel: string) => u(rel);
 
                     4. Gevurah (“Forza”, “Severità”) è la sefira della disciplina e del limite: il potere di dire no, tagliare l’eccesso, applicare legge e misura. È il fuoco che purifica, la spada che separa il vero dal superfluo, la giustizia che ristabilisce equilibrio senza sentimentalismo. In lavoro interiore governa coraggio, autocontrollo, responsabilità e capacità di sostenere conseguenze. Quando è integra, protegge il confine e rende l’azione precisa; quando è distorta diventa durezza, rabbia o rigidità punitiva.<br /><br />
 
-                    5. Ci sono due simboli alchilici allineati con il tridente, il primo al altezza dell'impugnatura (bastone orientato orrizontalmente) la quale impugnatura ha da una parte la testa di un'oca che mangia il bastone e dall'altra la testa di un serpente che fa la stessa cosa:<br /><br />
+                    5. Ci sono due simboli alchilici allineati con il tridente, il primo a altezza dell'impugnatura (bastone orientato orrizontalmente) la quale impugnatura ha da una parte la testa di un'oca che mangia il bastone e dall'altra la testa di un serpente che fa la stessa cosa:<br /><br />
 
                     - Simbolo alchemico di Saturno (sull'impugnatura): sull’impugnatura centrale funziona da attivatore di gravità: quando stringi il bastone con una mano e lo porti in orizzontale, agganci il principio di limite, tempo e struttura. L’orizzontale crea un asse di bilanciamento; la presa diventa firma e autorizzazione. In attivazione Saturno chiude le dispersioni, raffredda l’impulso e rende il comando preciso. Dopo l’innesco resta come forza sostenitrice: tenuta, pazienza, resistenza e continuità dell’opera, sotto pressione, senza cedere al rumore dello Scenario, fino al completamento.<br /><br />
 
@@ -411,17 +407,11 @@ const U = (rel: string) => u(rel);
 
                     6. Rune:<br /><br />
                     - Teiwaz. Runa della lancia e del diritto: orienta l’azione verso un bersaglio chiaro. Simbolicamente è coraggio, disciplina e scelta netta; magicamente taglia il superfluo e rende l’intento “rettilineo”. È il sigillo della vittoria ottenuta con coerenza e responsabilità.<br /><br />
-
                     - Dagaz. Runa dell’alba e del salto di stato: il momento in cui buio e luce si scambiano. Simbolicamente indica svolta, risveglio, integrazione degli opposti; magicamente accelera chiarimenti e “reset” positivi. Porta lucidità improvvisa, come apertura di una finestra sul reale.<br /><br />
-
                     - Hagalatz. Grandine: rottura necessaria, shock che libera, caos che ripulisce. Distrugge strutture deboli per far emergere l’essenziale. È crisi-alchimia: ciò che cade, lascia spazio a forma più vera.<br /><br />
-
                     - Sowilo. Runa del Sole: vittoria, energia centrale, integrità. Simbolicamente è luce cosciente, forza vitale e direzione; magicamente “carica” il campo, chiarisce, protegge dalla dispersione e alimenta il successo. È un sigillo di potenza pulita: brillare senza bruciare.<br /><br />
-
                     - Isa. Runa del ghiaccio: immobilità, sospensione, precisione. Simbolicamente è il fermo che conserva e definisce; magicamente blocca interferenze, raffredda l’eccesso emotivo e crea confini netti. Non è stallo sterile: è concentrazione. Invita a attendere il momento esatto.<br /><br />
-
                     - Perthro. Runa del dado/calice: mistero, destino, rivelazione. Simbolicamente parla di ciò che è nascosto e della sorte che si svela; magicamente apre l’oracolo, sincronicità e intuizioni. Porta “informazioni segrete” del campo, ma richiede fiducia e ascolto profondo.<br /><br />
-
                     - Jera: Runa del raccolto e del ciclo: tempo giusto, maturazione, ricompensa. Simbolicamente è legge di semina e conseguenza; magicamente stabilizza processi, favorisce risultati costanti e chiude cicli correttamente. Insegna pazienza operativa: ciò che nutri, torna a te, a stagione.<br /><br />
 
                     7. L’impugnatura con due teste che “mordono” il bastone è un sigillo di doppia presa sul potere: due guardiani che trattengono e regolano il flusso, impedendo dispersione. La testa superiore, collegata a Bilancia-Terra-Tridente e a berillo blu/smeraldo, governa misura, radicamento e comando: dà valore, struttura e coerenza al segnale. La testa opposta, il serpente che ingloba rune e Sodio, è il circuito iniziatico: custodisce il mistero, attiva trasformazione e purifica tramite cicli, rotture e rivelazioni. Insieme: disciplina + trasmutazione, tenute in equilibrio dalla presa.<br />
@@ -439,10 +429,8 @@ const U = (rel: string) => u(rel);
                     <div class="honeycomb" aria-label="Galleria P01 S05">
                       {P01S05.map((rel, idx) => (
                         <a
-                          class="hex"
+                          class="hex jsLightbox"
                           href={U(rel)}
-                          target="_blank"
-                          rel="noopener noreferrer"
                           aria-label={`P01 S05 ${String(idx + 1).padStart(2, "0")}`}
                         >
                           <span class="hexInner" style={`background-image:url('${U(rel)}');`}>
@@ -521,10 +509,8 @@ const U = (rel: string) => u(rel);
                     <div class="honeycomb" aria-label="Galleria P02 S01">
                       {P02S01.map((rel, idx) => (
                         <a
-                          class="hex"
+                          class="hex jsLightbox"
                           href={U(rel)}
-                          target="_blank"
-                          rel="noopener noreferrer"
                           aria-label={`P02 S01 ${String(idx + 1).padStart(2, "0")}`}
                         >
                           <span class="hexInner" style={`background-image:url('${U(rel)}');`}>
@@ -552,10 +538,8 @@ const U = (rel: string) => u(rel);
                     <div class="honeycomb" aria-label="Galleria P02 S02">
                       {P02S02.map((rel, idx) => (
                         <a
-                          class="hex"
+                          class="hex jsLightbox"
                           href={U(rel)}
-                          target="_blank"
-                          rel="noopener noreferrer"
                           aria-label={`P02 S02 ${String(idx + 1).padStart(2, "0")}`}
                         >
                           <span class="hexInner" style={`background-image:url('${U(rel)}');`}>
@@ -592,10 +576,8 @@ const U = (rel: string) => u(rel);
                     <div class="honeycomb" aria-label="Galleria P02 S03">
                       {P02S03.map((rel, idx) => (
                         <a
-                          class="hex"
+                          class="hex jsLightbox"
                           href={U(rel)}
-                          target="_blank"
-                          rel="noopener noreferrer"
                           aria-label={`P02 S03 ${String(idx + 1).padStart(2, "0")}`}
                         >
                           <span class="hexInner" style={`background-image:url('${U(rel)}');`}>
@@ -630,10 +612,8 @@ const U = (rel: string) => u(rel);
                     <div class="honeycomb" aria-label="Galleria P02 S04">
                       {P02S04.map((rel, idx) => (
                         <a
-                          class="hex"
+                          class="hex jsLightbox"
                           href={U(rel)}
-                          target="_blank"
-                          rel="noopener noreferrer"
                           aria-label={`P02 S04 ${String(idx + 1).padStart(2, "0")}`}
                         >
                           <span class="hexInner" style={`background-image:url('${U(rel)}');`}>
@@ -670,10 +650,8 @@ const U = (rel: string) => u(rel);
                     <div class="honeycomb" aria-label="Galleria P02 S05">
                       {P02S05.map((rel, idx) => (
                         <a
-                          class="hex"
+                          class="hex jsLightbox"
                           href={U(rel)}
-                          target="_blank"
-                          rel="noopener noreferrer"
                           aria-label={`P02 S05 ${String(idx + 1).padStart(2, "0")}`}
                         >
                           <span class="hexInner" style={`background-image:url('${U(rel)}');`}>
@@ -709,10 +687,8 @@ const U = (rel: string) => u(rel);
                     <div class="honeycomb" aria-label="Galleria P02 S06">
                       {P02S06.map((rel, idx) => (
                         <a
-                          class="hex"
+                          class="hex jsLightbox"
                           href={U(rel)}
-                          target="_blank"
-                          rel="noopener noreferrer"
                           aria-label={`P02 S06 ${String(idx + 1).padStart(2, "0")}`}
                         >
                           <span class="hexInner" style={`background-image:url('${U(rel)}');`}>
@@ -729,7 +705,7 @@ const U = (rel: string) => u(rel);
 
                     Sul lato destro troviamo il simbolo alchemico di Mercurio (☿) vale insieme per il metallo/quicksilver e per il pianeta. È il principio del “tra” - ciò che collega e trasporta. Nella triade paracelsiana (tria prima) Mercurio è spesso inteso come spirito: mobilità, volatilità, mediazione, capacità di mescolare e rendere trasformabile. Operativamente è la funzione che scioglie e ricompone, che rende comunicanti opposti e stati diversi: senza Mercurio non c’è passaggio, ma solo blocco. <br /><br />
 
-                    Sul lato sinistro invece troviamo troviamo il simbolo che nella mia lingua rappresenta la VI legge la quale dice, "hyllw ran Du Helghaa Gharan Mwn", ovvero In ogni Epoca, era o vita - ogni ciclio - bisogna incrementare la legge (svilupparla, sviluppare la base, sviluppare da dove si è arrivati, arricchirla).<br /><br />
+                    Sul lato sinistro invece troviamo troviamo il simbolo che nella mia lingua rappresenta la VI legge la quale dice, "hyllw ran Du Helghaa Gharan Mwn", ovvero In ogni Epoca, era o vita - ogni ciclo - bisogna incrementare la legge (svilupparla, sviluppare la base, sviluppare da dove si è arrivati, arricchirla).<br /><br />
 
                     Infine ci sono due simboli maestri che si condividono la guardia e la gestinde dell'equilibrio del potere di questo pendaglio. <br />
                     Il primo a sinistra è Esagramma unicorsale Telemaco che è un esagramma tracciabile con un’unica linea continua, adottato in ambito thelemico perché unisce in un solo gesto ciò che altrove è “doppio”. In Thelema è spesso mostrato con una rosa a cinque petali al centro: l’esagramma richiama le forze macrocosmiche/planetarie, mentre la rosa-pentagramma richiama il microcosmo (gli elementi/il mago). <br /><br />
@@ -747,10 +723,8 @@ const U = (rel: string) => u(rel);
                     <div class="honeycomb" aria-label="Galleria P02 S07">
                       {P02S07.map((rel, idx) => (
                         <a
-                          class="hex"
+                          class="hex jsLightbox"
                           href={U(rel)}
-                          target="_blank"
-                          rel="noopener noreferrer"
                           aria-label={`P02 S07 ${String(idx + 1).padStart(2, "0")}`}
                         >
                           <span class="hexInner" style={`background-image:url('${U(rel)}');`}>
@@ -795,10 +769,8 @@ const U = (rel: string) => u(rel);
                     <div class="honeycomb single" aria-label="Galleria P03 S01 (singola)">
                       {P03S01.map((rel) => (
                         <a
-                          class="hex"
+                          class="hex jsLightbox"
                           href={U(rel)}
-                          target="_blank"
-                          rel="noopener noreferrer"
                           aria-label="P03 S01 01"
                         >
                           <span class="hexInner" style={`background-image:url('${U(rel)}');`}>
@@ -825,6 +797,30 @@ const U = (rel: string) => u(rel);
         </div> <!-- /artCard -->
       </section> <!-- /artStage -->
     </main>
+
+    <!-- LIGHTBOX (overlay immagini) — v1.3.1 -->
+    <div
+      id="lightbox"
+      class="lb"
+      hidden
+      aria-hidden="true"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Anteprima immagine"
+    >
+      <button id="lbClose" class="lbClose" type="button" aria-label="Chiudi">×</button>
+
+      <div class="lbInner" role="document">
+        <img id="lbImg" class="lbImg" alt="" />
+        <a
+          id="lbOpenOriginal"
+          class="lbOpenOriginal"
+          href="#"
+          target="_blank"
+          rel="noopener noreferrer"
+        >Apri originale</a>
+      </div>
+    </div>
 
     <footer class="footer">
       <small>© <span id="y"></span> Raffaele Vicenzi</small>
@@ -965,6 +961,98 @@ const U = (rel: string) => u(rel);
 
         nav.querySelectorAll("a.navItem").forEach((a) => {
           a.addEventListener("click", () => close());
+        });
+      })();
+    </script>
+
+    <script is:inline>
+      (() => {
+        const lb = document.getElementById("lightbox");
+        const img = document.getElementById("lbImg");
+        const btnClose = document.getElementById("lbClose");
+        const openOriginal = document.getElementById("lbOpenOriginal");
+
+        if (!lb || !img || !btnClose || !openOriginal) return;
+
+        let isOpen = false;
+        let scrollY = 0;
+        let prevActive = null;
+
+        const lockScroll = () => {
+          scrollY = window.scrollY || 0;
+          document.body.style.position = "fixed";
+          document.body.style.top = `-${scrollY}px`;
+          document.body.style.left = "0";
+          document.body.style.right = "0";
+          document.body.style.width = "100%";
+        };
+
+        const unlockScroll = () => {
+          document.body.style.position = "";
+          document.body.style.top = "";
+          document.body.style.left = "";
+          document.body.style.right = "";
+          document.body.style.width = "";
+          window.scrollTo(0, scrollY);
+        };
+
+        const open = (url) => {
+          prevActive = document.activeElement;
+
+          img.src = url;
+          openOriginal.href = url;
+
+          lb.hidden = false;
+          lb.setAttribute("aria-hidden", "false");
+          isOpen = true;
+
+          lockScroll();
+
+          history.pushState({ lb: 1 }, "", location.href);
+
+          btnClose.focus({ preventScroll: true });
+        };
+
+        const close = (fromPop = false) => {
+          if (!isOpen) return;
+
+          isOpen = false;
+          lb.hidden = true;
+          lb.setAttribute("aria-hidden", "true");
+          img.src = "";
+
+          unlockScroll();
+
+          if (prevActive && typeof prevActive.focus === "function") {
+            prevActive.focus({ preventScroll: true });
+          }
+
+          if (!fromPop && history.state && history.state.lb) {
+            history.back();
+          }
+        };
+
+        document.addEventListener("click", (e) => {
+          const a = e.target.closest("a.hex.jsLightbox");
+          if (!a) return;
+
+          e.preventDefault();
+          const url = a.getAttribute("href");
+          if (url) open(url);
+        });
+
+        btnClose.addEventListener("click", () => close(false));
+
+        lb.addEventListener("click", (e) => {
+          if (e.target === lb) close(false);
+        });
+
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") close(false);
+        });
+
+        window.addEventListener("popstate", () => {
+          if (isOpen) close(true);
         });
       })();
     </script>
@@ -1449,6 +1537,70 @@ const U = (rel: string) => u(rel);
         .navItem:not(.navDisabled):hover{ animation: none !important; }
         .hexInner, .tab, .navItem{ transition: none !important; }
         .hex:hover .hexInner{ transform: none !important; }
+      }
+
+      /* ===== LIGHTBOX — v1.3.1 ===== */
+      .lb{
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        background: rgba(0,0,0,0.88);
+        display: grid;
+        place-items: center;
+        padding: 18px;
+      }
+
+      .lb[hidden]{ display:none; }
+
+      .lbInner{
+        position: relative;
+        width: min(980px, 96vw);
+        max-height: 92dvh;
+        display: grid;
+        gap: 10px;
+        justify-items: center;
+      }
+
+      .lbImg{
+        max-width: 96vw;
+        max-height: 84dvh;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,0.15);
+        background: rgba(255,255,255,0.06);
+      }
+
+      /* X sempre visibile (iOS safe-area) */
+      .lbClose{
+        position: fixed;
+        top: calc(12px + env(safe-area-inset-top));
+        right: calc(12px + env(safe-area-inset-right));
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+        border: 1px solid rgba(255,255,255,0.22);
+        background: rgba(0,0,0,0.35);
+        color: #fff;
+        font-size: 30px;
+        line-height: 1;
+        cursor: pointer;
+      }
+
+      .lbClose:focus-visible{
+        outline: 2px solid rgba(255,255,255,0.80);
+        outline-offset: 3px;
+      }
+
+      .lbOpenOriginal{
+        display: inline-block;
+        padding: 10px 12px;
+        border-radius: 999px;
+        border: 1px solid rgba(255,255,255,0.22);
+        background: rgba(0,0,0,0.35);
+        color: #fff;
+        font-family: "Candara", system-ui, -apple-system, Segoe UI, Roboto, Arial;
       }
     </style>
   </body>
