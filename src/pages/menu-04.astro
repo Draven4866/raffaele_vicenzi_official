@@ -1455,10 +1455,10 @@ const U = (rel: string) => u(rel);
         background: transparent;
       }
       
-      /* ===== LIGHTBOX FIX (menu-04 vs menu-05) — INCOLLA IN FONDO (v1.3) ===== */
+      /* ===== LIGHTBOX FIX (menu-04 vs menu-05) — incolla IN FONDO (v1.4) ===== */
 
-      /* overlay (supporta sia .lightbox che .lb) */
-      .lightbox, .lb{
+      /* overlay identico per .lightbox e .lb */
+      :where(.lightbox, .lb){
         position: fixed;
         inset: 0;
         z-index: 9999;
@@ -1466,11 +1466,11 @@ const U = (rel: string) => u(rel);
         align-items: center;
         justify-content: center;
 
-        /* variabili layout */
+        /* ✅ variabili layout */
         --lbPad: 12px;      /* padding base */
-        --lbReserve: 78px;  /* “aria” per X + respiro top */
+        --lbReserve: 78px;  /* aria per X + respiro top */
 
-        /* safe area + padding */
+        /* ✅ safe area + padding reale */
         padding:
           calc(var(--lbPad) + env(safe-area-inset-top))
           calc(var(--lbPad) + env(safe-area-inset-right))
@@ -1478,75 +1478,80 @@ const U = (rel: string) => u(rel);
           calc(var(--lbPad) + env(safe-area-inset-left));
       }
 
-      .lightbox[hidden], .lb[hidden]{
+      /* ✅ se usi [hidden] per mostra/nascondere */
+      :where(.lightbox, .lb)[hidden]{
         display: none !important;
       }
 
-      /* backdrop: se hai già .lbBackdrop nel DOM, lo gestiamo.
-        Se NON c’è, usiamo ::before. */
-      .lightbox::before, .lb::before,
-      .lbBackdrop{
-        content: "";
-        position: absolute;
-        inset: 0;
+      /* backdrop unico, sempre dietro */
+      :where(.lightbox, .lb)::before{
+        content:"";
+        position:absolute;
+        inset:0;
         background: rgba(0,0,0,0.72);
         backdrop-filter: blur(2px);
         z-index: 0;
       }
 
-      /* container sempre sopra al backdrop */
-      .lbDialog, .lbInner{
+      /* container (dialog/inner) sempre sopra */
+      :where(.lbDialog, .lbInner){
         position: relative;
         z-index: 1;
         width: min(980px, 100%);
         max-height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        display:flex;
+        align-items:center;
+        justify-content:center;
         pointer-events: none;
       }
 
-      /* immagine: fit viewport + cornice */
-      .lbImg, .lbDialog img, .lbInner img{
+      /* immagine: fit viewport VERO su mobile */
+      :where(.lbImg, .lbDialog img, .lbInner img){
         pointer-events: auto;
         display: block;
         box-sizing: border-box;
-
-        /* fallback “semplice” */
-        max-width: calc(100vw - (var(--lbPad) * 2));
-        max-height: calc(100vh - (var(--lbPad) * 2) - var(--lbReserve));
 
         width: auto;
         height: auto;
         object-fit: contain;
 
-        /* cornice */
+        /* ✅ fallback compatibile ovunque */
+        max-width: calc(100vw - (var(--lbPad) * 2) - env(safe-area-inset-left) - env(safe-area-inset-right));
+        max-height: calc(100vh - (var(--lbPad) * 2)
+          - env(safe-area-inset-top) - env(safe-area-inset-bottom)
+          - var(--lbReserve));
+
+        /* ✅ cornice */
         border: 15px solid rgba(255,255,255,0.98);
         border-radius: 18px;
         background: rgba(255,255,255,0.98);
         box-shadow: 0 18px 50px rgba(0,0,0,0.28);
       }
 
-      /* viewport moderni: svh/dvh (solo se supportati) */
+      /* ✅ svh (iOS moderno): più affidabile di vh quando la UI cambia */
       @supports (height: 100svh){
-        .lbImg, .lbDialog img, .lbInner img{
-          max-width: calc(100vw - (var(--lbPad) * 2) - env(safe-area-inset-left) - env(safe-area-inset-right));
-          max-height: calc(100svh - (var(--lbPad) * 2) - env(safe-area-inset-top) - env(safe-area-inset-bottom) - var(--lbReserve));
-        }
-      }
-      @supports (height: 100dvh){
-        .lbImg, .lbDialog img, .lbInner img{
-          max-height: calc(100dvh - (var(--lbPad) * 2) - env(safe-area-inset-top) - env(safe-area-inset-bottom) - var(--lbReserve));
+        :where(.lbImg, .lbDialog img, .lbInner img){
+          max-height: calc(100svh - (var(--lbPad) * 2)
+            - env(safe-area-inset-top) - env(safe-area-inset-bottom)
+            - var(--lbReserve));
         }
       }
 
-      /* X sempre sopra */
+      /* ✅ se dvh è supportato, usa quello (più preciso su mobile moderno) */
+      @supports (height: 100dvh){
+        :where(.lbImg, .lbDialog img, .lbInner img){
+          max-height: calc(100dvh - (var(--lbPad) * 2)
+            - env(safe-area-inset-top) - env(safe-area-inset-bottom)
+            - var(--lbReserve));
+        }
+      }
+
+      /* X sempre presente (fixed viewport) — TONDA BIANCA come menu-05 */
       .lbClose{
         position: fixed;
         top: calc(14px + env(safe-area-inset-top));
         right: calc(14px + env(safe-area-inset-right));
         z-index: 2;
-
         width: 46px;
         height: 46px;
         border-radius: 999px;
@@ -1555,18 +1560,15 @@ const U = (rel: string) => u(rel);
         color: rgba(0,0,0,0.85);
         font-size: 30px;
         line-height: 1;
-
         display:flex;
         align-items:center;
         justify-content:center;
-
         cursor:pointer;
         pointer-events: auto;
         -webkit-tap-highlight-color: transparent;
         touch-action: manipulation;
         box-shadow: 0 10px 28px rgba(0,0,0,0.18);
       }
-
       .lbClose:focus-visible{
         outline: 2px solid rgba(255,255,255,0.95);
         outline-offset: 4px;
@@ -1580,13 +1582,100 @@ const U = (rel: string) => u(rel);
           height: 44px;
           font-size: 28px;
         }
-
-        /* su mobile modifichiamo solo la cornice (non tocchiamo i calcoli) */
-        .lbImg, .lbDialog img, .lbInner img{
+        :where(.lbImg, .lbDialog img, .lbInner img){
+          max-width: 96vw;
+          max-height: calc(82vh - env(safe-area-inset-bottom));
           border-width: 8px;
           border-radius: 16px;
         }
       }
+
+      /* singola foto: cella grande */
+      .honeycomb.single{
+        grid-template-columns: minmax(260px, 420px);
+        justify-content: start;
+      }
+
+      /* ✅ BLANK (menu-05): reset + interazione */
+      .hex{
+        position: relative;
+        display:block;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        outline: none;
+
+        border: 0;
+        padding: 0;
+        background: transparent;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+      }
+
+      .hex:focus-visible .hexInner{
+        outline: 2px solid rgba(0,0,0,0.55);
+        outline-offset: -6px;
+      }
+
+      /* ✅ BLANK (menu-05): cornice + hover */
+      .hexInner{
+        position:absolute;
+        inset:0;
+        border-radius: 0;
+        background: rgba(255,255,255,0.35);
+        border: 10px solid var(--frameWhite);
+        box-shadow: 0 14px 34px rgba(0,0,0,0.10);
+        overflow:hidden;
+
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+
+        transform: scale(1);
+        transition: transform .18s ease, filter .18s ease;
+      }
+
+      .hexInner::after{
+        content:"";
+        position:absolute;
+        inset:0;
+        background: rgba(255,255,255,0.00);
+        transition: background .18s ease;
+        pointer-events:none;
+      }
+
+      .hex:hover .hexInner{
+        transform: scale(1.04);
+        filter: brightness(1.02);
+      }
+      .hex:hover .hexInner::after{
+        background: rgba(255,255,255,0.28);
+      }
+
+      /* ✅ NIENTE ETICHETTE SU HOVER (kill-switch anche se l'HTML le contiene) */
+      .hexLabel{ display:none !important; }
+
+      /* FOOTER */
+      .footer{
+        padding: 22px 18px;
+        background: rgba(255,255,255,0.85);
+        border-top: 1px solid rgba(0,0,0,0.10);
+      }
+
+      @media (max-width: 900px){
+        .brandLine{ white-space: normal; }
+        .tabs{ gap: 8px; }
+        .tab{ padding: 11px 12px 10px; }
+        .panel{ padding: 16px 14px 18px; }
+        .honeycomb{ grid-template-columns: repeat(3, 1fr); }
+      }
+
+      @media (prefers-reduced-motion: reduce){
+        .navItem:not(.navDisabled):hover{ animation: none !important; }
+        .hexInner, .tab, .navItem{ transition: none !important; }
+        .hex:hover .hexInner{ transform: none !important; }
+      }
+
 
 
       /* FOOTER */
