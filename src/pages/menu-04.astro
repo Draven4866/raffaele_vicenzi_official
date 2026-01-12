@@ -1454,6 +1454,123 @@ const U = (rel: string) => u(rel);
         border-radius: 18px;
         background: transparent;
       }
+      
+      /* ===== LIGHTBOX FIX (menu-04 vs menu-05) — incolla IN FONDO ===== */
+
+      /* overlay identico per .lightbox e .lb */
+      :where(.lightbox, .lb){
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        /* spazio reale su iOS (safe area) */
+        padding:
+          calc(12px + env(safe-area-inset-top))
+          calc(12px + env(safe-area-inset-right))
+          calc(12px + env(safe-area-inset-bottom))
+          calc(12px + env(safe-area-inset-left));
+      }
+
+      :where(.lightbox, .lb)[hidden]{
+        display: none !important;
+      }
+
+      /* backdrop unico, sempre dietro */
+      :where(.lightbox, .lb)::before{
+        content:"";
+        position:absolute;
+        inset:0;
+        background: rgba(0,0,0,0.72);
+        backdrop-filter: blur(2px);
+        z-index: 0;
+      }
+
+      /* container (dialog/inner) sempre sopra */
+      :where(.lbDialog, .lbInner){
+        position: relative;
+        z-index: 1;
+        width: min(980px, 100%);
+        max-height: 100%;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        pointer-events: none;
+      }
+
+      /* immagine: fit viewport VERO su mobile */
+      :where(.lbImg, .lbDialog img, .lbInner img){
+        pointer-events: auto;
+        display: block;
+        box-sizing: border-box;
+
+        max-width: 100%;
+        max-height: calc(100dvh - 140px);
+
+        width: auto;
+        height: auto;
+        object-fit: contain;
+
+        /* ✅ cornice bianca reale */
+        border: 15px solid rgba(255,255,255,0.98);
+        border-radius: 18px;
+        background: rgba(255,255,255,0.98);
+        box-shadow: 0 18px 50px rgba(0,0,0,0.28);
+
+        /* il segreto: niente vh “secco”, usa dvh e togli spazio X/padding */
+        max-width: 100%;
+        max-height: calc(100dvh - 140px);
+
+        width: auto;
+        height: auto;
+        object-fit: contain;
+      }
+
+      /* X sempre presente (fixed viewport) — TONDA BIANCA come menu-05 */
+      .lbClose{
+        position: fixed;
+        top: calc(14px + env(safe-area-inset-top));
+        right: calc(14px + env(safe-area-inset-right));
+        z-index: 2;
+        width: 46px;
+        height: 46px;
+        border-radius: 999px;
+        border: 1px solid rgba(0,0,0,0.18);
+        background: rgba(255,255,255,0.92);
+        color: rgba(0,0,0,0.85);
+        font-size: 30px;
+        line-height: 1;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        cursor:pointer;
+        pointer-events: auto;
+        -webkit-tap-highlight-color: transparent;
+        touch-action: manipulation;
+        box-shadow: 0 10px 28px rgba(0,0,0,0.18);
+      }
+      .lbClose:focus-visible{
+        outline: 2px solid rgba(255,255,255,0.95);
+        outline-offset: 4px;
+      }
+
+      @media (max-width: 900px){
+        .lbClose{
+          top: calc(10px + env(safe-area-inset-top));
+          right: calc(10px + env(safe-area-inset-right));
+          width: 44px;
+          height: 44px;
+          font-size: 28px;
+        }
+        .lbImg{
+          max-width: 96vw;
+          max-height: 82vh;
+          border-width: 8px;
+          border-radius: 16px;
+        }
+      }
 
       /* singola foto: cella grande */
       .honeycomb.single{
@@ -1541,109 +1658,8 @@ const U = (rel: string) => u(rel);
         .hex:hover .hexInner{ transform: none !important; }
       }
 
-      /* ===== LIGHTBOX FIX (menu-04 vs menu-05) — incolla IN FONDO ===== */
-
-      /* overlay identico per .lightbox e .lb */
-      :where(.lightbox, .lb){
-        position: fixed;
-        inset: 0;
-        z-index: 9999;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        /* spazio reale su iOS (safe area) */
-        padding:
-          calc(12px + env(safe-area-inset-top))
-          calc(12px + env(safe-area-inset-right))
-          calc(12px + env(safe-area-inset-bottom))
-          calc(12px + env(safe-area-inset-left));
-      }
-
-      :where(.lightbox, .lb)[hidden]{
-        display: none !important;
-      }
-
-      /* backdrop unico, sempre dietro */
-      :where(.lightbox, .lb)::before{
-        content:"";
-        position:absolute;
-        inset:0;
-        background: rgba(0,0,0,0.72);
-        backdrop-filter: blur(2px);
-        z-index: 0;
-      }
-
-      /* container (dialog/inner) sempre sopra */
-      :where(.lbDialog, .lbInner){
-        position: relative;
-        z-index: 1;
-        width: min(980px, 100%);
-        max-height: 100%;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        pointer-events: none;
-      }
-
-      /* immagine: fit viewport VERO su mobile */
-      :where(.lbImg, .lbDialog img, .lbInner img){
-        pointer-events: auto;
-        display: block;
-        box-sizing: border-box;
-
-        /* il segreto: niente vh “secco”, usa dvh e togli spazio X/padding */
-        max-width: 100%;
-        max-height: calc(100dvh - 140px);
-
-        width: auto;
-        height: auto;
-        object-fit: contain;
-      }
-
-      /* X sempre presente (fixed viewport) — TONDA BIANCA come menu-05 */
-      .lbClose{
-        position: fixed;
-        top: calc(14px + env(safe-area-inset-top));
-        right: calc(14px + env(safe-area-inset-right));
-        z-index: 2;
-        width: 46px;
-        height: 46px;
-        border-radius: 999px;
-        border: 1px solid rgba(0,0,0,0.18);
-        background: rgba(255,255,255,0.92);
-        color: rgba(0,0,0,0.85);
-        font-size: 30px;
-        line-height: 1;
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        cursor:pointer;
-        pointer-events: auto;
-        -webkit-tap-highlight-color: transparent;
-        touch-action: manipulation;
-        box-shadow: 0 10px 28px rgba(0,0,0,0.18);
-      }
-      .lbClose:focus-visible{
-        outline: 2px solid rgba(255,255,255,0.95);
-        outline-offset: 4px;
-      }
-
-      @media (max-width: 900px){
-        .lbClose{
-          top: calc(10px + env(safe-area-inset-top));
-          right: calc(10px + env(safe-area-inset-right));
-          width: 44px;
-          height: 44px;
-          font-size: 28px;
-        }
-        .lbImg{
-          max-width: 96vw;
-          max-height: 82vh;
-          border-width: 8px;
-          border-radius: 16px;
-        }
-      }
+      
+      
     </style>
   </body>
 </html>
