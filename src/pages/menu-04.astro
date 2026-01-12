@@ -1466,12 +1466,16 @@ const U = (rel: string) => u(rel);
         align-items: center;
         justify-content: center;
 
+        /* variabili layout */
+        --lbPad: 12px;      /* padding base */
+        --lbReserve: 78px;  /* “aria” per X + respiro top */
+
         /* spazio reale su iOS (safe area) */
         padding:
-          calc(12px + env(safe-area-inset-top))
-          calc(12px + env(safe-area-inset-right))
-          calc(12px + env(safe-area-inset-bottom))
-          calc(12px + env(safe-area-inset-left));
+          calc(var(--lbPad) + env(safe-area-inset-top))
+          calc(var(--lbPad) + env(safe-area-inset-right))
+          calc(var(--lbPad) + env(safe-area-inset-bottom))
+          calc(var(--lbPad) + env(safe-area-inset-left));
       }
 
       :where(.lightbox, .lb)[hidden]{
@@ -1500,14 +1504,16 @@ const U = (rel: string) => u(rel);
         pointer-events: none;
       }
 
-      /* immagine: fit viewport VERO su mobile */
+      /* immagine: fit viewport VERO su mobile + cornice */
       :where(.lbImg, .lbDialog img, .lbInner img){
         pointer-events: auto;
         display: block;
         box-sizing: border-box;
 
-        max-width: 100%;
-        max-height: calc(100dvh - 140px);
+        /* ✅ dimensionamento corretto: togli padding overlay + safe-area + spazio X */
+        max-width: calc(100vw - (var(--lbPad) * 2) - env(safe-area-inset-left) - env(safe-area-inset-right));
+        max-height: calc(100dvh - (var(--lbPad) * 2) - env(safe-area-inset-top) - env(safe-area-inset-bottom) - var(--lbReserve));
+        max-height: calc(100svh - (var(--lbPad) * 2) - env(safe-area-inset-top) - env(safe-area-inset-bottom) - var(--lbReserve));
 
         width: auto;
         height: auto;
@@ -1518,14 +1524,6 @@ const U = (rel: string) => u(rel);
         border-radius: 18px;
         background: rgba(255,255,255,0.98);
         box-shadow: 0 18px 50px rgba(0,0,0,0.28);
-
-        /* il segreto: niente vh “secco”, usa dvh e togli spazio X/padding */
-        max-width: 100%;
-        max-height: calc(100dvh - 140px);
-
-        width: auto;
-        height: auto;
-        object-fit: contain;
       }
 
       /* X sempre presente (fixed viewport) — TONDA BIANCA come menu-05 */
@@ -1564,9 +1562,10 @@ const U = (rel: string) => u(rel);
           height: 44px;
           font-size: 28px;
         }
-        .lbImg{
-          max-width: 96vw;
-          max-height: 82vh;
+
+        /* niente vh/vw qui: lasciamo i calcoli “safe” sopra,
+          modifichiamo solo la cornice come menu-05 */
+        :where(.lbImg, .lbDialog img, .lbInner img){
           border-width: 8px;
           border-radius: 16px;
         }
@@ -1638,6 +1637,7 @@ const U = (rel: string) => u(rel);
       .hexLabel{ display:none !important; }
 
       /* FOOTER */
+
       .footer{
         padding: 22px 18px;
         background: rgba(255,255,255,0.85);
